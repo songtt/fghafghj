@@ -1,0 +1,84 @@
+{extend name="public:advertiser-base" /}
+
+{block name="main"}
+    <div class="main_left">
+        <div class="subnav">
+            <div class="subnav-title">
+                <a href="" class="toggle-subnav">
+                    <i></i>
+                    <span>所有推广计划</span>
+                </a>
+            </div>
+            <ul class="subnav-menu">
+                <li><a href="/home/advertiser/adslist">所有计划</a></li>
+                {volist name="ads_list.pname" id="vo"}
+                <li><a href="/home/advertiser/adslist?pname={$vo}">{$vo}</a></li>
+                {/volist}
+            </ul>
+        </div>
+    </div>
+    <div class="main" style="padding-top:10px;">
+        <div class="mt30" style="height:30px;">
+            <div class="new_date">
+                <a href="/home/advertiser/adsAdd">新建广告</a>
+            </div>
+        </div>
+        <div class="box">
+            <div class="box-title">
+                <h3>
+                    <i></i>广告列表
+                </h3>
+                <div class="actions" style="color:#08c;">
+                    <select style="margin-left:20px;">
+                        <option>所有类型</option>
+                    </select>
+                </div>
+            </div>
+            <div class="box-content">
+                <table class="table table-hover">
+                    <tr>
+                        <th width="50">ID</th>
+                        <th width="260">浏览</th>
+                        <th>&nbsp;</th>
+                        <th>计划名称</th>
+                        <th>计费形式</th>
+                        <th>广告类型</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                    {volist name="ads_list.res" id="vo"}
+                    <tr>
+                        <td align="left" style="padding:20px; padding-left:10px;">{$vo.ad_id}</td>
+                        {if condition="$vo.files eq '2'"}
+                        <td height="30"><a><img src="{$vo.imageurl}" border="0"></a></td>
+                        {else/}
+                        <td height="30"><a><img src="{$ads_list.img.img_server}{$vo.imageurl}" border="0"></a></td>
+                        {/if}
+                        <td>{$vo.width|default=''}x{$vo.height|default=''}</td>
+                        <td>{$vo.plan_name|default=''}</td>
+                        <td>{$vo.plan_type|default=''}</td>
+                        <td>{$vo.tplname}</td>
+                        <td>
+                            <span class="common-button ajax-status">
+                                {switch name="vo.status" }
+                                    {case value="0"}<span class="sta_er">锁定</span>{/case}
+                                    {case value="1"}<span class="sta_bl">活动</span>{/case}
+                                    {case value="2"}<span class="sta_er">待审</span>{/case}
+                                {/switch}
+                            </span>
+                        </td>
+                        <td><a href="/home/advertiser/adsEdit?aid={$vo.ad_id}">编辑</a></td>
+                    </tr>
+                    {/volist}
+                </table>
+            </div>
+            <div class="row">
+                {$ads_list.show|default=''}
+            </div>
+        </div>
+    </div>
+{/block}
+
+{block name="js"}
+
+{/block}

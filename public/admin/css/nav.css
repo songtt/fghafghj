@@ -1,0 +1,30 @@
+/**/
+.navbar-static-top{
+    position: fixed;
+    left: 0;
+    right: 0;
+}
+/* ==导航栏== */
+.sidebar{
+    z-index: 1;
+    position: none;
+    width: inherit;
+    margin-top: 10px;
+    background-color: #1d2939;
+}
+.sidebar li{
+    border: none !important;
+}
+.sidebar li a{
+    color: #8692a2;
+}
+.sidebar li a:hover,
+.sidebar li a:focus{
+    background-color: #1d2939;
+    color: #fff;
+}
+.nav-second-level li a:hover{
+    background-color: #19b19a;
+    color: #fff;
+}
+

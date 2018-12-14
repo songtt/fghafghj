@@ -1,0 +1,137 @@
+{extend name="public:advertiser-base" /}
+
+{block name="main"}
+    <div class="main" style="padding-top:10px;">
+        <div class="mt30" style="height:30px;">
+            <div class="breadcrumbs mt30">
+                <ul>
+                    <li><a href="/home/advertiser/adslist">我的广告列表   »</a> 编辑广告</li>
+                </ul>
+            </div>
+        </div>
+        <div class="box">
+            <!--form表开始-->
+            <form class="form-hor" action="/home/advertiser/adsEdit" name="addform" method="post" enctype="multipart/form-data" >
+                <div class="pl-tab">
+                    <div class="control-group">
+                        <label class="controls-label">所属广告计划</label>
+                        <div class="controls">
+                            <input class="input-text input1" type="text" name="plan_name"  value="{$one.plan_name}" readonly="true" />
+                            <span>属于哪个计划名下的广告</span>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="controls-label">广告类型</label>
+                        <div class="controls">
+                            <select name="adtpl_id" disabled="">
+                                <option value="{$one['adtype']['tpl_id']}">{$one['adtype']['tplname']}----{$one['adtype']['type_name']}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="controls-label">广告名称</label>
+                        <div class="controls">
+                            <input class="input300 quired" name="ad_name" value="{$one.adname}" type="text"><span class="erro" style="display:none;">请输入广告名称</span>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="controls-label">显示尺寸</label>
+                        <div class="controls">
+                            <select name="" id="" disabled="disabled">
+                                <option value="200x300"> {$one.width|default=''}x{$one.height|default=''}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!--添加判断-->
+                    <div class="control-group">
+                        <label class="controls-label">上传图片</label>
+                        <div class="controls" style="margin-top:6px;">
+                            <input name="files" type="radio" value="1" checked="checked">上传文件
+                        </div>
+                        <br>
+                        <div class="controls">
+                            <input class="input300 quired a_quired" type="file" name="files" value="{$one.files}"><span class="erro" style="display:none;">请选择一个广告</span>
+                        </div>
+                    </div>
+                    <!--添加判断-->
+                    <div class="control-group">
+                        <label class="controls-label">广告地址</label>
+                        <div class="controls">
+                            <input class="input-text input1 quired b_quired" name="url" value="{$one.url}" type="text"><span class="erro" style="display:none;">广告地址不能为空</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!--end-->
+                <input type="hidden" name="hid_aid" value="{$one.ad_id}" />
+                <input type="hidden" name="hid_uid" value="" />
+                <!--表单提交-->
+                <div class="control-group" style="padding-bottom:50px;">
+                    <div class="controls">
+                        <button  class="btn btn-primary" type="submit">提交</button>
+                    </div>
+                </div>
+                <!--end-->
+            </form>
+            <!--end-->
+        </div>
+    </div>
+{if condition="$one.cmd_flag eq '1'"}
+<div class="al_box" style="position:fixed; top:80px; right:0; color:#444; width:280px; height:32px; line-height:32px; background:#d5ffce; text-indent:10px; border:1px solid #9adf8f;">保存成功</div>
+{/if}
+{/block}
+
+
+{block name="js"}
+<script>
+    $(function(){
+        $("form").submit(function(){
+            var flag = true;
+            $(".quired").each(function(){
+                if($(this).val() == ""){
+                    $(this).next().css('display','inline');
+                    // //获取滚动条高度
+                    // // var a = $(this).offset().top;
+                    $(this).focus();
+                    $("html,body").animate({scrollTop:0}, 0);
+                    flag = false;
+                }
+            })
+            if(!flag){
+                return false;
+            }
+        })
+        $(".a_quired").change(function(){
+            var value = $(this).val();
+            $(this).each(function(){
+                if(value!="" ){
+                    $(this).next().css('display','none');
+                    return true;
+                }else{
+                    $(this).next().css('display','inline');
+                    return false;
+                }
+            })
+        })
+        $(".b_quired").keyup(function(){
+            //正则判断
+            var pattern =/^http:\/\/[A-Za-z0-9]+\.[A-Za-z0-9]+[\/=\?%\-&_~`@[\]\':+!]*([^<>\"\"])*$/;
+            var value = $(this).val();
+            if(pattern.test(value)==true){
+                $(this).next().css('display','none');
+                return true;
+            }else{
+                $(this).next().css('display','inline');
+                return false;
+            }
+        })
+    })
+    $(".al_box,body").click(function(){
+        setTimeout(function(){
+            $(".al_box").css("display","none");
+        },3000);
+    })
+</script>
+{/block}
+
+

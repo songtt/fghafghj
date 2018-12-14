@@ -1,0 +1,166 @@
+{extend name="public:base" /}
+{block name="css"}
+<link href="__CSS__/daterangepicker-bs3.css" rel="stylesheet" />
+{/block}
+{block name="main"}
+<!--  添加  -->
+<div class="wrapper">
+    <div id="repo_data" class="tb_sts" style="position:absolute; top:82px; right:44px;">
+        <a href="" class="payTab"><i class="fa fa-plus-circle"></i>趋势分析</a>
+        <a href=""><i class="fa fa-plus-circle"></i>客户端属性</a>
+    </div>
+    <h3 class="heading head_trend">趋势分析<span><a href="">今天</a></span><span><a href="">昨天</a></span><span><a href="">最近7天</a></span><span><a href="">最近30天</a></span><span><a href="">所有数据</a></span></h3>
+    <div class="tb_sts">
+        <form class="" action="" method="post" name="">
+            搜索：
+            <input class="input-text input1" type="hidden" name="stats" value="" />
+            <input class="input-text" name="numid" type="text" value="" value="" style="width:200px;">
+            <select name="id" id="" style="width:90px;">
+                <option value="pid">计划ID</option>
+                <option value="uid">站长ID</option>
+                <option value="ad_id">广告ID</option>
+                <option value="adz_id ">广告位ID</option>
+            </select>
+            <select id="selectime" name="time" id="" style="width:204px;">
+                <option id="fatime" value="">111</option>
+                <option value="">所有时间段</option>
+                <option value="" >今天</option>
+                <option value="" >昨天</option>
+                <option value="" >最近七天</option>
+                <option value="" >最近30天</option>
+                <option value="" >上个月</option>
+            </select>
+            <img src="/admin/img/calendar.png" id="reservation">
+            <button type="input"><i class="fa fa-search"></i></button>
+        </form>
+    </div>
+    <table class="dataTable">
+        <tr class="list_trend">
+            <th>54564654<span>浏览量</span></th>
+            <th>4546464<span>CPV</span></th>
+            <th>4546<span>应付</span></th>
+            <th>456<span>盈利</span></th>
+        </tr>
+    </table>
+    <div style="float:left; padding:10px;">
+        <span class="echt">
+            <label><input name="aaa" type="radio" value="" checked="">按天</label>
+            <label><input name="aaa" type="radio" value="">按时</label>
+            <label><input name="aaa" type="radio" value="">对比数据</label>
+        </span>
+    </div>
+    <div class="box-content" style="margin-top:15px;">
+        <div id="container" style="min-width:700px;height:400px"></div>
+        <div class="fold" style="margin-bottom:30px;"></div>
+    </div>
+    <form  action="" name="delete" id="delete" method="post">
+    <table class="dataTable table-hover">
+        
+        <tr>
+            <th>日期</th>
+            <th>浏览量</th>
+            <th>结算数</th>
+            <th>点击量</th>
+            <th>效果数</th>
+            <th>扣量</th>
+            <th>二次点击</th>
+            <th>CTR</th>
+            <th>应付金额</th>
+            <th>盈利</th>
+        </tr>
+        <tr>
+            <td>2016-10-12</td>
+            <td>201945</td>
+            <td>54545645</td>
+            <td>2545</td>
+            <td>45</td>
+            <td>0</td>
+            <td>0</td>
+            <td>45</td>
+            <td>45456</td>
+            <td>4454645</td>
+        </tr>
+    </table>
+    </form>
+    <div class="row"></div>
+</div>
+
+{/block}
+
+<!-- end wrapper -->
+
+{block name="js"}
+<!-- <script src="__JS__/report.js"></script> -->
+<script src="__STATIC__/js/moment.min.js"></script>
+<script src="__JS__/daterangepicker.js"></script>
+<script src="__JS__/moment.js"></script>
+<script type="text/javascript" src="//cdn.hcharts.cn/highcharts/highcharts.js"></script>
+<script type="text/javascript">
+    $(function(){
+     
+        $('#container').highcharts({
+            title: {
+                text: '效果报告',
+                x: -20 //center
+            },
+            // xAxis: {
+            //     categories: day
+            // },
+            credits: {
+                enabled:false
+            },
+            yAxis: {
+//                title: {
+//                    text: '流量统计(IP)'
+//                },
+                title: {
+                    text: '支付统计'
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle',
+                borderWidth: 0
+            },
+//            series: [{
+//                name: '结算数',
+//                data: num
+//            },{
+//                name: '浏览数',
+//                data: views
+//            }]
+            // series: [{
+            //     name: '支付数',
+            //     data: adv_sumadvpay
+            // }]
+        });
+
+        $('#reservation').daterangepicker(null, function(start, end, label) {
+            var a = start.format();
+            var b = end.format();
+            //start time
+            var c = a.substr(0,10);
+            //end time
+            var d = b.substr(0,10);
+            //点击选中第一个
+            $("#selectime option:first").prop("selected","selected");
+            $("#fatime").text(c+"至"+d);
+            $("#fatime").val(value = c+""+d);
+        });
+    });
+    // 批量删除
+    function delLst(){
+        layer.confirm('确定删除吗？', {
+            btn: ['确定','取消'] //按钮
+        }, function(){
+            $('form').submit();
+        });
+    }
+</script>
+{/block}

@@ -1,0 +1,171 @@
+{extend name="public:base" /}
+
+{block name="main"}
+<div class="wrapper">
+<div class="row-fluid">
+  <h3 class="heading">联盟设置</h3>
+  <div id="content">
+  <form action="/admin/setting/basic" name="basicform" method="post">
+    <div class="control-group">
+      <label class="control-label control-label-left">联盟名称</label>
+      <div class="controls control-input">
+        <input class="input-text input1" type="text" name="sitename1" value="{$setting_basic.sitename}" />
+        <span>首页和底部或是其他地方出现的联盟名称.</span>
+      </div>
+    </div> 
+    <div class="control-group">
+      <label class="control-label control-label-left">计费方式开关</label>
+      <div class="controls control-input">
+        <input type="checkbox" name="cpc" value="1" {if condition="$setting_basic.cpc eq '1'"}
+                    checked {/if}>CPC
+                    <input type="checkbox" name="cpm" value="1" {if condition="$setting_basic.cpm eq '1'"}
+                    checked   {/if}>CPM
+                    <!--<input type="checkbox" name="cpv" value="1" {if condition="$setting_basic.cpv eq '1'"}-->
+                    <!--checked  {/if}>CPV-->
+                    <!--<input type="checkbox" name="cps" value="1" {if condition="$setting_basic.cps eq '1'"}-->
+                    <!--checked  {/if}>CPS-->
+                    <!--<input type="checkbox" name="cpa" value="1" {if condition="$setting_basic.cpa eq '1'"}-->
+                    <!--checked   {/if}>CPA-->
+      </div>
+    </div>
+    <div class="control-group">
+    <label class="control-label control-label-left">计费次数限制</label>
+        <div class="controls control-input">
+        <input class="input-text input1" type="text" name="maximum_clicks" value="{$setting_basic.maximum_clicks}" />
+    </div>
+    </div>
+   
+    <div class="control-group">
+      <label class="control-label control-label-left">广告商余额提醒</label>
+       <div class="controls control-input">
+        <input class="input-text input1" type="text" name="adv_money" value="{$setting_basic.adv_money}" />
+      </div>
+    </div>
+
+     <div class="control-group">
+      <label class="control-label control-label-left">域名限制</label>
+      <div class="controls control-input">
+        <input type="radio" name="domain_limit" value="1" {if condition="$setting_basic.domain_limit eq '1'"} checked {/if}>开启
+        <input type="radio" name="domain_limit" value="0" {if condition="$setting_basic.domain_limit eq '0'"} checked {/if}>关闭
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label control-label-left">大点击开关</label>
+      <div class="controls control-input">
+          <input type="radio" name="bigclick_status" value="1" {if condition="$setting_basic.bigclick_status eq '1'"} checked {/if}>开启
+          <input type="radio" name="bigclick_status" value="0" {if condition="$setting_basic.bigclick_status eq '0'"} checked {/if}>关闭
+      </div>
+    </div>
+    <!--<div class="control-group">-->
+      <!--<label class="control-label control-label-left">PV成长值</label>-->
+      <!--<div class="controls control-input">-->
+        <!--<input class="input-text input1" type="text" name="pv_step" value="{$setting_basic.pv_step}" />-->
+      <!--</div>  -->
+    <!--</div>-->
+    <!--<div class="control-group">-->
+      <!--<label class="control-label control-label-left">允许新用户注册</label>-->
+      <!--<div class="controls control-input">-->
+        <!--<input type="checkbox" name="opne_affiliate_register" value="1" {if condition="$setting_basic.opne_affiliate_register eq '1'"}-->
+                       <!--checked {/if}>开发站长注册-->
+                      <!--<input type="checkbox" name="opne_advertiser_register" value="1" {if condition="$setting_basic.opne_advertiser_register eq '1'"}-->
+                       <!--checked {/if}>开发广告商注册-->
+      <!--</div>                 -->
+    <!--</div>-->
+    <!--<div class="control-group">-->
+      <!--<label class="control-label control-label-left">注册验证</label>-->
+      <!--<div class="controls control-input">-->
+      <!--<input type="radio" name="register_status" value="1" {if condition="$setting_basic.register_status eq '1'"} checked {/if}>手动审核-->
+               <!--<input type="radio" name="register_status" value="2" {if condition="$setting_basic.register_status eq '2'"} checked {/if}>Email验证-->
+               <!--<input type="radio" name="register_status" value="3" {if condition="$setting_basic.register_status eq '3'"} checked {/if}>直接通过-->
+      <!--</div>         -->
+    <!--</div>-->
+    <!--<div class="control-group"> -->
+      <!--<label class="control-label control-label-left">新增网站</label> -->
+      <!--<div class="controls control-input">-->
+        <!--<input type="radio" name="add_website" value="1" {if condition="$setting_basic.add_website eq '1'"} checked {/if}>人工审核-->
+               <!--<input type="radio" name="add_website" value="2" {if condition="$setting_basic.add_website eq '2'"} checked {/if}>自动通过-->
+               <!--<input type="radio" name="add_website" value="3" {if condition="$setting_basic.add_website eq '3'"} checked {/if}>需验证网站后自动通过-->
+               <!--<input type="radio" name="add_website" value="4" {if condition="$setting_basic.add_website eq '4'"} checked {/if}>需验证网站后人工审核-->
+      <!--</div>         -->
+    <!--</div>-->
+    <!--<div class="control-group">-->
+      <!--<label class="control-label control-label-left">联盟标志</label>-->
+      <!--<div class="controls control-input">-->
+        <!--<input type="radio" name="site_status" value="1" {if condition="$setting_basic.site_status eq '1'"} checked {/if}>开启-->
+               <!--<input type="radio" name="site_status" value="0" {if condition="$setting_basic.site_status eq '0'"} checked {/if}>关闭-->
+      <!--</div>         -->
+    <!--</div>-->
+    <!--<div class="control-group">-->
+      <!--<label class="control-label control-label-left">24小时允许注册</label>-->
+      <!--<div class="controls control-input">-->
+        <!--<input class="input-text input1" type="text" name="24_hours_register_num" value="{$setting_basic.24_hours_register_num}"/> 次-->
+      <!--</div>  -->
+    <!--</div>-->
+    <!--<div class="control-group">-->
+      <!--<label class="control-label control-label-left">屏蔽以下IP注册</label>-->
+      <!--<div class="controls control-input">-->
+        <!--<input class="input-text input1" type="text" name="ban_ip_register" value="{$setting_basic.ban_ip_register}" />-->
+      <!--</div>  -->
+    <!--</div>  -->
+    <!--<div class="control-group">-->
+      <!--<label class="control-label control-label-left">会员登录验证码</label>-->
+      <!--<div class="controls control-input">-->
+        <!--<input type="radio" name="login_check_code" value="1" {if condition="$setting_basic.login_check_code eq '1'"} checked {/if}>开启-->
+                     <!--<input type="radio" name="login_check_code" value="0" {if condition="$setting_basic.login_check_code eq '0'"} checked {/if}>关闭-->
+      <!--</div>               -->
+    <!--</div>-->
+    <!--<div class="control-group">-->
+      <!--<label class="control-label control-label-left">会员注册验证码</label>-->
+      <!--<div class="controls control-input">-->
+        <!--<input type="radio" name="registered_check_code" value="1" {if condition="$setting_basic.registered_check_code eq '1'"}-->
+                     <!--checked {/if}>开启-->
+                     <!--<input type="radio" name="registered_check_code" value="0" {if condition="$setting_basic.registered_check_code eq '0'"}-->
+                     <!--checked {/if}>关闭-->
+      <!--</div>               -->
+    <!--</div>-->
+    <!--<div class="control-group">-->
+        <!--<label class="control-label control-label-left">注册赠送钱</label>-->
+        <!--<div class="controls control-input" id="">-->
+            <!--<input type="radio" name="register_add_money_on" register_add_money_on="register_add_money_on" value="1" {if condition="$setting_basic.register_add_money_on eq '1'"}-->
+                     <!--checked {/if}>开启-->
+            <!--<input type="radio" name="register_add_money_on" register_add_money_on="register_add_money_on" value="0" {if condition="$setting_basic.register_add_money_on eq '0'"}-->
+            <!--checked {/if}>关闭-->
+        <!--</div>           -->
+    <!--</div>-->
+    <!--<div class="control-group r-show-hide" style="display:none;">-->
+        <!--<label class="control-label control-label-left">增送款项到</label>-->
+        <!--<div class="controls control-input">-->
+            <!--<input type="radio" name="sash" value="1" {if condition="$setting_basic.register_add_money_on eq '1'"}-->
+            <!--checked {/if}>日款-->
+            <!--<input type="radio" name="sash" value="0" {if condition="$setting_basic.register_add_money_on eq '0'"}-->
+            <!--checked {/if}>周款-->
+            <!--<input type="radio" name="sash" value="0" {if condition="$setting_basic.register_add_money_on eq '0'"}-->
+            <!--checked {/if}>月款-->
+        <!--</div>           -->
+    <!--</div>-->
+    <!--<div class="control-group r-show-hide" style="display:none;">-->
+      <!--<label class="control-label control-label-left">退送款金额</label>-->
+      <!--<div class="controls control-input">-->
+        <!--<input class="input-text input1" type="text" name="sitename" value="{$setting_basic.sitename}" />-->
+        <!--<span>元</span>-->
+      <!--</div>-->
+    <!--</div>-->
+    <div class="sbut">
+      <button class="btn btn-primary" type="submit">保存设置</button>
+    </div>  
+   </form>
+  </div>
+</div>
+{if condition="$setting_basic.keep eq '1'"}
+<div class="al_box" style="position:fixed; top:80px; right:0; color:#444; width:280px; height:32px; line-height:32px; background:#d5ffce; text-indent:10px; border:1px solid #9adf8f;">保存成功</div>
+{/if}
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    $(".al_box,body").click(function(){
+        setTimeout(function(){
+            $(".al_box").css("display","none");},3000);
+    })
+</script>
+{/block}

@@ -1,0 +1,53 @@
+{extend name="public:base" /}
+
+{block name="main"}
+<div class="wrapper">
+    <div class="row-fluid">
+        <h3 class="heading">广告样式</h3>
+        <div class="tb-lis">
+            <a href="/admin/adtpl/adstyleAdd">新增广告样式</a>
+            <!-- <span class="dataTables_length">
+                 <select name="" id="" size="1" style="margin-left:20px;">
+                     <option value="">所有类型</option>
+                     <option value="">IOS</option>
+                     <option value="">安卓</option>
+                     <option value="">casddsajkldjsladsaklj</option>
+                 </select>
+             </span>-->
+        </div>
+        <table class="dataTable table-hover">
+            <tr role="row">
+				<th>序号</th>
+                <th>ID</th>
+                <th>样式名称</th>
+				<th>查看使用该样式的广告位</th>
+                <th>应用广告模式</th>
+                <!-- <th>广告个数</th>
+                 <th>描述</th>
+                 <th>状态</th>-->
+                <th>操作</th>
+                <th>创建时间</th>
+            </tr>
+            {volist name="$adstyle_list" id="vo" key="k"}
+            <tr>
+                <td>{$k}</td>
+                <td>{$vo.style_id}</td>
+                <td>{$vo.stylename}</td>
+				<td><a href="/admin/site/adzone?style_id={$vo.style_id}">点击查看</a></td>
+                <td>{if condition="$vo.tplname neq '' "}{$vo.tplname}{else/}分类已删除{/if}</td>
+
+                <td>
+                    <a href="/admin/adtpl/adstyleEdit?id={$vo.style_id}">修改</a>&nbsp;&nbsp;
+                    <a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                    <a href="javascript:;" class="ajax-del" data='{"id":"{$vo.style_id}"}' durl="/admin/adtpl/adstyleDelect?id={$vo.style_id}">删除</a>
+                </td>
+                <td>{$vo.ctime}</td>
+            </tr>
+            {/volist}
+        </table>
+        <div class="row"></div>
+    </div>
+    <div style="height:50px;"></div>
+</div>
+<!-- end wrapper -->
+{/block}

@@ -1,0 +1,37 @@
+{extend name="public:base" /}
+
+{block name="main"}
+<div class="wrapper">
+    <div class="row-fluid">
+        <div id="repo_data" class="tb_sts" style="position:absolute; top:110px; right:30px;"></div>
+        <h3 class="heading">查看应用广告位列表</h3>
+        <div class="dataTables-wrapper">
+
+        </div>
+        <table class="dataTable table-hover" name="users-list" >
+            <tr role="row">
+                <th>ID</th>
+                <th>链接名称</th>
+                <th>链接URL</th>
+            </tr>
+            {volist name="res" id="vo"}
+            <tr class="unread">
+                <td>{$vo.adz_id}</td>
+                <td><a href="/admin/report/zoneReport?numid={$vo.adz_id}" >查看广告位报表</a></td>
+                <td><a href="/admin/site/adzoneEdit?id={$vo.adz_id}" >编辑</a></td>
+            </tr>
+            {/volist}
+        </table>
+        <div class="row">
+            {$page}
+        </div>
+    </div>
+</div>
+
+<!-- end wrapper -->
+{/block}
+
+{block name="js"}
+<script type="text/javascript">
+</script>
+{/block}

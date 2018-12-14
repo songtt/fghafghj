@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit">  
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+<title>网站跟进管理系统</title>
+<!-- Bootstrap Core CSS -->
+<link href="__STATIC__/css/bootstrap.min.css" rel="stylesheet" />
+<!-- Custom Fonts -->
+<link href="__STATIC__/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+<link href="__CSS__/main.css" rel="stylesheet" />
+{block name="css"}
+
+{/block}
+
+</head>
+<body>
+    <div style="width:100%">
+        <!-- 导航 -->
+        <div class="nav">
+            {include  file="public:nav" /}
+        </div>
+        <div class="page-body">
+        <div class="alert alert-info" style="margin-left: 20px;">
+            <h5>修改状态规则</h5>
+            <p>1.网站修改状态为跟进中必填项：ip,pv,地域,权重,位置,QQ;</p>
+            <p>2.网站修改状态为已合作必填项：关联id(必须先在乐樽后台注册站长)</p>
+        </div>
+
+            <!-- 内容 -->
+            {block name="main"}content{/block}
+        </div>
+    </div>
+
+<!-- jQuery -->
+<script src="__STATIC__/jquery/jquery.min.js"></script>
+<script src="__STATIC__/js/bootstrap.min.js"></script>
+<script src="__STATIC__/layer/layer.js"></script>
+<!-- <script src="__STATIC__/flash/Uploader.swf"></script> -->
+<!--common js-->
+<script src="__JS__/webmaster.js"></script>
+
+
+{block name="js"}
+
+{/block}
+
+
+
+</body>
+</html>

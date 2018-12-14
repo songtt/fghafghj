@@ -1,0 +1,169 @@
+{extend name="public:base" /}
+
+<!-- block main start -->
+{block name="main"}
+<!--body  -->
+
+<div class="wrapper">
+    <div class="row-fluid">
+         <div id="repo_data" class="tb_sts" style="position:absolute; top:56px; right:30px;">
+            <a href="/admin/ads/list">全部</a>
+            <a href="/admin/ads/lock">锁定</a>
+            <a href="/admin/ads/activity" class="payTab">活动</a>
+            <a href="/admin/ads/pending">待审</a>
+        </div>
+        <h3 class="heading">广告管理</h3>
+        <div class="dataTables-wrapper">
+            <div class="tb-lis">
+                <a href="/admin/ads/add"><i class="fa fa-plus-circle"></i>新增广告</a>
+                <a href="/admin/ads/batchUpImg"><i class="fa "></i>新建批量广告</a>
+               <div class="dataTables-filter">
+                        <form action="/admin/Ads/activity" name="list" method="post">
+                            <!--搜索：-->
+                             <select name="ads">
+                                <option value="adname" {if condition="$ads.ads eq 'adname'"} selected {/if}>广告名称</option>
+                                <option value="ad_id" {if condition="$ads.ads eq 'ad_id'"} selected {/if}>广告ID</option>
+                                <option value="uid" {if condition="$ads.ads eq 'uid'"} selected {/if}>广告商ID</option>
+                                <option value="username" {if condition="$ads.ads eq 'username'"} selected {/if}>广告商名称</option>
+                                <option value="tplname" {if condition="$ads.ads eq 'tplname'"} selected {/if}>类型</option>
+                            </select>
+                            <input class="input-text input1" name="search" value="{$ads.search|default=''}" type="text" style="width:230px">
+                             <button type="input" style="width:60px"><i class="fa fa-search"></i></button>
+                        </form>
+                    </div>
+            </div>
+             <!--批量操作，暂时隐藏，下一期进行开发-->
+            <form action="/admin/ads/batchDel" name="listform" method="post">
+                <div class="row">
+                    <div class="plan6">
+                        <div class="dataTables-length">
+                            批量操作：
+                            <a href="javascript:;"  ><button class="btn btn-primary" type="button" onclick="delLst();" style="padding:2px 12px;">删除</button></a>
+                            
+                        </div>
+                    </div>
+                </div>
+                <table class="dataTable table-hover" name="ads-list" >
+                    <tr role="row">
+                        <th rowspan="1" colspan="1" style="width:13px;"><input id="" class="checkedAll" name="" type="checkbox" data-name="name-data"></th>
+                        <th>ID</th>
+                        <th>广告名称</th>
+                        <th>类型</th> 
+                        <th>计划名称</th>
+                        <th>尺寸</th>
+                        <th>广告商</th>
+                        <th>计费模式</th>
+                        <th>权重</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                    {volist name="ads_list" id="vo"}
+                    <tr class="unread">
+                        <td rowspan="1" colspan="1" style="width:13px;"><input id="" name="id[]" value="{$vo.ad_id}" type="checkbox" data-name="name-data"></td>
+                        <td><a class="detailed_info">{$vo.ad_id}</a></td>
+                        <td>{$vo.adname}</td>
+                        <td>{$vo.tplname|default='已删除'}</td>
+                        <td><a href="/admin/plan/one/pid/{$vo.pid}">{$vo.plan_name|default='已删除'}</a></td>
+                        <td>{$vo.width|default='已删除'}x{$vo.height|default='已删除'}</td>
+                        <td><a href="/admin/ads/adsToUser/uid/{$vo.uid}/type/2">{$vo.username|default='已删除'}</a></td>
+                        <td>{$vo.plan_type|default='已删除'}</td>
+                        <td><a href="javascript:;" class="data-amount" data='{"ad_id":"{$vo.ad_id}"}' durl="/admin/ads/changePriority">{$vo.priority|default='已删除'}</a></td>
+                        <td>
+                            <span class="common-button ajax-status">
+                                {switch name="vo.status"}
+                                    {case value="0"}<span class="sta_er">锁定</span>{/case}
+                                    {case value="1"}<span class="sta_bl">活动</span>{/case}
+                                    {case value="2"}<span class="sta_er">待审</span>{/case}
+                                {/switch}
+                            </span>
+                        </td>
+                        <td>
+                            <a href="javascript:;" class="data-lock " statuscls='ajax-status' data='{"aid":"{$vo.ad_id}","status":"0"}' durl="/admin/ads/activate" >锁定</a>
+                            <a href="javascript:;" class="data-activation" statuscls='ajax-status' data='{"aid":"{$vo.ad_id}","status":"1"}' durl="/admin/ads/activate">激活</a>
+                            <a href="/admin/ads/edit?aid={$vo.ad_id}">编辑</a>
+                            <a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                            <a href="javascript:;" class="ajax-del" data='{"aid":"{$vo.ad_id}"}' durl="/admin/ads/del">删除</a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="u_info">
+                        <td colspan="103">
+                            <table class="tab_info" border="0" cellpadding="0" cellspacing="0" width="100%">
+                                <tr>
+                                    <td width="50%" height="30">
+                                        <strong>基本信息</strong>
+                                        <span class="span7" style="padding-left:20px;">
+                                            <!-- <a href="/admin/ads/add">新建广告</a> -->
+                                            <a href="/admin/report/adsReport?stats=ads_list&id=ad_id&numid={$vo.ad_id}">查看报表</a>
+                                            <!--<a href="/admin/report/reportlist?pid={$vo.pid}">当天信息IP</a>-->
+                                            <!--<a href="/admin/ads/add">植入到广告位</a>-->
+                                            <!-- <a href="#">当天IP信息</a> -->
+                                            <!-- <a href="/admin/ads/add">获取跟踪代码</a> -->
+                                        </span>
+                                    </td>
+                                    <td width="10">&nbsp;</td>
+                                    <td width="49%">
+                                        <strong>广告预览</strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td bgcolor="#fff">
+                                        <table class="master_table">
+                                            <tr>
+                                                <td>站长单价:</td>
+                                                <td class="color_h">{if condition="$vo.gradation neq '1' "}{$vo.price|default='0'}元{else/}分等级单价{/if}</td>
+                                                <td class="color_h"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>广告商单价:</td>
+                                                <td class="color_h">{$vo.pricedv|default='0'}元</td>
+                                                <td class="color_h"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>描述:</td>
+                                                <td class="color_h">{$vo.adinfo|default='空'}</td>
+                                                <td class="color_h"></td>
+                                            </tr>
+                                            <tr>
+                                        </table>
+                                    </td>
+                                    <td>&nbsp;</td>
+                                    <td bgcolor="#fff">
+                                        <div style=" margin-top:10px;text-align:center">
+                                            {if condition="$vo.files eq '2'"}
+                                            <img border="0" width="{$vo.width}" height="{$vo.height}" src="{$vo.imageurl}">
+                                            {else/}
+                                            <img border="0" width="{$vo.width}" height="{$vo.height}" src="{$data.img.img_server}{$vo.imageurl}">
+                                            {/if}
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    {/volist}
+                </table>
+            </form>
+        </div>
+        <div class="row">
+        {$data.page}
+        </div>
+    </div>
+</div>
+<!-- end wrapper -->
+{/block}
+
+{block name="js"}
+<script>
+    // 批量删除
+    function delLst(){
+        layer.confirm('确定删除吗？', {
+          btn: ['确定','取消'] //按钮
+        }, function(){
+            $('form').submit();
+        });
+    }
+</script>
+{/block}
+<!-- block main end -->
+ 

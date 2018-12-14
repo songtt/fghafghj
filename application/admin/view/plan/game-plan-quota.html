@@ -1,0 +1,201 @@
+{extend name="public:base" /}
+
+{block name="main"}
+<div class="wrapper">
+    <div class="row-fluid">
+        <div id="repo_data" class="tb_sts" style="position:absolute; top:56px; right:30px;">
+            <a href="/admin/plan/gamePromote">全部</a>
+            <a href="/admin/plan/gameLock">锁定</a>
+            <a href="/admin/plan/gameActivity">活动</a>
+            <a href="/admin/plan/gamePending">待审</a>
+            <a href="/admin/plan/gameQuota" class="payTab">超过限额</a>
+        </div>
+        <h3 class="heading">游戏推广</h3>
+        <div class="dataTables-wrapper">
+            <div class="tb-lis">
+            </div>
+            <!--批量操作，暂时隐藏，下一期进行开发-->
+            <form action="/admin/plan/batchDel" name="deductionform" method="post">
+                <div class="row">
+                    <div class="plan6">
+                        <div class="dataTables-length">
+                            批量操作：
+                            <a href="javascript:;"  ><button class="btn btn-primary" type="button" onclick="delLst();" style="padding:2px 12px;">删除</button></a>
+
+                        </div>
+                    </div>
+
+
+                <!-- <div class="plan6">
+                    <div class="dataTables-filter">
+                        <from method="post"> -->
+                            <!--搜索：-->
+                            <!-- <select>
+                                <option value="planname">计划名称</option>
+                                <option value="planid">计划ID</option>
+                                <option value="uid">广告商ID</option>
+                            </select>
+                            <input class="input-text input1" name="search" value="" type="text">
+                            <span class="plan-search"><i class="fa fa-search"></i></span>
+                        </from>
+                    </div>
+                </div> -->
+
+
+                </div>
+            <table class="dataTable table-hover" name="plan-list" >
+                <tr role="row">
+                    <th rowspan="1" colspan="1" style="width:13px;"><input id="" class="checkedAll" name="" type="checkbox" data-name="name-data"></th>
+                    <th>ID</th>
+                    <th>计划名称</th>
+                    <th class="mobile">
+                        <select name="mobile">
+                            <option value="">投放设备</option>
+                            <option value="ios" {if condition="!empty($mobile)"} {if condition="$mobile eq 'ios'"}selected{/if} {/if}>IOS</option>
+                            <option value="android" {if condition="!empty($mobile)"} {if condition="$mobile eq 'android'"}selected{/if} {/if}>android</option>
+                            <option value="wp" {if condition="!empty($mobile)"} {if condition="$mobile eq 'wp'"}selected{/if} {/if}>微信</option>
+                        </select>
+                    </th>
+                    <th>计划权重</th>
+                    <th>限定金额</th>
+                    <!--<th>结算</th>-->
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+                {volist name="plan_list" id="vo"}
+                <tr class="unread">
+                    <td rowspan="1" colspan="1" style="width:13px;"><input id="" name="id[]" value="{$vo.pid}" type="checkbox" data-name="name-data"></td>
+                    <td>{$vo.pid}</td>
+                    <td>{$vo.plan_name}</td>
+                    {if condition="$vo.run_terminal eq '4'"}<td>微信</td>
+                    {else/}
+                    <td>{$vo.checkplan|f_plan_mobile}</td>
+                    {/if}
+                    <td>{$vo.priority}</td>
+
+                    <td><a href="javascript:;"  class="data-amount"  data='{"pid":"{$vo.pid}"}' durl='/admin/plan/changeBudget' style="color: red;">{$vo.budget}</a></td>
+                    <!--<td>
+                        {switch name="$vo.clearing" }
+                        {case value="month"}月结{/case}
+                        {case value="week"}周结{/case}
+                        {case value="day"}日结{/case}
+                        {/switch}
+                    </td>-->
+                    <td>
+                        <span class="common-button ajax-status" >
+                            {switch name="vo.status" }
+                                {case value="0"}<span class="sta_er">锁定</span>{/case}
+                                {case value="1"}<span class="sta_bl">活动</span>{/case}
+                                {case value="2"}<span class="sta_er">待审</span>{/case}
+                                {case value="3"}<span class="sta_er">超限额</span>{/case}
+                            {/switch}
+                        </span>
+                    </td>
+                    <td>
+                        {if condition="$vo.status eq 2 "}
+                        锁定
+                        {else/}
+                        <a href="javascript:;" class="data-lock " statuscls='ajax-status' data='{"pid":"{$vo.pid}","status":"0","activate":"{$vo.status}"}' durl="/admin/plan/activate" >锁定</a>
+                        {/if}
+                        <a href="javascript:;" class="activation" statuscls='ajax-status' data='{"pid":"{$vo.pid}","status":"1","activate":"{$vo.status}"}' durl="/admin/plan/activate" gametotal="{$vo.totalbudget}" num{$vo.pid}="{$vo.num}" budget="{$vo.budget}" pid="{$vo.pid}" status="{$vo.status}">激活</a>
+                        <a href="javascript:;" class="activation" statuscls='ajax-status' data='{"pid":"{$vo.pid}","status":"1","activate":"{$vo.status}"}' durl="/admin/plan/activate" gametotal="{$vo.totalbudget}" num{$vo.pid}="{$vo.num}" budget="{$vo.budget}" pid="{$vo.pid}" status="{$vo.status}">重新激活</a>
+                        {if condition="!empty($_SESSION['think']['auth_name']['Plan-gameDetails'])"}
+                        <a href="/admin/plan/edit?pid={$vo.pid}">编辑</a>
+                        <a href="/admin/plan/addprice?pid={$vo.pid}">新建单价</a>
+                        <a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                        <a href="javascript:;" class="ajax-del" data='{"pid":"{$vo.pid}"}' durl='/admin/plan/dodel'>删除</a>
+                        {/if}
+                    </td>
+                </tr>
+            </form>
+                {/volist}
+            </table>
+
+            <div class="row"></div>
+        </div>
+    </div>
+</div>
+<!-- end wrapper -->
+{/block}
+{block name="js"}
+
+<script>
+    // 批量删除
+    function delLst(){
+        layer.confirm('确定删除吗？', {
+          btn: ['确定','取消'] //按钮
+        }, function(){
+            $('form').submit();
+        });
+    }
+    //用户信息激活
+    $(".activation").click(function(){
+        //记录激活的次数
+        var gametotal = $(this).attr('gametotal');
+        var budget = $(this).attr('budget');
+
+        var pid = $(this).attr('pid');
+        //已经点的次数
+        var num = $(this).attr('num'+pid);
+        //该计划的状态 激活 锁定
+        var status = $(this).attr('status');
+
+        if(gametotal != '' && num != ''){
+            var ratio = (gametotal / budget);
+            $(this).attr('limitnum',ratio);
+            //游戏推广的总限额 除以 每轮跑的金额 ，得到它一共可以激活多少次
+            var limitnum = $(this).attr('limitnum');
+
+            if(parseInt(num) <= parseInt(limitnum)){
+
+                $.ajax({
+                    type : 'post',
+                    url : '/admin/plan/gameUpdate',
+                    data : {pid:pid,num:num},
+                    dataType : 'json',
+                    success:function(data){
+
+                        if(data !=''){
+                            $('.activation').attr('num'+pid,data['num'])
+                        }
+                    }
+                })
+
+            }else{
+                layer.msg('已到达开启的总次数,请求失败', {icon: 1});
+                return false;
+            }
+        }
+        var href= $(this).attr('durl');
+        var arr = $(this).attr('data');
+        var params = $.parseJSON(arr);
+        var statuscls = $(this).attr('statuscls');
+        var _this = $(this);
+
+        $.post(href,params,success);
+        function success(data) {
+            if(data.status == 2) {
+                window.location.href='/admin/plan/addprice?pid='+data.data+'';
+                return false;
+            }else if(data.status == 1){
+                _this.parent().parent().find('.ajax-status').html('活动').css({
+                    "background":"#058dc7",
+                    "padding":"2px 6px",
+                    "font-size":"12px",
+                    "color":"#fff",
+                    "border-radius":"4px"
+                });
+                layer.msg('激活成功', {icon: 1});
+            }else if(data.status == 0){
+                layer.msg('激活失败', {icon: 1});
+                return false;
+            }
+        }
+    });
+    //获取选择的投放设备
+    $('.mobile select').change('click',function(){
+        var mobile = $(this).val();
+        window.location.href='/admin/plan/gameQuota?mobile='+mobile;
+    })
+</script>
+{/block}

@@ -1,0 +1,576 @@
+/* =====nav start===  */
+*{
+    margin: 0;
+    padding: 0;
+}
+html,body{
+    width: 100%;
+    height: 100%;
+    background: #fff;
+}
+body{
+    background-repeat: repeat-y;
+}
+ul li{
+    list-style: none;
+}
+ol li{
+    list-style: none;
+}
+a:hover{
+    text-decoration: none;
+}
+table{
+    font-size: 13px;
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+}
+select{
+    padding: 4px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+/*==============锁定与激活==============*/
+.sta_er{
+    background: #ae432e;
+    padding: 2px 6px;
+    font-size: 12px;
+    color: #fff;
+    border-radius: 4px;
+}
+.sta_bl{
+    background: #1ebfae;
+    padding: 2px 6px;
+    font-size: 12px;
+    color: #fff;
+    border-radius: 4px;
+}
+/*==================end=================*/
+.btn{
+    padding: 4px 12px !important;
+}
+.table th{
+    border-top: 0px !important;
+    background: #eee;
+    padding: 10px !important;
+    line-height: 20px;
+}
+.table td{
+    padding: 10px !important;
+    line-height: 20px !important;
+    border-bottom: 1px dotted #ddd;
+    vertical-align: inherit !important;
+}
+#navigation{
+    background: #358ee1;
+    position: relative;
+    z-index: 100;
+    height: 40px;
+}
+.container-fluid{
+    padding-left: 20px;
+    padding-right: 20px;
+}
+#navigation #brand{
+    float: left;
+    color: #fff;
+    font-size: 20px;
+    margin-top: 9px;
+    width: 180px;
+    text-align: center;
+    padding-bottom: 2px;
+    background: url("../img/logo.png") no-repeat;
+}
+#navigation .main-nav{
+    float: left;
+    margin-bottom: 0px;
+}
+#navigation .main-nav li{
+    float: left;
+    position: relative;
+    margin: 0;
+}
+#navigation .main-nav li.active a{
+    background: #fff;
+    text-decoration: none;
+    color: #2a2a2a;
+}
+#navigation .main-nav li a{
+    display: block;
+    padding: 10px 15px;
+    color: #fff;
+}
+#navigation .main-nav li a:hover, #navigation .user .icon-nav li a:hover {
+    text-decoration: none;
+    background: #108a61
+}
+#navigation .user{
+    float: right;
+}
+.dropdown{
+    margin-right: 3px;
+    float: left;
+    position: relative;
+}
+#navigation .user .icon-nav li a{
+    padding: 11px 10px 9px 10px;
+    display: block;
+    color: #fff;
+    position: relative;
+    float: left;
+}
+/*======== nav end =========*/
+/*======== content left start ==============*/
+#content.container-fluid{
+    padding: 0;
+}
+#content{
+    position: relative;
+    min-height: 100%;
+    width: 100%;
+}
+.main_left {
+    width: 200px;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    top: 40px;
+    border-right: solid 1px #eee;
+    z-index: 100;
+    background: #f6f7f7;
+}
+.main_left .subnav {
+    margin-top: 15px;
+}
+.main_left .subnav .subnav-title .toggle-subnav {
+    color: #aeb2b7;
+    padding: 1px 6px;
+    text-decoration: none;
+    display: block;
+    position: relative;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.main_left .subnav .subnav-title .toggle-subnav i {
+    position: absolute;
+    font-size: 14px;
+    left: 10px;
+    top: 4px;
+    width: 10px;
+    height: 15px;
+    display: block;
+}
+.main_left .subnav .subnav-title span {
+    margin-left: 20px;
+    _margin-left: 25px;
+    font-size: 16px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.main_left .subnav .subnav-menu {
+    list-style-type: none;
+    margin: 5px 0;
+    padding: 0;
+    padding-left: 10px;
+    position: relative;
+    left: 1px;
+    z-index: 1;
+}
+.main_left .subnav .subnav-menu li {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    height: 36px;
+    margin-top: 3px;
+    width: 190px;
+    overflow: hidden;
+}
+.main_left .subnav .subnav-menu li a {
+    color: #aeb2b7;
+    display: block;
+    padding-left: 27px;
+    text-decoration: none;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    line-height: 36px;
+}
+.main_left .subnav .current {
+    border-radius: 3px 0 0 3px;
+    border : 1px solid #dbdcdc;
+    border-right: 1px solid #fff;
+    background: #ffffff;
+}
+.main_left .subnav .current a{
+    color: #358ee1 !important;
+}
+.main_left .subnav .current a:hover{
+    color: #358ee1;
+}
+/*======== content left end ==============*/
+/*========== content main start ============*/
+.main{
+    padding-left: 220px;
+    padding-top: 20px;
+    padding-right: 20px;
+}
+.main .mt30{
+    margin-top: 30px;
+}
+.money{
+    font-size: 24px;
+    font-weight: bold;
+}
+.box{
+    padding: 8px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+.box .box-title{
+    border-bottom: 1px solid #ddd;
+    padding: 7px 0 7px 10px;
+    margin-top: 20px;
+    height: 42px;
+    margin-bottom: 10px;
+}
+.box .box-title h3{
+    float: left;
+    margin: 3px 0 3px 0;
+    line-height: 24px;
+    font-weight: 400;
+    font-size: 20px;
+    color: #444;
+}
+.btn-primary{
+    font-size: 12px;
+    background: #39b5aa;
+    border-color: #29b5aa;
+}
+.btn-primary:hover{
+    background: #108a61;
+    border-color: #108a61;
+}
+.ai_report li{
+    padding: 6px 15px;
+}
+/*账户设置 start*/
+.form-hor{
+    padding: 20px;
+}
+.form-hor .control-group{
+    margin-top: 25px;
+    margin-bottom: 25px;
+    overflow: hidden;
+}
+.form-hor .controls-label{
+    text-align: left;
+    width: 140px;
+    float: left;
+    padding-top: 6px;
+}
+.form-hor .controls{
+    margin-left: 160px;
+}
+.form-modify input[readonly="readonly"]{
+    border: none !important;
+}
+.form-hor .controls input[type="text"], .input-text{
+    background-color: #fff;
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 4px 6px;
+    font-size: 14px;
+    line-height: 20px;
+    color: #555;
+    vertical-align: baseline;
+    border-radius: 4px;
+}
+.input300{
+    width: 500px;
+}
+#s_password {
+    background: #f8f8f8;
+    border: 1px solid #ebebeb;
+    margin-top: 10px;
+    width: 300px;
+    padding: 8px;
+    overflow: hidden;
+    padding-bottom: 12px;
+    display: none;
+}
+#s_password p {
+    height: 40px;
+    padding: 0;
+    margin: 0;
+    line-height: 40px;
+}
+#s_password span {
+    width: 100px;
+    display: block;
+    float: left
+}
+#s_password input {
+    margin-top:5px
+}
+#s_password p input{
+    background-color: #fff;
+    border: 1px solid #ccc;
+    display: inline-block;
+    height: 24px;
+    font-size: 14px;
+    line-height: 24px;
+    color: #555;
+    border-radius: 4px;
+}
+
+/*网站管理*/
+.new_date{
+    background: #39b5aa;
+    width: 105px;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
+    border-radius: 4px;
+    font-size: 12px;
+}
+.new_date a{
+    color: #fff;
+}
+.info_bg{
+    background: #058dc7; 
+}
+.notification{
+    padding: 2px 6px;
+    font-size: 10px;
+    color: #fff;
+    border-radius: 4px; 
+} 
+
+.breadcrumbs{
+    background: #f4f4f4;
+    overflow: hidden;
+    padding-left: 5px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+.breadcrumbs ul{
+    padding: 2px 5px;
+    float: left;
+    margin-bottom: 0px;
+}
+.breadcrumbs ul li{
+    float: left;
+    color: #666;
+}
+.breadcrumbs ul li a{
+    display: block;
+    font-size: 14px;
+    float: left;
+    padding-right: 10px;
+}
+
+/*付款记录*/
+.alert, .alert h4 {
+    color: #c09853;
+    margin: 0;
+}
+.alert {
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    border: 0;
+    padding: 8px 35px 8px 14px;
+    margin-bottom: 20px;
+    text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+    background-color: #fcf8e3;
+    border: 1px solid #fbeed5;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+.alert p {
+    margin-top: 5px;
+}
+.alert-info {
+    color: #3a87ad;
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+}
+
+
+/*广告管理模块*/
+.actions{
+    margin-top: 0px;
+    float: right;
+    margin-right: 10px;
+}
+.controls ul{
+    width: 450px;
+}
+.controls ul li{
+    float: left;
+    width: 25%;
+    height: 30px;
+    line-height: 30px;
+    margin-top: 20px;
+}
+#x_password{
+    cursor: pointer;
+}
+
+/*添加城市选择*/
+.area li{
+    line-height: 38px;
+    height: 38px;
+    overflow: hidden;
+    list-style: none;
+}
+.area span{
+    display: block;
+    width: 38px;
+    height: 32px;
+    line-height: 32px;
+    font-size: 12px;
+    float: left;
+    padding-left: 0;
+}
+.region{
+    font-size: 12px;
+    font-weight: normal;
+    height: 32px;
+    line-height: 32px;
+    float: left;
+    margin-top: 1px;
+}
+.region div{
+    float: left;
+    width: 65px;
+    text-align: center;
+}
+.region label{
+    margin-bottom: 0px !important;
+}
+.category{
+    font-size: 12px;
+    font-weight: normal;
+    height: 32px;
+}
+.category div{
+    float: left;
+    width: 13%;
+    text-align: left;
+}
+.region input,
+.category input{
+    vertical-align: middle;
+    margin-top: -2px;
+}
+.schedule{
+    font-size: 12px;
+    font-weight: normal;
+    height: 40px;
+    text-align: center;;
+} 
+.schedule li{
+    float: left;
+    padding:0 14px;
+}
+.schedule input{
+    vertical-align: middle;
+    margin-top: -2px;
+    margin-right: 4px;
+    margin-left: 4px;
+}
+.schedule .sunday{
+    padding-left: 0;
+}
+.sunday input{
+    margin-left: 0;
+}
+.region .hover{
+    border: 1px solid #97a5b2;
+    border-right: none;
+    background-color: #fff;
+    margin: -1px 0;
+    z-index: 999;
+    position: relative;
+}
+.p_city{
+    border: 1px solid #97A5B2;
+    position: absolute;
+    padding: 3px 0;
+    margin: -1px;
+    background-color: #fff;
+    z-index: 998;
+    width: 180px; 
+}
+.p_city li{
+    float: left;
+    padding: 5px;
+    padding-left: 10px;
+    white-space: nowrap;
+}
+
+/*投放设备*/
+.device ul{
+    width: 450px;
+    margin-top: 20px;
+}
+.device ul li{
+    float: left;
+    width: 25%;
+    height: 30px;
+    line-height: 30px;
+}
+
+
+/*客服后台*/
+.user_input input{
+    width:144px; 
+    padding:4px; 
+    border-radius:4px; 
+    border:1px solid #ccc;
+}
+.user_input select{
+    width: auto;
+    margin-right: 4px;
+    margin-left: 4px;
+}
+
+/*效果报告*/
+.echt{
+    font-size: 12px;
+    display: block;
+    margin-top: 10px;
+    margin-left: 14px;
+    float: left;
+}
+.echt input{
+    vertical-align: middle;
+    margin-top: 0;
+}
+.fold{
+    text-align: center;
+    border-top: 2px solid #e5e5e5;
+    margin-top: 10px;
+    line-height: 0;
+}
+/*========== content main end ============*/
+
+
+
+/*========= erro ============*/
+.erro{
+    color: #ff0000;
+    font-size: 12px;
+    display: none;
+}
+
+/*===========  隐藏设置默认报告 ============*/
+.report_none{
+    display: none;
+}
+/*===========  隐藏设置默认报告  end ============*/
+
+

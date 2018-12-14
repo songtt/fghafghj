@@ -1,0 +1,49 @@
+{extend name="public:base" /}
+
+{block name="main"}
+<div class="wrapper">
+    <div class="row-fluid">
+        <h3 class="heading">广告类型</h3>
+        <div class="tb-lis">
+            <a href="/admin/adtpl/addType">新增广告类型</a>
+        </div>
+        <table class="dataTable table-hover">
+            <tr role="row">
+				<th>序号</th>
+                <th>ID</th>
+                <th>广告类型名称</th>
+                <th>计费方式</th>
+                <th>排序</th>
+                <!-- <th>说明</th> -->
+                <!-- <th>状态</th> -->
+                <th>终端</th>
+                <th>操作</th>
+            </tr>
+            {volist name="type_list" id="vo" key="k"}
+            <tr>
+                <td>{$k}</td>
+                <td>{$vo.adtype_id}</td>
+                <td>{$vo.type_name}</td>
+                <td>{$vo.stats_type}</td>
+                <td>{$vo.sort}</td>
+                <td>
+                    {switch name="vo.terminal" }
+                        {case value="1"}PC{/case}
+                        {case value="2"}MOBILE{/case}
+                    {/switch}
+                </td>
+                <td>
+                    <!-- <a href="/admin/adtpl/delType?id={$vo.adtype_id}" >删除</a> -->
+                    <a href="/admin/adtpl/editType?id={$vo.adtype_id}">编辑</a>
+                    <a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                    <a href="javascript:;" class="ajax-del" data='{"id":"{$vo.adtype_id}"}' durl="/admin/adtpl/delType?id={$vo.adtype_id}">删除</a>
+                </td>
+            </tr>
+            {/volist}
+        </table>
+        <div class="row"></div>
+    </div>    
+</div>
+<div style="height:50px;"></div>
+<!-- end wrapper -->
+{/block}

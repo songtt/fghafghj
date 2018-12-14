@@ -1,0 +1,132 @@
+{extend name="public:customer-base" /}
+
+{block name="main"}
+    <!--账户设置-->
+    <div class="main_left">
+        <div class="subnav">
+            <div class="subnav-title">
+                <a href="" class="toggle-subnav">
+                    <i></i>
+                    <span>我的概括</span>
+                </a>
+            </div>
+            <ul class="subnav-menu">
+                <li><a href="/home/customer/index">我的概括</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="main" style="padding-top:10px;">
+        <div class="box">
+            <div class="form-hor" style="padding-bottom:0px;">
+                <div class="box-content">
+                    <div class="box-title" style="margin-bottom:40px;">
+                        <h3>
+                            <i></i>基本信息
+                            <span id="modify" style="font-size:14px; padding-left:30px; color:#08c; cursor:pointer;">修改</span>
+                        </h3>
+                    </div>
+                    <div class="control-group">
+                        <label for="" class="controls-label">用户名</label>
+                        <div class="controls">{$one.username}</div>
+                    </div>
+                    <div class="control-group">
+                        <label for="" class="controls-label">密码</label>
+                        <div class="controls" style="margin-top:4px;">
+                            ******
+                            <a id="x_password">修改密码</a>
+                            <div id="s_password">
+                                <p><span>原始密码</span> <input type="password" name="password" placeholder="请输入原始密码"/></p>
+                                <p><span>新密码</span><input type="password" name="new_password"  placeholder="请输入新密码"/></p>
+                                <p><span>确认新密码</span>  <input type="password" name="new_password_1"  placeholder="请确认密码"/></p>
+                                <button id = "g_password" type="submit" class="btn btn-primary">提交</button>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" name="uid" value="{$one.uid}"/>
+                </div>
+            </div>    
+            <form action="/home/customer/account" class="form-hor form-modify" method="post" style="padding-top:0px;">
+                <div class="control-group">
+                    <label class="controls-label">手机号码</label>
+                    <div class="controls">
+                        <input type="text" name="mobile" class="input300" value="{$one.mobile|default='空'}" readonly="readonly">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label for="" class="controls-label">QQ号码</label>
+                    <div class="controls">
+                        <input type="text" name="qq" class="input300" value="{$one.qq|default='空'}" readonly="readonly">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label for="" class="controls-label">电子邮件</label>
+                    <div class="controls">
+                        <input type="text" name="email" class="input300" value="{$one.email|default='空'}" readonly="readonly">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label for="" class="controls-label">固定电话</label>
+                    <div class="controls">
+                        <input type="text" name="tel" class="input300" value="{$one.tel|default='空'}" readonly="readonly">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label for="" class="controls-label">身份证号码</label>
+                    <div class="controls">
+                        <input type="text" name="idcard" class="input300" value="{$one.idcard|default='空'}" readonly="readonly">
+                    </div>
+                </div>
+                <div class="form-actions" style="margin-top:60px; margin-bottom:60px;">
+                    <button type="submit" class="btn btn-primary">提交</button>
+                </div>
+                <input type="hidden" name="uid" value="{$one.uid}"/>
+            </form>
+        </div>
+    </div>
+{/block}
+
+{block name="js"}
+<script>
+    $(function(){
+        $("#g_password").click(function(){
+            var password = $("input[name='password']").val();
+            var new_password = $("input[name='new_password']").val();
+            var new_password_1 = $("input[name='new_password_1']").val();
+            var uid = $("input[name='uid']").val();
+
+            layer.confirm('确定修改吗？', {
+                btn: ['确定','取消'] //按钮
+            }, function(){
+                $.post('/home/customer/passEdit',{password:password,new_password:new_password,
+                    new_password_1:new_password_1,uid:uid},function(data){
+                    if (data.status == 1) {
+                        layer.msg(data.info);
+                        setTimeout(function(){
+                            window.location.reload();
+                        },1500);
+                    } else {
+                        layer.msg(data.info);
+                        setTimeout(function(){},3000);
+                        return false;
+                    }
+                })
+            })
+        })
+        $("#x_password").click(function(){
+            if($(this).next().css('display') == 'none'){
+                $(this).next().css('display','block');
+            }else{
+                $(this).next().css('display','none');
+            }
+        })
+        $("#modify").click(function(){
+            $(".form-hor input[type='text']").each(function(){
+                if($(".form-hor input[type='text']").prop("readonly") == true){
+                    $(".form-hor input[type='text']").prop("readonly",false).css("border","1px solid #ccc");
+                }
+            })
+        })
+
+    })
+</script>
+{/block}

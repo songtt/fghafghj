@@ -1,0 +1,165 @@
+{extend name="public:base" /}
+{block name="css"}
+<link href="__CSS__/daterangepicker-bs3.css" rel="stylesheet" />
+
+{/block}
+{block name="main"}
+<div class="wrapper">
+    <h3 class="heading">广告位测试报表</h3>
+    <div class="tb_sts">
+        <form class="" action="/admin/newtest/adzlist" method="post" name="">
+
+            <!--数据报表content-->
+            搜索：
+            <input class="input-text" name="id" type="text" {if condition="$pageParam.id"} value="{$pageParam.id}" {else /} value="" {/if} style="width:80px;">
+            <select style="width:90px;">
+                <option>广告位ID</option>
+            </select>
+            <select id="selectime" name="time" id="" style="width:204px;">
+                <option id="fatime" value="{$timeValue.nowval}">{$timeValue.now}</option>
+                <option value="{$timeValue.allday}" {if condition="$timeValue.time eq $timeValue.allday"} selected {/if}>所有时间段</option>
+                <option value="{$timeValue.today}" {if condition="$timeValue.time eq $timeValue.today"} selected {/if}>今天</option>
+                <option value="{$timeValue.yesterday}" {if condition="$timeValue.time eq $timeValue.yesterday"} selected {/if}>昨天</option>
+                <option value="{$timeValue.lastseven}" {if condition="$timeValue.time eq $timeValue.lastseven"} selected {/if}>最近七天</option>
+                <option value="{$timeValue.lastthirty}" {if condition="$timeValue.time eq $timeValue.lastthirty"} selected {/if}>最近30天</option>
+                <option value="{$timeValue.lastmonth}" {if condition="$timeValue.time eq $timeValue.lastmonth"} selected {/if}>上个月</option>
+            </select>
+            <img src="/admin/img/calendar.png" id="reservation">
+            <button type="input" style="width:150px;"><i class="fa fa-search"></i></button>
+        </form>
+    </div>
+    <div class="row">
+    </div>
+    <table class="dataTable table-hover">
+        <tr>
+            <th>日期</th>
+            <th>广告位id</th>
+            <th>计划名称</th>
+            <th>计划id</th>
+            <th>消耗</th>
+            <th>浏览量</th>
+            <th>点击数</th>
+            <th>点击率</th>
+            {if condition="$name eq 'outh'"}
+            <th>激活</th>
+            <th>成本</th>
+            {/if}
+             <th>备注</th>
+             <th>星级</th>
+            <th>所属客服</th>
+            <th>扣量备注</th>
+        </tr>
+        {volist name="res" id="vo" }
+        <tr>
+            <td>{$vo.day|default=''}</td>
+            <td>{$vo.adz_id|default='不存在'}</td>
+            <td>{$vo.plan_name|default='已删除'}</td>
+            <td>{$vo.pid|default='不存在'}</td>
+                        <td>{$vo.sumadvpay|default='不存在'}</td>
+
+            <td>{$vo.views|default='0'}</td>
+            <td>{$vo.click_num|default='0'}</td>
+            <td>{$vo.ctr|default='0'}%</td>
+            {if condition="$name eq 'outh'"}
+                <td><a href="javascript:;"  class="data-testStats"  data='{"adz_id":"{$vo.adz_id}","pid":"{$vo.pid}","do":"activt","day":"{$vo.day}"}' durl='/admin/newtest/adzdownload'>{$vo.activt_num|default='0'}</a></td>
+                <td>{$vo.cost|default='0'}</td>
+            {/if}   
+            <td><a href="javascript:;"  class="data-testStats"  data='{"adz_id":"{$vo.adz_id}","pid":"{$vo.pid}","do":"info","day":"{$vo.day}"}' durl='/admin/newtest/addInfo'>{$vo.info|default='无'}</a></td>
+            <td>{$vo.star|default='0'}</td>
+            <td>{$vo.username|default='0'}</td>
+            <td><a href="javascript:;"  class="data-testStats"  data='{"adz_id":"{$vo.adz_id}","pid":"{$vo.pid}","do":"klinfo","day":"{$vo.day}"}' durl='/admin/newtest/deductionInfo'>{$vo.deduction_info|default='无'}</a></td>
+
+        </tr>
+        {/volist}
+    </table>
+    </form>
+
+    <div class="row">{$data.show}</div>
+
+</div>
+
+{/block}
+
+<!-- end wrapper -->
+
+{block name="js"}
+<!-- <script src="__JS__/report.js"></script> -->
+<script src="__STATIC__/js/moment.min.js"></script>
+<script src="__JS__/daterangepicker.js"></script>
+<script src="__JS__/moment.js"></script>
+<script type="text/javascript">
+    // 批量删除
+    function delLst(){
+        layer.confirm('确定删除吗？', {
+            btn: ['确定','取消'] //按钮
+        }, function(){
+            $('form').submit();
+        });
+    }
+
+    $(document).ready(function() {
+        var time = $('select[name="time"] option:selected').val();
+        var start = time.substr(0,10);
+        var end = time.substr(10);
+        $('#reservation').daterangepicker({
+            startDate: start,
+            endDate: end,
+        }, function(start, end, label) {
+            var a = start.format();
+            var b = end.format();
+            //start time
+            var c = a.substr(0,10);
+            //end time
+            var d = b.substr(0,10);
+            // console.log(a+'----'+b+'----'+c+'----'+d);
+            //点击选中第一个
+            $("#selectime option:first").prop("selected","selected");
+            $("#fatime").text(c+"至"+d);
+            $("#fatime").val(value = c+""+d);
+        });
+        //页面跳转之后 的状态以及颜色
+        $('#repo_data').children("a").each(function(){
+            // $(this).removeClass("repo_data");
+            if($(this)[0].href==String(window.location)){
+                $(this).addClass("repo_data");
+                $(this).siblings().removeClass("repo_data");
+            }
+        });
+    });
+    //测试报表页面修改
+    $(".data-testStats").click(function(){
+        var href= $(this).attr('durl');
+        var arr = $(this).attr('data');
+        var params = $.parseJSON(arr);
+        var _this = $(this);
+        var titletxt;
+        if(params.do == 'activt'){
+            titletxt = "修改激活数";
+        }else if(params.do == 'info'){
+            titletxt = "备注";
+        }else{
+            titletxt = "扣量备注";
+        }
+
+        layer.prompt({
+          formType: 0,
+          value: '',
+          title: titletxt
+        }, function(value, index, elem){
+            params.param = value;
+            $.post(href,params,success);
+            function success(data) {
+                if (data.status == 1) {
+                    _this.text(value);
+                    layer.msg('修改成功', {icon: 1});
+                } else {
+                    layer.msg('修改失败', {icon: 1});
+                    return false;
+                }
+            }
+        });
+
+    });
+
+</script>
+{/block}

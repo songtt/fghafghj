@@ -1,0 +1,186 @@
+{extend name="public:base" /}
+
+{block name="main"}
+<div class="wrapper">
+    <div class="row-fluid">
+        <h3 class="heading">游戏部管理</h3>
+        <div class="dataTables-wrapper">
+            <div class="tb-lis users_lis">
+                <a><i class="fa fa-plus-circle"></i>新增游戏部会员</a>
+                <div style="display:none;">
+                    <a href="#"><i class="fa fa-flag-o"></i>待审核</a>
+                    <a href="#"><i class="fa fa-flag-o"></i>已审核</a>
+                    <a href="#"><i class="fa fa-flag-o"></i>已锁定</a>
+                </div>
+            </div>
+            <!--批量操作，暂时隐藏，下一期进行开发-->
+            <!--<div class="row">-->
+                <!--<div class="users6">-->
+                    <!--<div class="dataTables-length">-->
+                        <!--批量操作：-->
+                        <!--<select size="1">-->
+                            <!--<option value="">请选择</option>-->
+                            <!--<option value="unlock">激活</option>-->
+                            <!--<option value="lock">锁定</option>-->
+                            <!--<option value="del">删除</option>-->
+                        <!--</select>-->
+                        <!--<button class="rowbtn" type="submin">提交</button>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <table class="dataTable table-hover" name="users-list" >
+            <input type='hidden' name='pageParam' value='{$pageParam.p}' />
+                <tr role="row">
+                    <th rowspan="1" colspan="1" style="width:13px;"><input class="checkedAll" id="" name="service" type="checkbox" data-name="name-data"></th>
+                    <th>ID</th>
+                    <th>游戏部用户名</th>
+                    <th>联系电话</th>
+                    <th>QQ</th>
+                    <!--<th>当月业绩</th>-->
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+                {volist name="users_list" id="vo" }
+                <tr class="unread">
+                    <td rowspan="1" colspan="1" style="width:13px;"><input id="" name="service" type="checkbox" data-name="name-data"></td>
+                    <td><a href="/admin/users/usersToClient?uid={$vo.uid}" target="_blank">{$vo.uid}</a></td>
+                    <td>{$vo.username}</td>
+                    <td>{$vo.tel|default='空'}</td>
+                    <td>{$vo.qq|default='空'}</td>
+
+                    <!--<td width="230"></td>-->
+                    <td>
+                        <span class="common-button ajax-status">
+                            {switch name="vo.status" }
+                                {case value="0"}<span class="sta_er">锁定</span>{/case}
+                                {case value="1"}<span class="sta_bl">活动</span>{/case}
+                                {case value="2"}<span class="sta_er">待审</span>{/case}
+                            {/switch}
+                        </span>
+                    </td>
+                    <td>
+                        <!--<a href="/admin/users/performance?uid={$vo.uid}&type={$one.type}">我的业绩</a>-->
+                        <a href="javascript:;" class="data-lock"  data='{"uid":"{$vo.uid}","status":"0","type":"{$one.type}"}' durl='/admin/users/activate' statuscls='ajax-status' >锁定</a>
+                        <a href="javascript:;"  class="data-activation"  data='{"uid":"{$vo.uid}","status":"1","type":"{$one.type}"}'  durl='/admin/users/activate' statuscls='ajax-status'>激活</a>
+                        <a href="/admin/users/edit?uid={$vo.uid}&type={$one.type}">编辑</a>
+                        <a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                        <a href="javascript:;" class="ajax-del" data='{"uid":{$vo.uid}}' durl="/admin/users/del">删除</a>
+                    </td>
+                </tr>
+                {/volist}
+            </table>
+            {$page}
+            <div class="row"></div>
+        </div>
+    </div>
+</div>
+<div class="modal_layer"></div>
+<div class="modal" style="width: 600px; height:540px; top: 64px; left: 651.5px; display:none;">
+    <div class="modal-header">
+        <div class="modal_title">新建游戏部用户</div>
+        <div class="modal_close"></div>
+    </div>
+    <div class="modal-body">
+        <div class="text" style="margin:0; padding-top:0;">
+
+            <form action="/admin/users/gameadd" name="addform" method="post">
+                <div class="txt-fld txt-name">
+                    <label class="tit" for="">用户角色</label>
+
+                    <input type="radio" value="5" data='three' name="type" checked="checked">游戏部
+                </div>
+                    <div class="txt-fld">
+                        <label class="tit" for="">用户名称</label>
+                        <input class="required" name="nickname" type="text"> <span class="erro">请输入游戏部名称</span>
+                    </div>
+
+                <div class="txt-fld">
+                    <label class="tit" for="">用户名</label> 
+                    <input class="required" name="username" type="text"> <span class="erro">请输入用户名</span>
+                </div>
+                <div class="txt-fld">
+                    <label class="tit" for="">用户密码</label> 
+                    <input class="required" name="password" type="text"> <span class="erro">请输入用户密码</span>
+                </div>
+                <div class="txt-fld">
+                    <label class="tit" for="">联系电话</label>
+                    <input name="tel" type="text">
+                </div>
+                <div class="txt-fld">
+                    <label class="tit" for="">QQ</label>
+                    <input name="qq" type="text">
+                </div>
+                <div class="btn-fld" style="margin-top:10px;">
+                    <button class="btn btn-primary" type="submin">提交</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal-footer"></div>
+</div>
+<!-- end wrapper -->
+{/block}
+
+{block name="js"}
+<script type="text/javascript">
+    $(function(){
+        $('.txt-name input').change(function(){
+            var _data = $(this).attr('data');
+            if(_data == 'one'){
+                $('.titname').text('站长扣量');
+                $('.titlabel').css('display','block');
+            }else if(_data == 'two'){
+                $('.titname').text('广告扣量');
+                $('.titlabel').css('display','block');
+            }else{
+                $('.titlabel').css('display','none');
+            }
+        })
+    })
+     window.onload = function(){
+        var pageParam = $('input[name="pageParam"]').val()
+        $('.trigger1').html('<img src="/admin/img/jiazai.jpg" height="25"/>');
+        $.ajax({
+            type: 'get',//数据发送的方式（post 或者 get）
+            url: '/admin/users/ajaxcustomer',//要发送的后台地址
+            data: {p:pageParam},//要发送的数据（参数）格式为{'val1':"1","val2":"2"}
+            dataType: 'json',//后台处理后返回的数据格式
+            success: function (res){
+            //ajax请求成功后触发的方法
+                // $('.trigger').text(res);
+
+                for(var i=0;i<res.length;i++){
+                     var num = $('.trigger1_'+i).attr('num');
+                    
+                    if(i == num){
+
+                        $('.trigger1_'+i).text(res[i]);
+                    }
+                }
+                // console.log(res);
+            }
+        })
+        $('.trigger').html('<img src="/admin/img/jiazai.jpg" height="25"/>');
+        $.ajax({
+            type: 'get',//数据发送的方式（post 或者 get）
+            url: '/admin/users/ajaxbusiness',//要发送的后台地址
+            data: {p:pageParam},//要发送的数据（参数）格式为{'val1':"1","val2":"2"}
+            dataType: 'json',//后台处理后返回的数据格式
+            success: function (res){
+            //ajax请求成功后触发的方法
+                // $('.trigger').text(res);
+
+                for(var i=0;i<res.length;i++){
+                     var num = $('.trigger_'+i).attr('num');
+                    
+                    if(i == num){
+
+                        $('.trigger_'+i).text(res[i]);
+                    }
+                }
+                // console.log(res);
+            }
+        })
+    };
+</script>
+{/block}

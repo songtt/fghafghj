@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html mip>
+<head>
+  <meta charset="UTF-8">
+  <meta name="applicable-device" content="mobile">
+  <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="https://mipcache.bdstatic.com/static/v1/mip.css">
+  <link rel="canonical" href="https://www.example.com/your/path.html">
+  <title></title>
+  <style mip-custom>
+    mip-lezun-ad > a {
+      position: relative;
+      display: block;
+    }
+    mip-lezun-ad .lzadtracker {
+      display: none;
+      width: 1px;
+      height: 1px;
+    }
+  </style>
+  <script src="https://c.mipcdn.com/static/v1/mip-list/mip-list.js" async="async"></script>
+  <script src="https://c.mipcdn.com/static/v1/mip-mustache/mip-mustache.js" async="async"></script>
+  <script src="https://c.mipcdn.com/static/v1/mip-fixed/mip-fixed.js" async="async"></script>
+</head>
+<body>
+<mip-list src="https://www.gtchong.com/pname/9031" preLoad>
+  <template type="mip-mustache">
+    <mip-lezun-ad>
+      <a href="{{clickurl}}"><mip-img src="{{imageurl}}"></mip-img><mip-pix class="lzadtracker" src="https://{{viewurl}}"></mip-pix></a>
+    </mip-lezun-ad>
+  </template>
+</mip-list>
+<script src="https://mipcache.bdstatic.com/static/v1/mip.js"></script>
+</body>
+</html>

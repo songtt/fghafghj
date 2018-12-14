@@ -1,0 +1,66 @@
+{extend name="public:station-base" /}
+
+{block name="main"}
+    <div class="main_left">
+        <div class="subnav">
+            <div class="subnav-title">
+                <a href="" class="toggle-subnav">
+                    <i></i>
+                    <span>我的概括</span>
+                </a>
+            </div>
+            <ul class="subnav-menu">
+                <li><a href="/home/webmaster/myCenter">我的概括</a></li>
+                <li><a href="/home/webmaster/account">账户设置</a></li>
+                <li><a href="/home/webmaster/siteList">网站管理</a></li>
+                <li><a href="/home/webmaster/record">付款记录</a></li>
+                <!--<li><a href="/home/webmaster/message">消息中心</a></li>-->
+            </ul>
+        </div>
+    </div>
+    <div class="main" style="padding-top:10px;">
+        <div class="mt30" style="height:30px;">
+            <div class="new_date">
+                <a href="/home/webmaster/siteAdd">新建网站</a>
+            </div>
+        </div>
+        <div class="box">
+            <div class="box-title">
+                <h3>
+                    <i></i>网站管理
+                </h3>
+            </div>
+            <div class="box-content">
+                <table class="table table-hover">
+                    <tr>
+                        <th width="300">网站名称</th>
+                        <th width="100">网站域名</th>
+                        <th width="100">是否包含https</th>
+                        <th width="100">分类</th>
+                        <th width="100">状态</th>
+                        <th width="120">操作</th>
+                    </tr>
+                    {volist name="list" id="vo"}
+                    <tr>
+                        <td>{$vo.sitename}</td>
+                        <td>{$vo.siteurl}</td>
+                        <td>{if condition="$vo.https"}是{else/}否{/if}</td>
+                        <td>{$vo.class_name}</td>
+                        <td>
+                            <span class="notification info_bg">{if condition="$vo.status eq 0"}锁定{elseif condition="$vo.status eq 1"}激活{else/}待审{/if}</span>
+                        </td>
+                        <td>
+                            <a href="/home/webmaster/siteEdit?id={$vo.site_id}">修改</a>
+                            <a href="/home/webmaster/siteDele?id={$vo.site_id}">删除</a>
+                        </td>
+                    </tr>
+                    {/volist}
+                </table>
+            </div>
+        </div>
+    </div>
+{/block}
+
+{block name="js"}
+
+{/block}

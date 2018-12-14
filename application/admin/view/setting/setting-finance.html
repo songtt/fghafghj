@@ -1,0 +1,46 @@
+{extend name="public:base" /}
+
+{block name="main"}
+<div class="wrapper">
+    <div class="row-fluid">
+        <h3 class="heading">财务设置</h3>
+        <div id="content">
+            <form action="" name="basicform" method="post">
+                <div class="control-group">
+                    <label class="control-label control-label-left">最低充值金额</label>
+                    <div class="controls control-input">
+                        <input class="input-text input1" type="text" name="least_money" value="{$setting_finance.least_money}" />
+                        <span>例如：100</span>
+                    </div>
+                </div> 
+                <div class="control-group">
+                    <label class="control-label control-label-left">结算方式</label>
+                    <div class="controls control-input">
+                        <p class="input1" />自动结算</p>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label control-label-left">结算周期</label>
+                    <div class="controls control-input">
+                        <p class="input1">周结</p>
+                    </div>
+                </div>
+                <div class="sbut">
+                    <button class="btn btn-primary" type="submit">保存设置</button>
+                </div>  
+            </form>
+        </div>
+    </div>
+{if condition="$setting_finance.keep eq '1'"}
+<div class="al_box" style="position:fixed; top:80px; right:0; color:#444; width:280px; height:32px; line-height:32px; background:#d5ffce; text-indent:10px; border:1px solid #9adf8f;">保存成功</div>
+{/if}
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    $(".al_box,body").click(function(){
+        setTimeout(function(){
+            $(".al_box").css("display","none");},3000);
+    })
+</script>
+{/block}

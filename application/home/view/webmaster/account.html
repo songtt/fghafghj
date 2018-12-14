@@ -1,0 +1,217 @@
+{extend name="public:station-base" /}
+
+{block name="main"}
+    <div class="main_left">
+        <div class="subnav">
+            <div class="subnav-title">
+                <a href="" class="toggle-subnav">
+                    <i></i>
+                    <span>我的概括</span>
+                </a>
+            </div>
+            <ul class="subnav-menu">
+                <li><a href="/home/webmaster/myCenter">我的概括</a></li>
+                <li><a href="/home/webmaster/account">账户设置</a></li>
+                <li><a href="/home/webmaster/siteList">网站管理</a></li>
+                <li><a href="/home/webmaster/record">付款记录</a></li>
+                <!--<li><a href="/home/webmaster/message">消息中心</a></li>-->
+            </ul>
+        </div>
+    </div>
+    <div class="main" style="padding-top:10px;">
+        <div class="box">
+            <div class="form-hor" style="padding-bottom:0px;">
+                <div class="box-title" style="margin-bottom:40px;">
+                    <h3>
+                        <i></i>基本信息
+                        <span id="modify" style="font-size:14px; padding-left:30px; color:#08c; cursor:pointer;">修改</span>
+                    </h3>
+                </div>
+                <div class="control-group">
+                    <input type="hidden" name="uid" value="{$list['uid']}"/>
+                    <label for="" class="controls-label">用户名</label>
+                    <div class="controls">{$list['username']}</div>
+                </div>
+                <div class="control-group">
+                    <label for="" class="controls-label">密码</label>
+                    <div class="controls">
+                        ******
+                        <a id="x_password" href="javascript:;">修改密码</a>
+                        <div id="s_password">
+                            <p><span>原始密码</span> <input type="password" name="password" placeholder="请输入原始密码"/></p>
+                            <p><span>新密码</span><input type="password" name="new_password"  placeholder="请输入新密码"/></p>
+                            <p><span>确认新密码</span>  <input type="password" name="new_password_1"  placeholder="请确认密码"/></p>
+                            <button id = "g_password" type="submit" class="btn btn-primary">提交</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <form action="/home/webmaster/edit" method="post" class="form-hor form-modify" style="padding-top:0px;">
+                <input type="hidden" name="uid" value="{$list['uid']}"/>
+                <div class="control-group">
+                    <label class="controls-label">手机号码</label>
+                    <div class="controls">
+                        <input type="text" name="mobiles" class="input300" value="{$list['mobile'] | default='空'}" readonly="readonly">
+                    </div>
+                </div>
+
+                <div {if condition="($judge_name eq 'admin' || $judge_name eq 'laixiaoxing' )"}style="display:block" {else
+                /}style="display:none"{/if}>
+                <div class="control-group">
+                    <label for="" class="controls-label">QQ号码</label>
+                    <div class="controls">
+                        <input type="text" name="qqhao" class="input300" value="{$list['qq'] | default='空'}" readonly="readonly">
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label for="" class="controls-label">电子邮件</label>
+                    <div class="controls">
+                        <input type="text" name="emails" class="input300" value="{$list['email'] | default='空'}" readonly="readonly">
+                    </div>
+                </div>
+                </div>
+                <div class="control-group">
+                    <label for="" class="controls-label">固定电话</label>
+                    <div class="controls">
+                        <!-- readonly="readonly"-->
+                        <input type="text" name="tels" class="input300" value="{$list['tel'] | default='空'}" readonly="readonly">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label for="" class="controls-label">身份证号码</label>
+                    <div class="controls">
+                        <input type="text" name="idcars" class="input300" value="{$list['idcard'] | default='空'}" readonly="readonly">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label for="" class="controls-label">收款银行</label>
+                    <div class="controls">
+                        <select class="input-text form-group form-groupreg" name="bank_name" style="display: none;">
+
+                            <option value="工商银行" {if condition="$list.bank_name eq '工商银行'"} selected {/if}>工商银行</option>
+                            <option value="招商银行" {if condition="$list.bank_name eq '招商银行'"} selected {/if}>招商银行</option>
+                            <option value="建设银行" {if condition="$list.bank_name eq '建设银行'"} selected {/if}>建设银行</option>
+                            <option value="农业银行" {if condition="$list.bank_name eq '农业银行'"} selected {/if}>农业银行</option>
+                            <option value="交通银行" {if condition="$list.bank_name eq '交通银行'"} selected {/if}>交通银行</option>
+                            <option value="中国银行" {if condition="$list.bank_name eq '中国银行'"} selected {/if}>中国银行</option>
+                            <option value="民生银行" {if condition="$list.bank_name eq '民生银行'"} selected {/if}>民生银行</option>
+                            <option value="邮政银行" {if condition="$list.bank_name eq '邮政银行'"} selected {/if}>邮政银行</option>
+                            <option value="广发银行" {if condition="$list.bank_name eq '广发银行'"} selected {/if}>广发银行</option>
+                            <option value="三峡银行" {if condition="$list.bank_name eq '三峡银行'"} selected {/if}>三峡银行</option>
+                            <option value="支付宝" {if condition="$list.bank_name eq '支付宝'"} selected {/if}>支付宝</option>
+
+                        </select>
+
+                        <span class="bank_name">{$list['bank_name'] | default='空'}</span>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label for="" class="controls-label">开户分行</label>
+                    <div class="controls">
+                        <input type="text" name="bank_branch" class="input300" value="{$list['bank_branch'] | default='空'}" readonly="readonly">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label for="" class="controls-label">收款姓名</label>
+                    <div class="controls">
+                        <input type="text" name="account_name" class="input300" value="{$list['account_name'] | default='空'}" readonly="readonly">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label for="" class="controls-label">收款账号</label>
+                    <div class="controls">
+                        <input type="text" name="bank_card" class="input300" value="{$list['bank_card'] | default='空'}" readonly="readonly">
+                    </div>
+                </div>
+                <div class="form-actions" style="margin-top:60px; margin-bottom:60px;">
+                    <button type="submit" class="btn btn-primary">提交</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{/block}
+
+{block name="js"}
+<script>
+
+    $(function(){
+        $("#g_password").click(function(){
+            var password = $("input[name='password']").val();
+            var new_password = $("input[name='new_password']").val();
+            var new_password_1 = $("input[name='new_password_1']").val();
+            var uid = $("input[name='uid']").val();
+
+            layer.confirm('确定修改吗？', {
+                btn: ['确定','取消'] //按钮
+            }, function(){
+                $.post('/home/webmaster/passEdit',{password:password,new_password:new_password,
+                    new_password_1:new_password_1,uid:uid},function(data){
+                    if (data.status == 1) {
+
+                        layer.msg(data.info);
+                        setTimeout(function(){
+                            window.location.reload();
+                        },3000);
+                    } else {
+                        layer.msg(data.info);
+                        setTimeout(function(){},3000);
+                        return false;
+                    }
+                })
+            })
+        })
+        $("#x_password").click(function(){
+            if($(this).next().css('display') == 'none'){
+                $(this).next().css('display','block');
+            }else{
+                $(this).next().css('display','none');
+            }
+        })
+        $("#modify").click(function(){
+            $(".form-hor input[type='text']").each(function(){
+                if($(".form-hor input[type='text']").prop("readonly") == true){
+                    $(".form-hor input[type='text']").prop("readonly",false).css("border","1px solid #ccc");
+                }
+            })
+
+            $(".bank_name").css("display","none");
+            $(".controls select").css("display","block");
+
+        })
+
+    })
+</script>
+{/block}
+
+
+
+
+<!-- <!DOCTYPE HTML>
+<html>
+<div>修改信息</div>
+<div style="text-align: center;">
+<form action="/index.php/edit" method="post">
+    <input type="hidden" name="uid" value="{$list['uid']}"/>
+    <input type="text" name="mobiles" value="{$list['mobile']}" placeholder="手机号"/>
+    <input type="text" name="qqhao" value="{$list['qq']}" placeholder="qq"/>
+    <input type="text" name="emails" value="{$list['email']}" placeholder="email"/>
+    <input type="text" name="tels" value="{$list['tel']}" placeholder="tel"/>
+    <input type="text" name="idcars" value="{$list['idcard']}" placeholder="idcard"/>
+    <input type="submit" value="修改"/>
+</form>
+</div>
+
+
+<div>修改密码</div>
+<div style="text-align: center;">
+    <form action="/index.php/passEdit" method="post">
+        <input type="hidden" name="uid" value="{$list['uid']}"/>
+        <input type="password" name="password" placeholder="请输入原始密码"/>
+        <input type="password" name="new_password"  placeholder="请输入新密码"/>
+        <input type="password" name="new_password_1"  placeholder="请确认密码"/>
+        <input type="submit" value="修改"/>
+    </form>
+</div>
+</body>
+</html> -->

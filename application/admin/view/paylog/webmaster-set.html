@@ -1,0 +1,47 @@
+{extend name="public:base" /}
+
+{block name="main"}
+<div class="wrapper">
+    <div class="row-fluid">
+        <h3 class="heading">手动结算</h3>
+        <div class="row-plan row-fluid" style="padding-top:20px;">
+            <div class="text" style="margin:0; padding-top:0;">
+                <form  name="handform" method="post">
+                    <div class="control-group">
+                        <label class="control-label control-padding" for="">站长：</label>
+                        <div class="controls">
+                            <select name="uid" id="" style="width:160px;">
+                                <option value="">请选择站长</option>
+                                {volist name="web_name" id="vo" }
+                                <tr class="unread">
+                                    <option value="{$vo.uid}">{$vo.username}</option>
+                                </tr>
+                                {/volist}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label control-padding" for="">结算金额</label>
+                        <div class="controls">
+                            <input class="required input-text input1 " id="money" name="money" type="text"> <span class="erro">请输入结算金额</span><span id="money_text"></span>
+                        </div>
+                    </div>
+                   
+                    <div class="control-group control-padding" style="margin-top:10px;">
+                        <div class="controls">
+                            <button class="btn btn-primary" type="submin">提交</button>
+                        </div>
+                    </div>      
+                </form>
+            </div>    
+        </div> 
+    </div>
+</div>  
+<!-- end wrapper -->
+{/block}
+
+{block name="js"}
+<script>
+ 
+</script>
+{/block}

@@ -1,0 +1,312 @@
+{extend name="public:base" /}
+
+{block name="main"}
+<div class="wrapper">
+    <div class="row-fluid">
+        <h3 class="heading">新建 广告</h3>
+        <!-- 选项卡 -->
+        <div class="">
+            <!-- <form class="" action="" method="" name=""> -->
+            <div id="repo_data" style="position:absolute; top:102px; right:30px;">
+                <a id="ceshi" href="/admin/ads/add?pid={$ads_name.pid | default=''}&plan_name={$ads_name.plan_name | default=''}&uid={$ads_name.uid | default=''}" style="padding-right: 20px;">
+                    新建广告</a>
+                <a href="/admin/ads/txtadd?pid={$ads_name.pid | default=''}&plan_name={$ads_name.plan_name | default=''}&uid={$ads_name.uid | default=''}">
+                    新建文字广告</a>
+            </div>
+        </div>
+        <div class="row-plan row-fluid" style="padding-top:20px;">
+            <div class="">
+                <!--form表开始-->
+                <form action="/admin/ads/doAdd" name="addform" method="post" enctype="multipart/form-data" >
+                    <div class="pl-tab">
+                        <div class="control-group control-padding">
+                            <label class="control-label">新建广告类型</label>
+                            <div class="controls">
+                                <input name="type" value="1" type="radio" checked="checked" data="/admin/ads/add?pid={$ads_name.pid | default=''}&plan_name={$ads_name.plan_name | default=''}&uid={$ads_name.uid | default=''}"/>新建广告
+                                <input name="type" value="2" type="radio" data="/admin/ads/txtadd?pid={$ads_name.pid | default=''}&plan_name={$ads_name.plan_name | default=''}&uid={$ads_name.uid | default=''}"/>新建文字广告
+
+                                <input name="type" value="3" type="radio" data="/admin/ads/moreAdd?pid={$ads_name.pid | default=''}&plan_name={$ads_name.plan_name | default=''}&uid={$ads_name.uid | default=''}"/>新建组合广告
+                            </div>
+                        </div>
+
+                        <div class="control-group control-padding">
+                            <label class="control-label">所属广告计划</label>
+                            <div class="controls">
+                                {if condition="$ads_name"}
+                                <select id="plan_select" name="ads_pid" class="required onesel">
+                                    <option value="{$ads_name.pid}" data="{$ads_name.uid}" pid="{$ads_name.pid}">{$ads_name.plan_name}</option>
+                                </select>
+                                <span class="erro"></span>
+                                {else /}  
+                                <select id="plan_change" name="ads_pid" class="required onesel">
+                                    <option value="">选择一个计划</option>
+                                    {volist name="ptype_list" id="vo"}
+                                    <optgroup label="{$key}" >
+                                        {volist name="vo" id="sub"}
+                                        <option value="{$sub.pid}" data="{$sub.uid}" pid="{$sub.pid}">{$sub.plan_name}</option>
+                                        {/volist}
+                                    </optgroup>
+                                    {/volist}
+                                </select>
+                                <span class="erro"></span>
+                                <span>属于哪个计划名下的广告</span>
+                                {/if}
+                            </div>
+                        </div>
+                        <div class="control-group control-padding">
+                            <label class="control-label">广告名称</label>
+                            <div class="controls">
+                                <input id="ad_name" class="input-text input1 data_pac" name="ad_name" value="" type="text"><span class="erro" style="display:none;">请输入广告名称</span>
+                            </div>
+                        </div>
+                        <div class="control-group control-padding">
+                            <label class="control-label">广告类型尺寸</label>
+                            <div class="controls">
+                                <select id="adtpl_change" name="adtpl_id" class="required twosel">
+                                    <option value="">选择一个广告类型尺寸</option>
+                                </select>
+                                <span class="erro"></span>
+                            </div>
+                        </div>
+                        <div id="ad_ch" style="margin-bottom:20px;"></div>
+                        <div class="control-group control-padding">
+                            <label class="control-label">大点击链接</label>
+                            <div class="controls">
+                                <input id="" class="input-text input1" type="text" name="click_url" value=""/><span></span>
+                            </div>
+                        </div>
+                        <div class="control-group control-padding">
+                            <label class="control-label">广告权重</label>
+                            <div class="controls">
+                                <input id="" class="input-text input1" type="text" name="priority" value="1"  /><span>1~10数字，默认为1，权重越高，显示的几率越大</span>
+                            </div>
+                        </div>
+                        {if condition="$auth.group_id eq '1'"}
+                        <div class="control-group control-padding">
+                            <label class="control-label">站长扣量</label>
+                            <div class="controls">
+                                <input id="" class="input-text input1" type="text" name="web_deduction" value=""/><span>%</span>
+                            </div>
+                        </div>
+                        <div class="control-group control-padding">
+                            <label class="control-label">广告商扣量</label>
+                            <div class="controls">
+                                <input id="" class="input-text input1" type="text" name="adv_deduction" value=""/><span>%</span>
+                            </div>
+                        </div>
+                        {/if}
+                        <div class="control-group control-padding">
+                            <label class="control-label">广告描述</label>
+                            <div class="controls">
+                                <input id="adinfo" class="input-text input1" type="text" name="adinfo" value=""  /><span>(两行文字广告下为第二行文字内容)</span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!--end-->
+                    
+                    <!--表单提交-->
+                    <div class="control-group" style="padding-bottom:50px;">
+                        <div class="controls">
+                            <button class="btn btn-primary" type="submit">提交</button>
+                        </div>
+                    </div>
+                    <!--end-->
+                    <input id="hid_uid" type="hidden" name="uid" value="" />
+                </form>
+                <!--end-->
+            </div>
+        </div>
+    </div>
+</div>
+
+{/block}
+
+{block name="js"}
+<script src="__JS__/submit.js"></script>
+<script language="JavaScript" type="text/javascript">
+$(function(){
+     (function(){
+        var uid = $('#plan_select option:selected').attr('data');
+        $('#hid_uid').val(uid);
+
+        var href = '/admin/ads/changePrice';
+        var params = {
+            pid:$('#plan_select option:selected').attr('pid')
+        };
+        /*console.log(121);*/      
+        $.post(href,params,success);
+        function success(data) {
+        /*console.log(441114);*/
+
+            var info='';
+            info='<option value="">选择一个广告类型尺寸</option>';
+            if (data.status == 1) {
+                $("#adtpl_change").html("");
+
+                for(var key in data.data){
+                    info+='<option value='+data.data[key].tpl_id+','+data.data[key].id+','+data.data[key].size+'>'+data.data[key].price_name+'</option>';
+                }
+                $("#adtpl_change").append(info);
+
+            } else {
+                $("#adtpl_change").html("");
+                $("#adtpl_change").append(info);
+            }
+        }
+    })();
+
+    //点击单选框跳转
+    $("input[name='type']").click(function(){
+        var val = $(this).val();
+        var url = $(this).attr('data');
+        window.location.href=url;
+    })
+
+    $('#plan_change').change(function(){
+        var uid = $('#plan_change option:selected').attr('data');
+        $('#hid_uid').val(uid);
+
+        var href = '/admin/ads/changePrice';
+        var params = {
+            pid:$('#plan_change option:selected').attr('pid')
+        };
+        /*console.log(121);*/
+        $.post(href,params,success);
+        function success(data) {
+        /*console.log(441114);*/
+
+            var info='';
+            info='<option value="">选择一个广告类型尺寸</option>';
+            if (data.status == 1) {
+                $("#adtpl_change").html("");
+
+                for(var key in data.data){
+                    info+='<option value='+data.data[key].tpl_id+','+data.data[key].id+','+data.data[key].size+'>'+data.data[key].price_name+'</option>';
+                }
+                $("#adtpl_change").append(info);
+
+            } else {
+                $("#adtpl_change").html("");
+                $("#adtpl_change").append(info);
+                // console.log(data);
+            }
+        }
+    });
+    $('#adtpl_change').on('change',function(){
+        var href = '/admin/ads/changeAdtpl';
+        var params = {
+                tpl_id:$('#adtpl_change').val()
+            };
+        $.post(href,params,success);
+        function success(data) {
+            if (data.status == 1) {
+                var arr = data.data;
+                var htmlcontrol = arr.htmlcontrol;
+                $("#ad_ch").html("");
+                var info='';
+                if(false!=htmlcontrol){
+                    for (var i=0;i<htmlcontrol.control_type.length;i++) {
+                        info+='<div class="control-group control-padding">';
+                        info+='<label class="control-label">'+htmlcontrol.control_text[i]+'</label>';
+                        if(htmlcontrol.control_type[i]=="file"){
+                            info+='<div class="controls" style="margin-top:6px;">';
+
+                            info+='<input name="file" type="radio" value="1" checked="checked" onclick="show1()">上传文件';
+                            info+='<input name="file" type="radio" value="2" onclick="show()">远程文件';
+
+                            info+='</div>';
+                            info+='<br>';
+                            info+='<div class="controls">';
+                            info+='<input id="files" class="input-text input1 data_pac" type="'+htmlcontrol.control_type[i]+'" name="'+htmlcontrol.control_name[i]+'" value=""/><span class="erro" style="display:none;">请选择图片</span>';
+                            info+='</div>';
+                        }else{
+                            info+='<div class="controls">';
+                            info+='<input class="input-text input1 data_pac" type="'+htmlcontrol.control_type[i]+'" name="'+htmlcontrol.control_name[i]+'" value="" />'
+                            // 根据广告类型id区分广告的类型 19、文字广告   20、信息流广告       21、banner+15字广告
+                            console.log(arr.adtype_id)
+                            if (arr.adtype_id ==19) {
+                                info+= '<span style="color:red;">'+textContent(i,arr.adtype_id)+'</span>'
+                                info+= '<span class="erro" style="display:none;">请输入文字广告内容</span>';
+                            }else if(arr.adtype_id ==20){
+                                info+= '<span style="color:red;">'+textContent(i,arr.adtype_id)+'</span>'
+                                info+= '<span class="erro" style="display:none;">请输入文字广告内容</span>';
+                            }else if(arr.adtype_id ==21){
+                                info+= '<span style="color:red;">'+textContent(i,arr.adtype_id)+'</span>'
+                                info+= '<span class="erro" style="display:none;">请输入文字广告内容</span>';
+                            }else{
+                                info+= '<span class="erro" style="display:none;">请输入网站地址</span>';
+                            }
+                            info+='</div>';
+                        }
+                        info+='</div>';
+                    };  
+                } 
+                $("#ad_ch").append(info);
+            } else {
+                console.log('----0');
+            }
+        }
+    });
+
+function textContent(i,tp_id){
+    var textRes;
+    switch(i)
+    {
+    case 0:
+      textRes = '字数不超过3个字';
+      break;
+    case 1:
+      if(tp_id == 19){
+        textRes = '字数不超过5个字';
+      }else if (tp_id == 20) {
+        textRes = '字数不超过7个字';
+      }else{
+        textRes = '字数不超过15个字';
+      }
+      break;
+    case 2:
+      textRes = (tp_id == 19)?'字数不超过3个字':'必填*';
+      break;
+    case 3:
+      textRes = '字数不超过5个字'
+      break;
+    default:
+      textRes = '必填*'
+    }
+    return textRes
+}
+
+$("form").submit(function(){
+        var flag = true;
+        $(".data_pac").each(function(){
+            if($(this).val() == ""){
+                $(this).next().css('display','inline');
+                // //获取滚动条高度
+                // // var a = $(this).offset().top;
+                $(this).focus();
+                $("html,body").animate({scrollTop:0}, 0);
+                flag = false;
+            }
+        })
+        if(!flag){
+            return false;
+        }
+    })
+})
+function show(){
+    var type = $('#files').attr('type');
+    if(type == 'file'){
+        $('#files').attr('type','text');
+    }
+}
+function show1(){
+    var type = $('#files').attr('type');
+    if(type == 'text'){
+        $('#files').attr('type','file');
+    }
+}
+
+
+</script> 
+{/block}

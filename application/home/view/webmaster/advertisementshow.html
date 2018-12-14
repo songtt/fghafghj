@@ -1,0 +1,55 @@
+{extend name="public:station-base" /}
+
+{block name="main"}
+    <div class="main_left">
+        <div class="subnav">
+            <div class="subnav-title">
+                <a href="" class="toggle-subnav">
+                    <i></i>
+                    <span>广告活动</span>
+                </a>
+            </div>
+            <ul class="subnav-menu">
+                {volist name="plantype" id="vo"}
+                <li {if condition="$i eq 1"} class="current"{/if} ><a href="advertisementshow?pid={$vo.pid}&admtpid={$vo.tpl_id}">{$vo.tplname}</a></li>
+                {/volist}
+            </ul>
+        </div>
+    </div>
+    <div class="main" style="padding-top:10px;">
+        <div class="box">
+            <div class="box-title">
+                <h3>
+                    <i></i>查看广告
+                </h3>
+            </div>
+            <div class="box-content">
+                <table class="table">
+                    {volist name="planshow" id="vo"}
+                    <tr>
+                        <td width="10">#{$vo.ad_id}</td>
+                        <td width="50%">{if condition="$vo['imageurl'] neq ''"}
+                            {if condition="$vo.files eq '2'"}
+                            <img src="{$vo.imageurl}" width="100%" height="30%">
+                            {else/}
+                            <img src="{$img.img_server}{$vo.imageurl}" width="100%" height="30%">
+                            {/if}
+                            {/if}</td>
+                        <td width="50">{if condition="$vo['imageurl'] neq ''"}{$vo.width}*{$vo.height}{/if}</td>
+                        <td width="80"><a href="activitAdd">获取代码</a></td>
+                    </tr>
+                    {/volist}
+
+                </table>
+            </div>
+        </div>
+    </div>
+{/block}
+
+{block name="js"}
+<script>
+    if('{$tplid}' =='' ){
+      window.location.href=$(".subnav-menu li a").attr('href');
+    }
+</script>
+{/block}

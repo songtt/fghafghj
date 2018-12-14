@@ -1,0 +1,60 @@
+
+{extend name="public:base" /}
+
+{block name="main"}
+<div class="wrapper">
+    <div class="row-fluid">
+        <h3 class="heading">广告位包天详情管理</h3>
+        <form action="/admin/site/batchDel" name="batchDel" method="post">
+            <div class="row">
+                <div class="plan6">
+                    <div class="dataTables-length">
+                        批量操作：
+                        <a href="javascript:;"  ><button class="btn btn-primary" type="button" onclick="delLst();" style="padding:2px 12px;">删除</button></a>
+                    </div>
+                </div>
+            </div>
+        <div class="dataTables-wrapper">
+            <table class="dataTable table-hover" name="users-list" >
+                <tr role="row">
+                    <th rowspan="1" colspan="1" style="width:13px;"><input class="checkedAll" id="" type="checkbox" data-name="name-data"></th>
+                    <th>ID</th>
+                    <th>广告位名称</th>
+                    <th>包天单价</th>
+                    <th>包天日期</th>
+                    <th>操作</th>
+                </tr>
+                {volist name="adzone_list" id="vo"}
+                <tr class="unread">
+                    <td rowspan="1" colspan="1" style="width:13px;"><input id="" name="id[]" value="{$vo.id}" type="checkbox" data-name="name-data"></td>
+                    <td>{$vo.adz_id}</td>
+                    <td>{$vo.zonename}</td>
+                    <td>{$vo.cpd}</td>
+                    <td>{$vo.cpd_day}</td>
+                    <td>
+                        <a href="/admin/site/cpdEdit?id={$vo.id}">编辑</a>
+                    </td>
+                </tr>
+                {/volist}
+            </table>
+            {$page}
+            <div class="row"></div>
+        </div>
+        </form>
+    </div>
+</div>
+<!-- end wrapper -->
+{/block}
+
+{block name="js"}
+<script>
+    // 批量删除
+    function delLst(){
+        layer.confirm('确定删除吗？', {
+            btn: ['确定','取消'] //按钮
+        }, function(){
+            $('form').submit();
+        });
+    }
+</script>
+{/block}

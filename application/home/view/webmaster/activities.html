@@ -1,0 +1,150 @@
+{extend name="public:station-base" /}
+
+{block name="main"}
+
+    <div class="main_left">
+        <div class="subnav">
+            <div class="subnav-title">
+                <a href="" class="toggle-subnav">
+                    <i></i>
+                    <span>我的广告位</span>
+                </a>
+            </div>
+            <ul class="subnav-menu">
+                <li><a href="/home/webmaster/advertising">所有活动</a></li>
+                {if condition="!empty($act_list)"}
+                {volist name="actpname" id="vo"}
+                <li><a href="/home/webmaster/advertising?type={$vo}">{$vo}广告位</a></li>
+                {/volist}
+                {/if}
+            </ul>
+        </div>
+    </div>
+    <div class="main" style="padding-top:10px;">
+        <div class="mt30" style="height:30px;">
+            {if condition="empty($list)"}
+             <span style="color:#F00;font-size:20px">您目前没有添加网站，请先:</span><span style="font-size:18px;line-height:20px" class="new_date">
+                <a href="/home/webmaster/siteAdd">新建网站</a>
+            </span>
+            {else /}
+            <div class="new_date">
+                <a href="/home/webmaster/activitAdd">新建广告位</a>
+            </div>
+            {/if}
+        </div>
+        <div class="box">
+            <div class="box-title">
+                <h3>
+                    <i></i>广告位管理
+                </h3>
+            </div>
+            <div class="box-content">
+                <table class="table">
+                    <tr>
+                        <th width="300">广告位名称</th>
+                        <th width="100">广告位ID</th>
+                        <th width="100">尺寸</th>
+						<th width="100" class="mobile">
+                            <select name="mobile">
+                            <option value="">投放设备</option>
+                            <option value="1" {if condition="!empty($mobile)"} {if condition="$mobile eq '1'"}selected{/if} {/if}>ios+android</option>
+                            <option value="2" {if condition="!empty($mobile)"} {if condition="$mobile eq '2'"}selected{/if} {/if}>ios</option>
+                            <option value="3" {if condition="!empty($mobile)"} {if condition="$mobile eq '3'"}selected{/if} {/if}>android</option>
+                        </select>
+                        </th>
+                        <th width="100">广告模式</th>
+                        <th width="100">计费方式</th>
+                        <th width="120">上次修改时间</th>
+                    </tr>
+                    {volist name="act_list" id="vo"}
+                    <tr>
+                        <td width="300">{$vo.zonename}<br/>
+                            <a href="/home/webmaster/activitEdit?zid={$vo.adz_id}">修改</a>
+                            <a href="javascript:;" zid="<script src='{$service.js_server}/title/{$vo.adz_id}'></script>" data="{$vo.adz_id},{$vo.type}" status="{$vo.status}" class="getcode">获取代码</a>
+                            <a href="javascript:;" class="ajax-del" data='{"zid":{$vo.adz_id}}' durl="/home/webmaster/activitDel">删除</a>
+                            <a href="/home/webmaster/normalReport?adzid={$vo.adz_id}&type=adz">查看报告</a>
+                        </td>
+                        <td width="300">{$vo.adz_id}</td>
+                        <td width="300">{$vo.width}x{$vo.height}</td>
+						<td width="300">
+                            {switch name="vo.system_type" }
+                                {case value="0"}/{/case}
+                                {case value="1"}ios+android{/case}
+                                {case value="2"}ios{/case}
+                                {case value="3"}android{/case}
+                            {/switch}
+                        </td>
+                        <td width="300">{$vo.tplname}</td>
+                        <td width="300">{$vo.plan_type}</td>
+                        <td width="300">{$vo.add_time}</td>
+                    </tr>
+                    {/volist}
+                </table>
+            </div>
+        </div>
+    </div>
+{/block}
+
+{block name="js"}
+    <script>
+        var index ={$zid};
+        $('.getcode').each(function(){
+            if($(this).attr('data') == index) {
+                if (index != 'advertising' && index != 0  && ($(this).attr('status') == 1)) {
+                    $("#show").css("display", "block");
+                    //在这里面输入任何合法的js语句
+                    // layer.open({
+                    //     type: 1, //page层
+                    //     area: ['500px', '200px'],
+                    //     title: '获取代码',
+                    //     shade: 0.6, //遮罩透明度
+                    //     moveType: 1, //拖拽风格，0是默认，1是传统拖动
+                    //     shift: -1, //0-6的动画形式，-1不开启
+                    //     content: '<div style="width:100%;height:auto;"><div style="width:80%;margin:20px auto;"><textarea style="display:block;width:100%;height:30%;line-height:20px;border-radius:4px;" id="val"></textarea><button style="color:#484848;background:#f4f4f4;padding:4px;margin-top:10px;" onclick="copyUrl2()">复制代码<tton></div></div>'
+                    // });
+                    // $('.getcode').each(function () {
+                    //     if ($(this).attr('data') == index) {
+                    //         $("textarea").text($(this).attr('zid'));
+                    //     }
+                    // })
+                window.location.href="/home/webmaster/obtain?adz_id="+($(this).attr('data')); 
+                }else{
+                    alert('需要工作人员审核')
+                }
+            }
+        })
+
+        $(".getcode").click(function(){
+            //判断广告位是否审核
+            if($(this).attr('status') == 1) {
+                $("#show").css("display", "block");
+                //在这里面输入任何合法的js语句
+                // layer.open({
+                //     type: 1, //page层
+                //     area: ['500px', '200px'],
+                //     title: '获取代码',
+                //     shade: 0.6, //遮罩透明度
+                //     moveType: 1, //拖拽风格，0是默认，1是传统拖动
+                //     shift: -1, //0-6的动画形式，-1不开启
+                //     content: '<div style="width:100%;height:auto;"><div style="width:80%;margin:20px auto;"><textarea style="display:block;width:100%;height:30%;line-height:20px;border-radius:4px;" id="val"></textarea><button style="color:#484848;background:#f4f4f4;padding:4px;margin-top:10px;" onclick="copyUrl2()">复制代码<tton></div></div>'
+                // });
+                window.location.href="/home/webmaster/obtain?adz_id="+($(this).attr('data')); 
+                $("textarea").text($(this).attr('data'));
+            }else{
+                alert('需要工作人员审核')
+            }
+        })
+
+        function copyUrl2(){
+            var Url2=document.getElementById("val");
+            Url2.select(); // 选择对象
+            document.execCommand("copy"); // 执行浏览器复制命令
+        }
+
+		//获取选择的投放设备
+        $('.mobile select').change('click',function(){
+            var mobile = $(this).val();
+            window.location.href='/home/webmaster/advertising?mobile='+mobile;
+        });
+    </script>
+{/block}

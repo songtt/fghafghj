@@ -1,0 +1,124 @@
+{extend name="public:base" /}
+{block name="css"}
+<link href="__CSS__/daterangepicker-bs3.css" rel="stylesheet" />
+{/block}
+{block name="main"}
+<div class="wrapper">
+        <div class="row-fluid">
+            <h3 class="heading">客服业绩查询</h3>
+            <div class="dataTables-wrapper">
+                <form action="/admin/users/performance?type={$params.type}" method="post">
+                <div class="tb_sts">
+                职员：
+                <select class="select-results" name="uid" id="" style="width:160px;">
+                {volist name="$params.list" id="vo" }
+                <option value="{$vo.uid}" {if condition="$vo.uid eq $params.uid"} selected {/if}>{$vo.username}</option>
+                {/volist}
+                </select>
+                    时间段
+                    <select id="selectime" name="time" style="width:204px;">
+                        <option id="fatime" value="{$data.time.nowval}">{$data.time.now}</option>
+                        <option value="{$data.time.yesterday}" {if condition="$data.time.time eq $data.time.yesterday"} selected {/if}>昨天</option>
+                        <option value="{$data.time.lastseven}" {if condition="$data.time.time eq $data.time.lastseven"} selected {/if}>一周</option>
+                        <option value="{$data.time.lastthirty}" {if condition="$data.time.time eq $data.time.lastthirty"} selected {/if}>最近30天</option>
+                        <option value="{$data.time.lastmonth}" {if condition="$data.time.time eq $data.time.lastmonth"} selected {/if}>上个月</option>
+                        <!-- <option value="{$data.time.allday}" {if condition="$data.time.time eq $data.time.allday"} selected {/if}>所有时间段</option> -->
+                    </select>
+                    <img src="/admin/img/calendar.png" id="reservation">
+                    <button class="btn btn-primary" style="margin-top:-4px;">搜索</button>
+                </div>
+                </form>
+                <div id="container" style="min-width:700px;height:400px"></div>
+                <table class="dataTable" style="margin-top:30px;">
+                    <tr role="row">
+                        <th>日期</th>
+                        <th>业绩</th>
+                        <!--<th>{if condition="$params.type eq '3'"}会员{else /}厂商{/if}</th>-->
+                    </tr>
+                    <tr>
+                        <td><b>汇总</b></td>
+                        <td><b>{$summoney|process_decimal}</b></td>
+
+                    </tr>
+                    {volist name="data.num" id="vo"}
+                    <tr>
+                        <td>{$vo.day}</td>
+                        {if condition="$params.type eq '3'"}<td>{$vo.money|process_decimal}元</td>{else /}<td>{$vo.money|process_decimal}元</td>{/if}
+                        <!--<td>{$vo.num}个</td>-->
+
+                    </tr>
+                    {/volist}
+                </table>
+
+                <div class="row"></div>
+            </div>
+        </div>
+</div>
+<!-- end wrapper -->
+{/block}
+
+{block name="js"}
+<script src="__STATIC__/js/moment.min.js"></script>
+<script src="__JS__/daterangepicker.js"></script>
+<script src="__JS__/moment.js"></script>
+<script type="text/javascript" src="//cdn.hcharts.cn/highcharts/highcharts.js"></script>
+<script type="text/javascript">
+    $(function (){
+        var day = [{$data.chart.day}];
+        var data = [{$data.chart.num}];
+        $('#container').highcharts({
+            title: {
+                text: '业绩',
+                x: -20 //center
+            },
+            credits: {
+                enabled:false
+            },
+            xAxis: {
+                categories: day
+            },
+            yAxis: {
+                title: {
+                    text: '元'
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
+            },
+            tooltip: {
+                valueSuffix: '元'
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle',
+                borderWidth: 0
+            },
+            series: [{
+                name: '业绩',
+                data: data
+            }]
+        });
+        var time = $('select[name="time"] option:selected').val();
+        var start = time.substr(0,10);
+        var end = time.substr(10);
+        $('#reservation').daterangepicker( {
+                startDate: start,
+                endDate: end
+        },function(start, end, label) {
+            var a = start.format();
+            var b = end.format();
+            //start time
+            var c = a.substr(0,10);
+            //end time
+            var d = b.substr(0,10);
+            //点击选中第一个
+            $("#selectime option:first").prop("selected","selected");
+            $("#fatime").text(c+"至"+d);
+            $("#fatime").val(value = c+""+d);
+        });
+    });
+</script>
+{/block}

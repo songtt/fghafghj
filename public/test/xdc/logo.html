@@ -1,0 +1,82 @@
+<!doctype html>
+<html mip>
+<head>
+  <meta charset="UTF-8">
+  <meta name="applicable-device" content="mobile">
+  <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="https://mipcache.bdstatic.com/static/v1/mip.css">
+  <!-- canonical 中的链接优先填写对应内容的移动端页面（H5）地址 -->
+  <link rel="canonical" href="https://www.example.com/your/path.html">
+  <title>左图右文</title>
+
+  <style mip-custom>
+
+    .lztw-1 {
+      position: relative;
+      width: 100%;
+      padding: 15px 0;
+    }
+
+    .lztw-1 .lz-pic .lz-pic-img {
+      width: 110px;
+      height: 80px;
+    }
+
+    .lz-des-title {
+      position: absolute;
+      left: 118px;
+      top: 0;
+      font-size: 18px;
+      color: #333;
+    }
+
+    .lz-des-time {
+      position: absolute;
+      left: 118px;
+      bottom: 2px;
+      color: #999;
+      font-size: 12px;
+    }
+
+    .lz-des-time-item {
+      font-style: normal;
+    }
+
+
+  </style>
+
+  <script src="https://c.mipcdn.com/static/v1/mip-list/mip-list.js" async="async"></script>
+  <script src="https://c.mipcdn.com/static/v1/mip-mustache/mip-mustache.js" async="async"></script>
+
+
+</head>
+<body>
+
+<p>1111</p>
+<div class="lztw-1">
+  <!-- <mip-list src="https://www.hzyuw.com/pname/10137" preLoad> -->
+  <!-- <mip-list src="http://www.lzbd.com/ad/sdk/api.php?id=10405" preLoad> -->
+  <mip-list src="http://lezun.sjzwhwy.com/ad/sdk/api.php?id=10412" preLoad>
+
+    <template type="mip-mustache">
+      <a href="{{clickurl}}">
+        <div class="lz-pic">
+          <mip-img src="{{imageurl}}" class="lz-pic-img"></mip-img>
+        </div>
+        <p class="lz-des-title">{{text}}</p>
+        <p class="lz-des-time">
+          <em class="lz-des-time-item">{{day}}</em>
+        </p>
+        <mip-pix class="lzadtracker" src="https://{{viewurl}}"></mip-pix>
+      </a>
+    </template>
+  </mip-list>
+</div>
+
+
+<p>0000</p>
+
+<script src="https://mipcache.bdstatic.com/static/v1/mip.js"></script>
+
+</body>
+</html>

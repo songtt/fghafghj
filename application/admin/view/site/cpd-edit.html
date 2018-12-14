@@ -1,0 +1,68 @@
+{extend name="public:base" /}
+
+{block name="main"}
+<!--  编辑  -->
+<div class="wrapper">
+    <div>
+        <h3 class="heading">编辑包天价钱</h3>
+        <form class="" action="/admin/site/cpdEdit?id={$cpd_money.id}&adz_id={$cpd_money.adz_id}" method="post" id="formId">
+            <div class="control-group formSep st">
+                <label class="control-label">广告位id</label>
+                <div class="controls">
+                    <p class="input1" style="margin-top:6px;">{$cpd_money.adz_id}</p>
+                </div>
+            </div>
+            <div class="control-group formSep st">
+                <label class="control-label">广告位名称</label>
+                <div class="controls">
+                    <p class="input1" style="margin-top:6px;">{$cpd_money.zonename}</p>
+                </div>
+            </div>
+            <div class="control-group formSep">
+                <label class="control-label">包天价钱</label>
+                <div class="controls">
+                    <input class="input1 input-text required" name="cpd" type="text" value="{$cpd_money.cpd}"><span class="erro">输入包天价钱</span>
+                </div>
+            </div>
+            <div class="control-group formSep">
+                <label class="control-label">包天日期</label>
+                <div class="controls">
+                    <input class="input1 input-text required" name="cpd_day" disabled="true" type="text" value="{$cpd_money.cpd_day}"><span class="erro">输入包天日期</span>
+                </div>
+            </div>
+            <div class="control-group formSep">
+                <div class="controls">
+                    <button class="btn btn-primary" type="submit">提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{/block}
+
+<!-- end wrapper -->
+
+{block name="js"}
+<script type="text/javascript">
+    $('#formId').submit(function(){
+        console.log(11111);
+        window.location.href='/admin/site/adzone';
+//        //点击按钮提交
+//        var href = '/admin/site/adzoneEdit';
+//        var data = $("#formId").serialize();
+//
+//        $.post(href,data,success);
+//        function success(data) {
+//            if(data.status == 0) {
+//                layer.msg(data.info, {icon: 1});
+//                setTimeout(function(){},2000);
+//                return false;
+//            }else {
+//                window.location.href='/admin/site/adzone';
+//            }
+//        }
+//        return false;
+    });
+</script>
+{/block}

@@ -1,0 +1,92 @@
+{extend name="public:base" /}
+
+<!-- block main start -->
+{block name="main"}
+<!--body  -->
+
+<div class="wrapper">
+    <div class="row-fluid">
+        <div id="repo_data" class="tb_sts" style="position:absolute; top:110px; right:30px;">
+            <a href="/admin/Auxiliary/modleList?status=all&search={$param.search|default=''}" {if condition="$param.status eq 'all'"} class="payTab" {/if}>全部机型</a>
+            <a href="/admin/Auxiliary/modleList?status=3&search={$param.search|default=''}" {if condition="$param.status eq '3'"} class="payTab" {/if}>高端机</a>
+            <a href="/admin/Auxiliary/modleList?status=2&search={$param.search|default=''}" {if condition="$param.status eq '2'"} class="payTab" {/if}>中端机</a>
+            <a href="/admin/Auxiliary/modleList?status=1&search={$param.search|default=''}" {if condition="$param.status eq '1'"} class="payTab" {/if}>低端机</a>
+            <a href="/admin/Auxiliary/modleList?status=4&search={$param.search|default=''}" {if condition="$param.status eq '4'"} class="payTab" {/if}>高付费机型</a>
+        </div>
+        <h3 class="heading">手机机型列表</h3>
+        <div class="tb-lis">
+            <a href="/admin/auxiliary/add"><i class="fa fa-plus-circle"></i>新增手机机型</a>
+        </div>
+        <div class="row">
+            <form  action="/admin/auxiliary/modleList" name="conditions" method="post">
+                <div class="plan6">
+                    搜索：
+                    <input class="input-text input1" name="search" value="{$param.search|default=''}" type="text">
+                    <select name="searchName">
+                        <option value="modle_name">机型名称</option>
+                    </select>
+                    <button type="input" style="width:60px"><i class="fa fa-search"></i></button>
+                </div>
+            </form>
+            <!--<div class="plan6">-->
+            <!--<div class="dataTables-filter">-->
+            <!--批量操作：-->
+            <!--<a href="javascript:;"  ><button class="btn btn-primary" type="button" onclick="delLst();" style="padding:2px 12px;">删除</button></a>-->
+            <!--</div>-->
+            <!--</div>-->
+        </div>
+        <div class="dataTables-wrapper">
+            <table class="dataTable table-hover" name="ads-list" >
+                <tr role="row">
+                    <th>机型名称</th>
+                    <th>机型类型</th>
+                    <th>是否高付费</th>
+                    <th>备注</th>
+                    <th>操作</th>
+                </tr>
+                {volist name="one" id="vo"}
+                <tr class="unread">
+                    <td>{$vo.name|default='未填写'}</td>
+                    <td><span class="common-button ajax-status">
+                            {switch name="vo.type"}
+                                {case value="1"}<span>低端机</span>{/case}
+                                {case value="2"}<span>中端机</span>{/case}
+                                {case value="3"}<span>高端机</span>{/case}
+                            {/switch}
+                    </span></td>
+                    <td><span class="common-button ajax-status">
+                            {switch name="vo.type_pay"}
+                                {case value="0"}<span>否</span>{/case}
+                                {case value="1"}<span>是</span>{/case}
+                            {/switch}
+                    </span></td>
+                    <td>{$vo.notice|default='未填写'}</td>
+                    <td>
+                        <a href="/admin/Auxiliary/edit?id={$vo.id}">编辑</a>
+                        <!--<a href="javascript:;" class="ajax-del" data='{"id":{$vo.id}}' durl="/admin/auxiliary/del">删除</a>-->
+                    </td>
+                </tr>
+                {/volist}
+            </table>
+        </div>
+        <div class="row">
+            {$page}
+        </div>
+    </div>
+</div>
+<!-- end wrapper -->
+{/block}
+
+{block name="js"}
+<script>
+    // 批量删除
+    function delLst(){
+        layer.confirm('确定删除吗？', {
+            btn: ['确定','取消'] //按钮
+        }, function(){
+            $('form').submit();
+        });
+    }
+</script>
+{/block}
+<!-- block main end -->

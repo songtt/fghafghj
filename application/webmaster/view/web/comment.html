@@ -1,0 +1,118 @@
+{extend name="public:base" /}
+
+<!-- block main start -->
+{block name="main"}
+<!--body  -->
+
+<div class="wrapper">
+    <div class="row-fluid">
+        <h3 class="heading">批注列表</h3>
+        <div class="tb-lis">
+            {if condition="$data.name eq 'admin'"}
+            <a id="addCom"><i class="fa fa-plus-circle"></i>批注</a>
+            {else/}
+            <a id="haveRead"><i class="fa fa-plus-circle"></i>回复</a>
+           {/if}
+            <a href="/webmaster/web/read?web_id={$data.id}&user={$data.name}">一键全读</a>
+        </div>
+            
+        <div class="dataTables-wrapper">
+            <form action="/webmaster/web/batchDel" name="listform" method="post">
+                <table class="dataTable table-hover" name="ads-list" >
+                    <tr role="row">
+                        <th rowspan="1" colspan="1" style="width:13px;"><input id="" class="checkedAll" name="" type="checkbox" data-name="name-data"></th>
+                        <th>网站id</th>
+                        <th>网站域名</th>
+                        <th>批注</th>
+                        <th>批注人/回复人</th>
+                        <th>批注时间/回复时间</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                    {volist name="res" id="vo"}
+                    <tr class="unread">
+                        <td rowspan="1" colspan="1" style="width:13px;"><input id="" name="id[]" value="{$vo.id}" type="checkbox" data-name="name-data"></td>
+                        <td>{$vo.web_id}</td>
+                        <td>{$vo.web_url|default=''}</td>
+                        <td style="word-break:break-all;max-width: 350px;">{$vo.comment|default=''}</td>
+                        <td>{$vo.user|default=''}</td>
+                        <td>{$vo.ptime|date="Y-m-d H:i:s",###}</td>
+                        <td>
+                            <span class="common-button ajax-status">
+                                {switch name="vo.status"}
+                                    {case value="0"}<span class="sta_er">未读</span>{/case}
+                                    {case value="1"}<span class="sta_bl">已读</span>{/case}
+                                {/switch}
+                            </span>
+                        </td>
+                        <td>
+                            {if condition="$vo.status eq '0'"}
+                                {if condition="$vo.user eq $data.name"}
+                                <a href="javascript:;" class="web-del" data='{"id":"{$vo.id}"}' durl="/webmaster/web/delCom">删除</a>
+                                {else/}
+                                不可操作
+                                {/if}
+                            {else/}
+                            已读不可操作
+                            {/if}
+
+                        </td>
+                    </tr>
+
+                    {/volist}
+
+                </table>
+            </form>
+        </div>
+        <div class="row">
+        </div>
+    </div>
+</div>
+
+<div class="modal_layer"></div>
+<div class="modal" style="width: 550px; height:350px; top: 0px;left: 60%; display:none;">
+    <div class="modal-header">
+        <div class="modal_title">添加回复/添加批注</div>
+        <div class="modal_close"></div>
+    </div>
+    <div class="modal-body">
+        <div class="text" style="margin:0; padding-top:0; ">
+            <form action="/webmaster/web/addCom" name="addform" method="post">
+                <div class="txt-fld">
+                    <label class="tit" for="" style="font-size:12px ">内容:</label>
+                    <textarea class="" name="comment"  type="text" style=" width: 300px; height:180px;" id="res"> </textarea><span class="erro">请填写内容</span>
+                </div>
+                <input class="input-text input1" name="user" type="hidden" value="{$data.name|default=''}">
+                <input class="input-text input1" name="web_id" type="hidden" value="{$data.id|default=''}">
+                <div id="hidden"></div>
+                <div class="btn-fld" style="margin-top:10px;">
+                    <button class="btn btn-primary" type="submit" id="handbtn" clicked="0">提交</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal-footer"></div>
+</div>
+<!-- end wrapper -->
+{/block}
+
+{block name="js"}
+<script>
+//添加备注或添加批注狂  
+$("#haveRead").click(function(){
+    $(".modal_layer").show();
+    $(".modal").show();
+}) 
+$("#addCom").click(function(){
+    $(".modal_layer").show();
+    $(".modal").show();
+})
+
+//关闭会员管理弹出框
+$(".modal_layer ,.modal_close").click(function(){
+    $(".modal_layer").hide();
+    $(".modal").hide();
+})
+</script>
+{/block}
+<!-- block main end -->

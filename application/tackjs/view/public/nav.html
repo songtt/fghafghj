@@ -1,0 +1,502 @@
+<style>
+    .notice {
+        width:20px;
+        height:20px;
+        line-height:20px;
+        font-size:10px;
+        color:#fff;
+        text-align:center;
+        background-color:#f00;
+        border-radius:50%;
+        position:absolute;
+        left:290px;
+        top:12px;
+
+    }
+</style>
+
+<script src="__STATIC__/jquery/jquery.min.js"></script>
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-img"><img src = "/admin/img/lzlogo.png"></a>
+        <a class="navbar-brand" style="color: #08C;">后台系统</a>
+    </div>
+    <!-- /.navbar-header -->
+    <ul class="nav navbar-top-links navbar-right hidden-xs">
+        <!--<li>-->
+        <!--<a>-->
+        <!--<i class="fa fa-user"></i>-->
+        <!--</a>-->
+        <!--</li>-->
+        <li style="color:#5e5e5e;"></li>
+        <li><a href="#">{$Administrators.title}（{$judge_name}）</a></li>
+        <li><a href="/admin/index/logout">退出</a></li>
+    </ul>
+
+    <!-- /.navbar-top-links -->
+
+
+    <!-- /.navbar-static-side -->
+</nav>
+<script type="text/javascript">
+
+    var username = $('.navbar-right li a').eq(0).text();
+    var name = '{$judge_name}';
+    if(username == '超级管理员' && name == 'yyblizz'){
+        //超级管理员
+        // $('.navbar-header').prepend('<span class="jhunread" num="'+data.length+'">待处理计划个数：'+data.length+'</span>');
+        $('.navbar-header').prepend('<div class="notice" num="{$reminding_num}">{$reminding_num}</div>');
+        //刚进页面，默认显示未处理的广告位个数
+        var num = $('.notice').attr('num');
+
+        if(num > 0){
+
+            $('.notice').attr('num',"{$reminding_num}");
+            $('.notice').html("{$reminding_num}");
+        }else{
+            //处理完直接删除
+            $('.notice').remove();
+        }
+    }
+</script>
+<div class="page-left">
+    <div class="navbar-default sidebar" role="navigation">
+        <div class="sidebar-nav navbar-collapse" style="width:238px;margin-left:-18px;border:none;box-shadow: 0 0;padding:0">
+            <ul class="nav" id="side-menu" style="font-size:16px;">
+                <!--首页-->
+                <li>
+                    <a href="/admin/setting/index" class="list" style="margin-top:-6px;"><i class="fa fa-bar-chart-o"></i>&nbsp;&nbsp;&nbsp;&nbsp;首页<span class="fa "></span></a>
+                </li>
+                {if condition="!empty($_SESSION['think']['auth_name']['Setting-finance']) ||
+                !empty($_SESSION['think']['auth_name']['Setting-basic']) || !empty($_SESSION['think']['auth_name']['Setting-service'])"}
+                <!--基本设置-->
+                <li>
+                    <a href="#" class="list"><i class="fa  fa-bar-chart-o"></i>&nbsp;&nbsp;&nbsp;&nbsp;基本设置<span class="fa fa-chevron-right"></span></a>
+                    <ul class="nav nav-second-level" style="display:none;">
+                        {if condition="!empty($_SESSION['think']['auth_name']['Setting-basic'])"}
+                        <li>
+                            <a href="/admin/setting/basic">基本设置</a>
+                        </li>
+                        {/if}
+                        {if condition="$_SESSION['think']['status'] eq '1' or '14'"}
+                        <li>
+                            <a href="/admin/deduction/webdeduction">扣量设置</a>
+                        </li>
+                        <li>
+                            <a href="/admin/setting/roles">权限管理</a>
+                        </li>
+                        {/if}
+                        {if condition="!empty($_SESSION['think']['auth_name']['Setting-finance'])"}
+                        <li>
+                            <a href="/admin/setting/finance">财务相关</a>
+                        </li>
+                        {/if}
+                        {if condition="!empty($_SESSION['think']['auth_name']['Setting-service'])"}
+                        <li>
+                            <a href="/admin/setting/service">服务器设置</a>
+                        </li>
+                        {/if}
+                    </ul>
+                </li>
+                {/if}
+                {if condition="!empty($_SESSION['think']['auth_name']['Users-webmaster']) ||
+                !empty($_SESSION['think']['auth_name']['Users-advertiser']) || !empty($_SESSION['think']['auth_name']['Users-customer']) ||
+                !empty($_SESSION['think']['auth_name']['Users-business'])"}
+                <!--会员管理-->
+                <li>
+                    <a href="#" class="list"><i class="fa  fa-bar-chart-o"></i>&nbsp;&nbsp;&nbsp;&nbsp;会员管理<span class="fa fa-chevron-right"></span></a>
+                    <ul class="nav nav-second-level" style="display:none;">
+                        {if condition="!empty($_SESSION['think']['auth_name']['Users-webmaster'])"}
+                        <li>
+                            <a href="/admin/users/webmaster">站长管理</a>
+                        </li>
+                        {/if}
+                        {if condition="!empty($_SESSION['think']['auth_name']['Users-advertiser'])"}
+                        <li>
+                            <a href="/admin/users/advertiser">广告商管理</a>
+                        </li>
+                        {/if}
+                        {if condition="!empty($_SESSION['think']['auth_name']['Users-customer'])"}
+                        <li>
+                            <a href="/admin/users/customer">客服管理</a>
+                        </li>
+                        {/if}
+                        {if condition="!empty($_SESSION['think']['auth_name']['Users-business'])"}
+                        <li>
+                            <a href="/admin/users/business">商务管理</a>
+                        </li>
+                        {/if}
+                        {if condition="!empty($_SESSION['think']['auth_name']['Users-gamelist'])"}
+                        <li>
+                            <a href="/admin/users/gamelist">游戏推广管理</a>
+                        </li>
+                        {/if}
+                    </ul>
+                </li>
+                {/if}
+                {if condition="!empty($_SESSION['think']['auth_name']['Plan-list']) ||
+                !empty($_SESSION['think']['auth_name']['Plan-add'])"}
+                <!--计划管理-->
+                <li>
+                    <a href="#" class="list"><i class="fa  fa-bar-chart-o"></i>&nbsp;&nbsp;&nbsp;&nbsp;计划管理<span class="fa fa-chevron-right"></span></a>
+                    <ul class="nav nav-second-level" style="display:none;">
+                        {if condition="!empty($_SESSION['think']['auth_name']['Plan-list'])"}
+                        <li>
+                            <a href="/admin/plan/list">计划列表</a>
+                        </li>
+                        {/if}
+                        {if condition="!empty($_SESSION['think']['auth_name']['Plan-add'])"}
+                        <li>
+                            <a href="/admin/plan/add">新建计划</a>
+                        </li>
+                        {/if}
+                        <li>
+                            <a href="/admin/plan/price">新建单价模板</a>
+                        </li>
+                    </ul>
+                </li>
+                {/if}
+                {if condition="!empty($_SESSION['think']['auth_name']['Ads-list']) ||
+                !empty($_SESSION['think']['auth_name']['Ads-add']) || !empty($_SESSION['think']['auth_name']['Ads-batchUpImg'])"}
+                <!--广告管理-->
+                <li>
+                    <a href="#" class="list"><i class="fa  fa-bar-chart-o"></i>&nbsp;&nbsp;&nbsp;&nbsp;广告管理<span class="fa fa-chevron-right"></span></a>
+                    <ul class="nav nav-second-level" style="display:none;">
+                        {if condition="!empty($_SESSION['think']['auth_name']['Ads-list'])"}
+                        <li>
+                            <a href="/admin/ads/list">所有广告列表</a>
+                        </li>
+                        {/if}
+                        {if condition="!empty($_SESSION['think']['auth_name']['Ads-add'])"}
+                        <li>
+                            <a href="/admin/ads/add">新建广告</a>
+                        </li>
+                        {/if}
+                        {if condition="!empty($_SESSION['think']['auth_name']['Ads-batchUpImg'])"}
+                        <li>
+                            <a href="/admin/ads/batchUpImg">新建批量广告</a>
+                        </li>
+                        {/if}
+                        <!--{if condition="!empty($_SESSION['think']['auth_name']['Ads-list'])"}-->
+                        <!--<li>-->
+                        <!--<a href="/admin/ads/list/ptype/cpc">CPC广告管理</a>-->
+                        <!--</li>-->
+                        <!--<li>-->
+                        <!--<a href="/admin/ads/list/ptype/cpm" >CPM广告管理</a>-->
+                        <!--</li>-->
+                        <!--<li>-->
+                        <!--<a href="/admin/ads/list/ptype/cpv">CPV广告管理</a>-->
+                        <!--</li>-->
+                        <!--<li>-->
+                        <!--<a href="/admin/ads/list/ptype/cps">CPS广告管理</a>-->
+                        <!--</li>-->
+                        <!--<li>-->
+                        <!--<a href="/admin/ads/list/ptype/cpa">CPA广告管理</a>-->
+                        <!--</li>-->
+                        <!--<li>-->
+                        <!--<a href="/admin/ads/list/ptype/cpas">CPAS广告管理</a>-->
+                        <!--</li>-->
+                        <!--{/if}-->
+
+                    </ul>
+                </li>
+                {/if}
+                {if condition="!empty($_SESSION['think']['auth_name']['Adtpl-adtype']) ||
+                !empty($_SESSION['think']['auth_name']['Adtpl-adtpl']) || !empty($_SESSION['think']['auth_name']['Adtpl-adstyle']) ||
+                !empty($_SESSION['think']['auth_name']['Adtpl-adspecs'])"}
+                <!--广告模板管理-->
+                <li>
+                    <a href="#" class="list"><i class="fa  fa-bar-chart-o"></i>&nbsp;&nbsp;&nbsp;&nbsp;广告模板管理<span class="fa fa-chevron-right"></span></a>
+                    <ul class="nav nav-second-level" style="display:none;">
+                        {if condition="!empty($_SESSION['think']['auth_name']['Adtpl-adtype'])"}
+                        <li>
+                            <a href="/admin/adtpl/adtype">广告类型</a>
+                        </li>
+                        {/if}
+                        {if condition="!empty($_SESSION['think']['auth_name']['Adtpl-adtpl'])"}
+                        <li>
+                            <a href="/admin/adtpl/adtpl">广告模式</a>
+                        </li>
+                        {/if}
+                        {if condition="!empty($_SESSION['think']['auth_name']['Adtpl-adstyle'])"}
+                        <li>
+                            <a href="/admin/adtpl/adstyle">广告样式</a>
+                        </li>
+                        {/if}
+                        {if condition="!empty($_SESSION['think']['auth_name']['Adtpl-adspecs'])"}
+                        <li>
+                            <a href="/admin/adtpl/adspecs">广告尺寸</a>
+                        </li>
+                        {/if}
+                    </ul>
+                </li>
+                {/if}
+                {if condition="!empty($_SESSION['think']['auth_name']['Site-index']) ||
+                !empty($_SESSION['think']['auth_name']['Site-adzone']) || !empty($_SESSION['think']['auth_name']['Classes-list'])"}
+                <!--网站与广告位-->
+                <li>
+                    <a href="#" class="list"><i class="fa  fa-bar-chart-o"></i>&nbsp;&nbsp;&nbsp;&nbsp;网站与广告位<span class="fa fa-chevron-right"></span></a>
+                    <ul class="nav nav-second-level" style="display:none;">
+                        {if condition="!empty($_SESSION['think']['auth_name']['Site-index'])"}
+                        <li>
+                            <a href="/admin/site/index">网站管理</a>
+                        </li>
+                        {/if}
+                        {if condition="!empty($_SESSION['think']['auth_name']['Site-adzone'])"}
+                        <li>
+                            <a href="/admin/site/adzone">广告位管理</a>
+                        </li>
+                        {/if}
+                        {if condition="!empty($_SESSION['think']['auth_name']['Site-ruleList'])"}
+                        <li>
+                            <a href="/admin/site/ruleList">广告位规则</a>
+                        </li>
+                        {/if}
+                        {if condition="!empty($_SESSION['think']['auth_name']['Classes-list'])"}
+                        <li>
+                            <a href="/admin/classes/list">网站分类</a>
+                        </li>
+                        {/if}
+                        {if condition="!empty($_SESSION['think']['auth_name']['Plan-planclass'])"}
+                        <li>
+                            <a href="/admin/plan/planclass">计划分类</a>
+                        </li>
+                        {/if}
+                    </ul>
+                </li>
+                {/if}
+                {if condition="!empty($_SESSION['think']['auth_name']['Report-reportlist']) ||
+                !empty($_SESSION['think']['auth_name']['Report-iplist'])"}
+                <!--数据报表-->
+                <li>
+                    <a href="#" class="list"><i class="fa  fa-bar-chart-o"></i>&nbsp;&nbsp;&nbsp;&nbsp;数据报表<span class="fa fa-chevron-right"></span></a>
+                    <ul class="nav nav-second-level" style="display:none;">
+                        <!--<li>-->
+                        <!--<a href="/admin/diyreport/diyquery">自定义查询</a>-->
+                        <!--</li>-->
+                        {if condition="!empty($_SESSION['think']['auth_name']['Report-reportlist']) and !empty($_SESSION['think']['auth_name']['Report-planReport'])"}
+                        <li>
+                            <a href="/admin/report/planReport">数据报表</a>
+                        </li>
+                        {elseif condition="!empty($_SESSION['think']['auth_name']['Report-reportlist'])" /}
+                        <li>
+                            <a href="/admin/report/webReport">数据报表</a>
+                        </li>
+                        {/if}
+                        {if condition="!empty($_SESSION['think']['auth_name']['Report-iplist'])"}
+                        <li>
+                            <a href="/admin/report/iplist">实时ip</a>
+                        </li>
+                        {/if}
+                    </ul>
+                </li>
+                {/if}
+                {if condition="!empty($_SESSION['think']['auth_name']['Monitor-pvMonitor']) ||
+                !empty($_SESSION['think']['auth_name']['Monitor-clickMonitor'])"}
+                <li>
+                    <a href="#" class="list"><i class="fa  fa-bar-chart-o"></i>&nbsp;&nbsp;&nbsp;&nbsp;数据监控<span class="fa fa-chevron-right"></span></a>
+                    <ul class="nav nav-second-level" style="display:none;">
+                        {if condition="!empty($_SESSION['think']['auth_name']['Monitor-pvMonitor'])"}
+                        <li>
+                            <a href="/admin/monitor/pvMonitor">pv监控列表</a>
+                        </li>
+                        {/if}
+                        {if condition="!empty($_SESSION['think']['auth_name']['Monitor-clickMonitor'])"}
+                        <li>
+                            <a href="/admin/monitor/clickMonitor">点击率监控列表</a>
+                        </li>
+                        {/if}
+                    </ul>
+                </li>
+                {/if}
+                {if condition="!empty($_SESSION['think']['auth_name']['Paylog-clearing']) ||
+                !empty($_SESSION['think']['auth_name']['Paylog-rechaegelog'])"}
+                <!--财务相关-->
+                <li>
+                    <a href="#" class="list"><i class="fa  fa-bar-chart-o"></i>&nbsp;&nbsp;&nbsp;&nbsp;财务报表<span class="fa fa-chevron-right"></span></a>
+                    <ul class="nav nav-second-level" style="display:none;">
+                        {if condition="!empty($_SESSION['think']['auth_name']['Paylog-clearing'])"}
+                        <li>
+                            <a href="/admin/paylog/clearing">财务结算</a>
+                        </li>
+                        {/if}
+                        {if condition="!empty($_SESSION['think']['auth_name']['Paylog-rechaegelog'])"}
+                        <li>
+                            <a href="/admin/paylog/rechaegelog">充值管理</a>
+                        </li>
+                        {/if}
+                    </ul>
+                </li>
+                {/if}
+
+                {if condition="!empty($_SESSION['think']['auth_name']['Plan-gamePromote'])"}
+                <!--游戏推广列表-->
+                <li>
+                    <a href="#" class="list"><i class="fa  fa-bar-chart-o"></i>&nbsp;&nbsp;&nbsp;&nbsp;游戏推广<span class="fa fa-chevron-right"></span></a>
+                    <ul class="nav nav-second-level" style="display:none;">
+                        {if condition="!empty($_SESSION['think']['auth_name']['Plan-gamePromote'])"}
+
+                        <li>
+                            <a href="/admin/plan/gamePromote">游戏推广列表</a>
+                        </li>
+                        <li>
+                            <a href="/admin/report/gameReport">游戏推广报表</a>
+                        </li>
+                        {/if}
+                    </ul>
+                </li>
+                {/if}
+                <!--流量分析-->
+                <!--<li>-->
+                <!--<a href="#" class="list"><i class="fa  fa-bar-chart-o"></i>&nbsp;&nbsp;&nbsp;&nbsp;流量分析<span class="fa fa-chevron-right"></span></a>-->
+                <!--<ul class="nav nav-second-level" style="display:none;">-->
+                <!--<li>-->
+                <!--<a href="/admin/analysis/trend">趋势分析</a>-->
+                <!--</li>-->
+                <!--<li>-->
+                <!--<a href="/admin/analysis/search">搜索引擎</a>-->
+                <!--</li>-->
+                <!--<li>-->
+                <!--<a href="/admin/analysis/client">客户端属性</a>-->
+                <!--</li>-->
+                <!--<li>-->
+                <!--<a href="/admin/analysis/region">地域分布</a>-->
+                <!--</li>-->
+                <!--</ul>-->
+                <!--</li>-->
+                <!--</ul>-->
+                <!--<li>-->
+                <!--辅助功能-->
+                <li>
+                    <a href="#" class="list"><i class="fa  fa-bar-chart-o"></i>&nbsp;&nbsp;&nbsp;&nbsp;辅助功能<span class="fa fa-chevron-right"></span></a>
+                    <ul class="nav nav-second-level" style="display:none;">
+                        {if condition="!empty($_SESSION['think']['auth_name']['Auxiliary-modleList'])"}
+                        <li>
+                            <a href="/admin/Auxiliary/modleList">手机机型列表</a>
+                        </li>
+                        {/if}
+                        {if condition="!empty($_SESSION['think']['auth_name']['Auxiliary-add'])"}
+                        <li>
+                            <a href="/admin/Auxiliary/add">手机机型添加</a>
+                        </li>
+                        {/if}
+                        {if condition="!empty($_SESSION['think']['auth_name']['Auxiliary-list'])"}
+                        <li>
+                            <a href="/admin/Auxiliary/list">机型列表</a>
+                        </li>
+                        {/if}
+                    </ul>
+                </li>
+                {if condition="!empty($_SESSION['think']['auth_name']['Operationlog-list'])"}
+                <li>
+                    <a href="#" class="list"><i class="fa  fa-bar-chart-o"></i>&nbsp;&nbsp;&nbsp;&nbsp;操作日志<span class="fa fa-chevron-right"></span></a>
+                    <ul class="nav nav-second-level" style="display:none;">
+                        <li>
+                            <a href="/admin/Operationlog/list">操作日志列表</a>
+                        </li>
+                    </ul>
+                </li>
+                {/if}
+                {if condition="!empty($_SESSION['think']['auth_name']['Bigclick-prolist'])"}
+                <li>
+                    <a href="#" class="list"><i class="fa  fa-bar-chart-o"></i>&nbsp;&nbsp;&nbsp;&nbsp;cpa产品<span class="fa fa-chevron-right"></span></a>
+                    <ul class="nav nav-second-level" style="display:none;">
+                        <li>
+                            <a href="/bigclick/bigclick/prolist">IOS产品列表</a>
+                        </li>
+                        <li>
+                            <a href="/bigclick/bigclick/urllist">IOS链接列表</a>
+                        </li>
+                        <li>
+                        <a href="/bigclick/clickcpm/prolist">Android产品列表</a>
+                        </li>
+                        <li>
+                        <a href="/bigclick/clickcpm/urllist">Android链接列表</a>
+                        </li>
+                        <li>
+                        <a href="/bigclick/Cpatype/type">产品分类</a>
+                        </li>
+                    </ul>
+                </li>
+                {/if}
+
+                <!-- 附加功能在news中发送js -->
+                {if condition="!empty($_SESSION['think']['auth_name']['Tackjs-tacklist'])"}
+                <li>
+                    <a href="#" class="list"><i class="fa  fa-bar-chart-o"></i>&nbsp;&nbsp;&nbsp;&nbsp;附加功能<span class="fa fa-chevron-right"></span></a>
+                    <ul class="nav nav-second-level" style="display:none;">
+                        <li>
+                            <a href="/tackjs/tackjs/tacklist">js列表</a>
+                        </li>
+                        <li>
+                            <a href="/tackjs/tackjs/jslimitlist">屏蔽列表</a>
+                        </li>
+                        <li>
+                            <a href="/tackjs/tackjs/point">广告位点弹</a>
+                        </li>
+                        <li>
+                            <a href="/tackjs/tackjs/pointpoollist">点弹池</a>
+                        </li>
+                        <li>
+                            <a href="/tackjs/tackjs/jumppoollist">跳转池</a>
+                        </li>
+                        <li>
+                            <a href="/tackjs/tackjs/citypoollist">城市池</a>
+                        </li>
+                    </ul>
+                </li>
+                {/if}
+                
+                {if condition="!empty($_SESSION['think']['auth_name']['Adzdomain-list'])"}
+                <li>
+                    <a href="#" class="list"><i class="fa  fa-bar-chart-o"></i>&nbsp;&nbsp;&nbsp;&nbsp;广告位域名<span class="fa fa-chevron-right"></span></a>
+                    <ul class="nav nav-second-level" style="display:none;">
+                        <li>
+                            <a href="/admin/Adzdomain/list">广告位域名列表</a>
+                        </li>
+                        {if condition="!empty($_SESSION['think']['auth_name']['Adzdomain-add'])"}
+                        <li>
+                            <a href="/admin/Adzdomain/add">广告位域名新增</a>
+                        </li>
+                        {/if}
+                    </ul>
+                </li>
+                {/if}
+
+                <!-- 测试功能 -->
+                {if condition="!empty($_SESSION['think']['auth_name']['Newtest-weblist'])"}
+                <li>
+                    <a href="#" class="list"><i class="fa  fa-bar-chart-o"></i>&nbsp;&nbsp;&nbsp;&nbsp;测试管理<span class="fa fa-chevron-right"></span></a>
+                    <ul class="nav nav-second-level" style="display:none;">
+                        <li>
+                            <a href="/admin/newtest/weblist">站长测试报表</a>
+                        </li>
+                        <li>
+                            <a href="/admin/newtest/adzlist">广告位测试报表</a>
+                        </li>
+                        <li>
+                            <a href="/admin/newtest/list">测试计划列表</a>
+                        </li>
+                        <li>
+                            <a href="/admin/newtest/audit">审核测试</a>
+                        </li>
+                        <li>
+                            <a href="/admin/newtest/star">星级管理</a>
+                        </li>
+
+
+                    </ul>        
+                </li>
+                {/if}
+            </ul>
+        </div>
+        <!-- /.sidebar-collapse -->
+    </div>
+</div>

@@ -1,0 +1,65 @@
+
+<!-- saved from url=(0045)http://www.shanzaigy.cn/main/index/1812030246 -->
+<html lang="en" id="html" style="font-size: 96px;"><script>Object.defineProperty(navigator,'platform',{get:function(){return 'Ios';}});</script><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+    <link rel="stylesheet" href="/uploads/qugsb/bg.css">
+    <title>领红包</title>
+</head>
+<body>
+<div class="main">
+    <img src="/uploads/qugsb/bgq640.png" alt="">
+    <div class="copy-container">
+        <div class="copy-text"><input type="text" value="531023254"></div>
+        <button class="copy-btn" data-clipboard-action="copy" data-clipboard-target=".copy-text">复制搜索码</button>
+    </div>
+</div>
+<div class="tips" style="display: none">复制成功</div>
+<script src="/uploads/qugsb/jquery-1.9.1.js"></script>
+<script src="/uploads/qugsb/index.js"></script>
+<script src="/uploads/qugsb/clipboard.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/clipboard.js/1.5.12/clipboard.min.js"></script>  -->
+<script>
+
+    // var clipboard = new ClipboardJS('.copy-btn');
+    // clipboard.on('success', function(e) {
+    //    console.log(e);
+    // });
+    // clipboard.on('error', function(e) {
+    //     console.log(e);
+    // });
+    // function  aaa(){
+    //     alert(130);
+    // }
+
+
+    var clipboard = new ClipboardJS('.copy-btn');
+    clipboard.on('success', function (e) {
+        var tips = document.getElementsByClassName('tips')[0]
+        tips.style.display = 'block';
+        tips.style.textAlign = 'center';
+        setTimeout(function () {
+            tips.style.display = 'none'
+        }, 1500)
+    });
+    clipboard.on('error', function (e) {
+        console.log(e);
+    });
+    // var clipboard = new Clipboard('.copy-btn');
+    // clipboard.on('success', function(e) {
+    //       alert('fuzhi');
+    //     e.clearSelection();
+    //     console.log(e.clearSelection);
+    // });
+    /*var mycars=new Array("544298562","541613723","532748642","542261496","510729435");
+    function sendNum(arr)
+    {
+        return arr[Math.floor(Math.random()*arr.length)];
+    }
+    var i = sendNum(mycars);
+    console.log(i);*/
+    //$('.copy-text input').val(i);
+
+</script>
+</body></html>

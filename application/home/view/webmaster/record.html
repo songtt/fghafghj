@@ -1,0 +1,59 @@
+{extend name="public:station-base" /}
+
+{block name="main"}
+    <div class="main_left">
+        <div class="subnav">
+            <div class="subnav-title">
+                <a href="" class="toggle-subnav">
+                    <i></i>
+                    <span>我的概括</span>
+                </a>
+            </div>
+            <ul class="subnav-menu">
+                <li><a href="/home/webmaster/myCenter">我的概括</a></li>
+                <li><a href="/home/webmaster/account">账户设置</a></li>
+                <li><a href="/home/webmaster/siteList">网站管理</a></li>
+                <li><a href="/home/webmaster/record">付款记录</a></li>
+                <!-- <li><a href="/home/webmaster/message">消息中心</a></li> -->
+            </ul>
+        </div>
+    </div>
+    <div class="main" style="padding-top:10px;">
+        <div class="alert alert-info" style="margin-top:10px;">
+            <h4>付款规则</h4>
+            <p>1.支付标准为 100元起付</p>
+            <p>2.结算时间周结 (上周周一至周日)</p>
+            <p>3.如果您账户分类金额尚未累计至 100元，系统会自动累计下次结算</p>
+        </div>
+        <div class="box">
+            <div class="box-title">
+                <h3>
+                    <i></i>付款记录
+                </h3>
+            </div>
+            <div class="box-content">
+                <table class="table">
+                     <tr role="row">
+                        <th rowspan="1" colspan="1" style="width:13px;"></th>
+                        <th>时间</th>
+                        <th>付款金额</th>
+                        <th>备注</th>
+                        <th>状态</th>
+                    </tr>
+                    {volist name="record" id="vo"}
+                     <tr class="unread">
+                        <td rowspan="1" colspan="1" style="width:13px;"></td>
+                        <td>{$vo.day}</td>
+                        <td>{$vo.money|default='0.00'|decimal}</td>
+                        <td>{$vo.payinfo|default='空'}</td>
+                        <td>{$vo.log}</td>
+                    </tr>
+                    {/volist}
+                </table>
+            </div>
+        </div>
+    </div>
+{/block}
+
+{block name="js"}
+{/block}

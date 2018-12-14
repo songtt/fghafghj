@@ -1,0 +1,55 @@
+{extend name="public:base" /}
+
+{block name="main"}
+
+<div class="wrapper">
+    <div>
+        <h3 class="heading">编辑广告类型</h3>
+        <form class="" action="/admin/adtpl/editType" method="post" name="addform">
+            <div class="control-group formSep st">
+                <label class="control-label">计费模式</label>
+                <div class="controls" style="margin-top:6px;">
+                    <input name="statstype[]" type="checkbox" class="" value="CPC"  {if condition=" 'CPC' eq $one['stype']['CPC'] "  }checked{/if} > CPC
+                    <input name="statstype[]" type="checkbox" class="" value="CPM" {if condition=" 'CPM' eq $one['stype']['CPM'] "  }checked{/if} > CPM
+                    <input name="statstype[]" type="checkbox" class="" value="CPV" {if condition=" 'CPV' eq $one['stype']['CPV'] "  }checked{/if} > CPV
+                    <input name="statstype[]" type="checkbox" class="" value="CPS" {if condition=" 'CPS' eq $one['stype']['CPS'] "  }checked{/if} > CPS
+                    <input name="statstype[]" type="checkbox" class="" value="CPA" {if condition=" 'CPA' eq $one['stype']['CPA'] "  }checked{/if} > CPA
+                    <input name="statstype[]" type="checkbox" class="" value="CPAS" {if condition=" 'CPAS' eq $one['stype']['CPAS'] "  }checked{/if} > CPAS
+                </div>    
+            </div>
+            <div class="control-group formSep st">
+                <label class="control-label">广告类型名称</label>
+                <div class="controls">
+                    <input name="name" type="text" class="input1 input-text required"  value="{$one.type_name}"> <span class="erro">请输入广告类型</span>
+                </div>
+            </div>
+            <div class="control-group formSep">
+                <label class="control-label">排序</label>
+                <div class="controls">
+                    <input name="sort" type="text" class="input1 input-text"  value="{$one.sort}">
+                    <span>1~100数字</span>
+                </div>
+            </div>
+            <div class="control-group formSep">
+                <label class="control-label">终端</label>
+                <div class="controls" style="margin-top:6px;">
+                    <input name="terminal" type="radio" value="1" {if condition=" '1' eq $one['terminal'] "  }checked{/if}>PC
+                    <input name="terminal" type="radio"  value="2" {if condition=" '2' eq $one['terminal'] "  }checked{/if}>MOBILE
+                    <span></span>
+                </div>
+            </div>
+            <!-- <div>
+                <label class="">说明</label>
+                <input name="description" type="text" class=""   value="">
+            </div> -->
+            <div class="control-group formSep">
+                <div class="controls">
+                    <button class="btn btn-primary" type="submit">提交</button>
+                </div>
+            </div>
+            <input type="hidden" name="id"  value="{$one.adtype_id}"  >
+        </form>
+    </div>
+</div>
+
+{/block}

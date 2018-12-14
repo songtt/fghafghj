@@ -1,0 +1,77 @@
+
+{extend name="public:base" /}
+
+{block name="main"}
+<div class="wrapper">
+     <div class="main_nav">
+        <!-- <div class="mn_left"></div> -->
+        <div class="mn_right">
+            <div class="mn_mt">
+                <ul>
+                    <li><a href="/admin/plan/list"><返回列表</a></li>
+                    <!-- <li><a href="">编辑单价</a></li> -->
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <h3 class="heading">计划单价模板管理</h3>
+        <div class="tb-lis">
+                <a href="/admin/plan/price"><i class="fa fa-plus-circle"></i>新建单价模板</a>
+        </div>
+        <form action="/admin/plan/delTemplatePrice?pid=0" id="delPrice" method="post">
+            <div class="row">
+                <div class="plan6">
+                    <div class="dataTables-length">
+                        批量操作：
+                        <!-- <a href="javascript:;"  ><button class="btn btn-primary" type="submit" onclick="delLst();" style="padding:2px 12px;">删除</button></a> -->
+                        <a href="javascript:;"  ><button class="btn btn-primary" type="button"  onclick="delLst();" style="padding:2px 12px;">删除</button></a>
+                    </div>
+                </div>
+            </div>
+
+        <div class="dataTables-wrapper">
+
+            <table class="dataTable table-hover" name="plan-list" >
+                <tr role="row">
+                    <th rowspan="1" colspan="1" style="width:13px;"><input id="" class="checkedAll" name="" type="checkbox" data-name="name-data"></th>
+                    <th>ID</th>
+                    <th>计划模板名称</th>
+                    <th>查看</th>
+                </tr>
+
+                {volist name='template_list' id='vo'}
+                <tr class="unread">
+                    <td rowspan="1" colspan="1" style="width:13px;"><input id="" name="template_name[]" value="{$vo.template_name}" type="checkbox" data-name="name-data"></td>
+                    <td>{$vo.id}</td>
+                    <td>{$vo.template_name}</td>
+                    <td><a href="/admin/plan/templatePrice?template_name={$vo.template_name}">查看</a></td>
+                </tr>
+                {/volist}
+            </table>
+
+        </div>
+    </form>
+    </div>
+</div>
+<!-- end wrapper -->
+{/block}
+
+{block name="js"}
+<script>
+    function delLst(){
+        //点击按钮提交
+        var href = '/admin/plan/ads';
+        var data = $("input[name='id[]']").serialize();
+            $.post(href,data,success);
+            function success(data) {
+                console.log(data)
+                if(data.info == '请先删除该计划下广告！'){
+                    layer.msg(data.info, {icon: 1});
+                }else{
+                    $('form').submit();
+                }
+            }
+    }
+</script>
+{/block}

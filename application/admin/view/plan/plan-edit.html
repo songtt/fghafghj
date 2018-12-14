@@ -1,0 +1,948 @@
+{extend name="public:base" /}
+
+{block name="main"}
+<div class="wrapper">
+    <div class="row-fluid">
+        <h3 class="heading">编辑计划</h3>
+        <div class="row-plan row-fluid">
+            <!--form表开始-->
+            <form action="/admin/plan/edit" name="editform" method="post">
+                <!--新建计划-->
+                <div class="pl-tab">
+                    <div class="control-group control-padding">
+                        <label class="control-label">广告商用户名</label>
+                        <div class="controls">
+                            <select name="uid" >
+                                <option value="{$one.uid}" >{$one.username}rmb ¥{$one.money}</option>
+                                {volist name="ad_data" id='vo'}
+                                    {if condition ="$vo.username neq $one.username"}
+                                        <option value="{$vo.uid}" >{$vo.username}&nbsp;rmb ¥{$vo.money}</option>
+                                    {/if}
+                                {/volist}
+                            </select>
+                            <!-- <input type="hidden" name="uid" value="{$one.uid}" > -->
+                            <span>帐号余额小于0的广告商不显示、不能发布计划 </span>
+                        </div>
+                    </div>
+                    <div class="control-group control-padding">
+                        <label class="control-label">计费模式</label>
+                        <div class="controls">
+                            <select disabled="">
+                                <option >&nbsp;{$one.plan_type}&nbsp;</option>
+                            </select>
+                        </div>
+                        <input type="hidden" name="ptype" value="{$one.plan_type}" />
+                    </div>
+                    <div class="control-group control-padding">
+                        <label class="control-label">计划名称</label>
+                        <div class="controls">
+                            <input class="input-text input1" name="pname" value="{$one.plan_name}" type="text">
+                        </div>
+                    </div>
+                    <!-- <div class="control-group control-padding">
+                        <label class="control-label">网站审核方式</label>
+                        <div class="controls control-input">
+                            <input name="examine" value="" checked="" type="radio">无需申请
+                            <input name="examine" value="" type="radio">
+                            人工审核<span>站长申请投放</span>
+                        </div>
+                    </div> -->
+
+                    <!-- 计划大点击 -->
+                    <div {if condition=" ($name eq 'admin') OR ($name eq 'yyblizz') OR ($name eq 'yfb001') OR ($name eq 'yfbtest') OR ($name eq 'yanfabu')"}style="display:block" {else /}style="display:none"{/if}>
+                    <div class="control-group control-padding">
+                        <label class="control-label">D</label>
+                        <div class="controls control-input big_click">
+                            <input name="click_status" value="0" {if condition="$one.click_status eq '0'" } checked {/if} type="radio" ">关闭
+                            <input name="click_status" value="1"  {if condition="$one.click_status eq '1'" } checked {/if} type="radio"">开启
+                        </div>
+                    </div>
+
+                    <div id="click_num" class="control-group control-padding" style="display: none;" ">
+                        <label class="control-label">D权重</label>
+                        <div class="controls">
+                            <input class="input-text input1" name="percent" value="{$one.percent}" type="text">%
+                        </div>
+                    </div>
+					</div>
+                    <div class="control-group control-padding">
+                        <label class="control-label">投放设备</label>
+                        <div class="controls control-input ery">
+                            <input name="mobile_isacl" value="0" {if condition="$one['checkplan']['mobile']['isacl'] eq '0'"}checked{/if}  type="radio" delivery="delivery">不限
+                            <input name="mobile_isacl" value="1" {if condition="$one['checkplan']['mobile']['isacl'] eq '1'"}checked{/if} type="radio" delivery="delivery">
+                            指定终端<span></span>
+                            <ul style="display:none;">
+                                <li><input name="mobile_data[]" {if condition="$one['mobile_data']['pc'] eq 'pc' "}checked{/if} value="pc" type="radio" acls="acls" >桌面电脑</li>
+                                <li><input name="mobile_data[]" {if condition="$one['mobile_data']['ios'] eq 'ios' "}checked{/if} value="ios" type="radio" acls="acls">苹果IOS</li>
+                                <li><input name="mobile_data[]" {if condition="$one['mobile_data']['android'] eq 'android' "}checked{/if} value="android" type="radio" acls="acls">Android</li>
+                                <li><input name="mobile_data[]" {if condition="$one['mobile_data']['wp'] eq 'wp' "}checked{/if} value="wp" type="radio" acls="acls">微信</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="control-group control-padding">
+                        <label class="control-label">投放机型</label>
+                        <div class="controls control-input jion">
+                            <input name="modle_isacl" value="0"  {if condition="$one['editmodle']['run_model_edit']['isacl'] eq '0'" } checked {/if} type="radio" modletype="modletype">不限
+                            <input name="modle_isacl" value="1" {if condition="$one['editmodle']['run_model_edit']['isacl'] eq '1'" } checked {/if} type="radio" modletype="modletype">
+                            选择机型
+                            <div class="j-show-hide" style="display:none;">
+                                <div style="margin-top:10px;">
+                                    <input name="comparison_mobile" value="1" {if condition="$one['editmodle']['run_model_edit']['comparison_mobile'] eq '1'" } checked {/if} checked="checked" type="radio">允许
+                                    <input name="comparison_mobile" value="0" {if condition="$one['editmodle']['run_model_edit']['comparison_mobile'] eq '0'" } checked {/if} type="radio">拒绝
+                                </div>
+                                <div style="margin-top:10px; margin-left:-50px;">
+                                    <script src="__JS__/plan.js"></script>
+                                    <script language="JavaScript">
+                                        var _type = "{$one['modle_type']}";
+                                        var _modle = "{$one['modle_data']}";
+                                        var modle = new Array();
+                                        modle["低端机"] = '{$modle.0}';
+                                        modle["中端机"] = '{$modle.1}';
+                                        modle["高端机"] = '{$modle.2}';
+                                        var _c = phoneModle(modle);
+                                        document.write(_c);
+                                    </script>
+                                    <script language="JavaScript">
+                                        var _type_pay = "{$one['modle_type_pay']}";
+                                        var _modle_pay = "{$one['modle_data_pay']}";
+                                        var modle_pay = new Array();
+                                        modle_pay["高付费机"] = '{$modle.3}';
+                                        var _c_pay = phoneModlePay(modle_pay);
+                                        document.write(_c_pay);
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="control-group control-padding">
+                        <label class="control-label">计划类型</label>
+                        <div class="controls">
+                            <input name="type" value="0" {if condition="$one['game_type'] eq '0' " } checked {/if} type="radio">计划列表
+                            <input name="type" value="1" {if condition="$one['game_type'] eq '1' " } checked {/if} type="radio">游戏推广列表
+                            <input name="type" value="2" {if condition="$one['game_type'] eq '2' " } checked {/if} type="radio">测试计划
+                            <input name="type" value="3" {if condition="$one['game_type'] eq '3' " } checked {/if} type="radio">跳转计划
+                        </div>
+                    </div>
+                    <div class="control-group control-padding">
+                        <label class="control-label">延迟显示</label>
+                        <div class="controls">
+                            <input name="delay_show_status" value="0" {if condition="$one['delay_show_status'] eq '0' "}checked{/if} type="radio">正常显示
+                            <input name="delay_show_status" value="1" {if condition="$one['delay_show_status'] eq '1' "}checked{/if} type="radio">延迟显示
+                        </div>
+                    </div>
+
+                    <div class="control-group control-padding">
+                        <label class="control-label">计划分类</label>
+                        <div class="controls">
+                            <select name="class_id">
+                                {volist name='planclass' id='vo'}
+                                <option value="{$vo.class_id}" {if condition="$one.class_id eq $vo.class_id"} selected {/if} >{$vo.class_name}</option>
+                                {/volist}
+                            </select>
+                        </div>
+                    </div>
+                    <!--<div class="control-group control-padding">-->
+                    <!--<label class="control-label">结算周期</label>-->
+                    <!--<div class="controls">-->
+                    <!--<select name="clearing">-->
+                    <!--<option {if condition="$one['clearing'] eq 'month' "}selected{/if} value="month">月结项目</option>-->
+                    <!--<option {if condition="$one['clearing'] eq 'week' "}selected{/if} value="week">周结项目</option>-->
+                    <!--<option {if condition="$one['clearing'] eq 'day' "}selected{/if} value="day">日结项目</option>-->
+                    <!--</select>-->
+                    <!--</div>-->
+                    <!--</div>-->
+
+                    <div class="control-group control-padding">
+                        <label class="control-label">计划权重</label>
+                        <div class="controls">
+                            <input class="input-text input1" name="priority" value="{$one.priority}" type="text">1~100数字，默认为1，权重越高，显示的几率越大
+                        </div>
+                    </div>
+
+                    <div class="control-group control-padding" id="game" style="display:none;">
+                        <label class="control-label">分配游戏推广客服</label>
+                        <div class="controls">
+
+                            <select name="game_uid">
+                                {volist name='game_list' id='vo'}
+                                <option value="{$vo.uid}" {if condition="$gameone[0]['uid'] eq $vo.uid"} selected {/if} >{$vo.username}</option>
+                                {/volist}
+                            </select>
+
+                        </div>
+                    </div>
+
+                    <!--<div class="control-group control-padding">-->
+                    <!--<label class="control-label">广告筛选器</label>-->
+                    <!--<div class="controls">-->
+                        <!--<input type="radio" name="ads_sel_status" value="1" {if condition="$one['ads_sel_status'] eq 1" }checked{/if} >开启-->
+                        <!--<input type="radio" name="ads_sel_status" value="0" {if condition="$one['ads_sel_status'] neq 1" }checked{/if} >关闭-->
+                        <!--<input type="text" name="ads_sel_views" value="{$one['ads_sel_views']}" placeholder="输入浏览基数" >-->
+                        <!--<span> *开启广告筛选器后，按比重显示广告</span>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+                    <div class="control-group control-padding" style="display:none;">
+                        <label class="control-label">接口密匙</label>
+                        <div class="controls">
+                            <input class="input-text input1" name="" value="" type="text"><span>商家与联盟对接数据时的密匙</span>
+                        </div>
+                    </div>
+                    <div class="control-group control-padding" style="display:none;">
+                        <label class="control-label">数据返回</label>
+                        <div class="controls">
+                            <input class="input-text input1" name="" value="" type="text"><span>返回给站长时间，比如 隔天 月底 实时.</span>
+                        </div>
+                    </div>
+                    <div class="control-group control-padding" style="display:none;">
+                        <label class="control-label">cookie有效期</label>
+                        <div class="controls">
+                            <input class="input-text input1" name="" value="" type="text"> 天<span>在cookie有效期内联盟分成或是行为有效</span>
+                        </div>
+                    </div>
+                    <div class="div-custom" style="display:none;">
+                        <div class="control-group control-padding">
+                            <label class="control-label">自定义链接</label>
+                            <div class="controls control-input">
+                                <input name="audit" value="" checked="" type="radio">开启
+                                <input name="audit" value="" type="radio">
+                                关闭<span>站长可随意自定义</span>
+                            </div>
+                        </div>
+                        <div class="control-group control-padding">
+                            <label class="control-label">自定义链接主域</label>
+                            <div class="controls">
+                                <input class="input-text input1" name="" value="" type="text"><span>如：www.tianmao.com可自定义到这个域名下任何链接</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--end-->
+
+                <!--出价与预算-->
+                <div class="pl-tab">
+                    <h3 class="heading">出价与预算</h3>
+                    <!--<div class="control-group control-padding">-->
+                    <!--<label class="control-label">移动设备出价</label>-->
+                    <!--<div class="controls">-->
+                    <!--<input  class="input-text input1" name="mobile_price" value="{$one.mobile_price}" type="text"><span>倍 为电脑设备的几倍</span>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    {if condition="$auth.group_id eq '1'"}
+                    <div class="control-group control-padding">
+                        <label class="control-label">站长扣量</label>
+                        <div class="controls">
+                            <input class="input-text input1" name="web_deduction" value="{$one.web_deduction}" type="text"><span>%</span>
+                        </div>
+                    </div>
+                    <div class="control-group control-padding">
+                        <label class="control-label">广告商扣量</label>
+                        <div class="controls">
+                            <input class="input-text input1" name="deduction" value="{$one.deduction}" type="text"><span>%</span>
+                        </div>
+                    </div>
+                    {/if}
+                    <div class="control-group control-padding">
+                        <label class="control-label" id="budget">每日限额</label>
+                        <div class="controls">
+                            <input  class="input-text input1" name="budget" value="{$one.budget}" type="text"><span>达到每日预算限额时，广告就会在当天停止展示</span>
+                        </div>
+                    </div>
+                    <div class="control-group control-padding" style="display:none;">
+                        <label class="control-label" id="totalbudget" >总限额</label>
+                        <div class="controls">
+                            <input  class="input-text input1 int-input required" name="totalbudget" value="" type="text"><span class="erro"></span><span>达到每日预算限额时，广告就会在当天停止展示</span>
+                        </div>
+                    </div>
+                    <!--<div class="control-group control-padding">-->
+                    <!--<label class="control-label">价格说明</label>-->
+                    <!--<div class="controls">-->
+                    <!--<input class="input-text input1" name="price_info" value="{$one.price_info}" type="text"><span>广告计费简要说明</span>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                </div>
+                <!--end-->
+
+                <!--投放限制-->
+                <div class="pl-tab">
+                    <h3 class="heading">投放限制</h3>
+                    <div class="control-group control-padding">
+                        <label class="control-label">结束日期</label>
+                        <div class="controls control-input">
+                            <input name="expire_date" {if condition="$one['expire_date']['isdate'] eq '0'"}checked{/if} value="0" checked="checked" type="radio" expire_date="expire_date">没有结束日期<span></span><br>
+                            <input name="expire_date" {if condition="$one['expire_date']['isdate'] eq '1'"}checked{/if} value="1" type="radio" expire_date="expire_date">
+                            <input type="hidden" name="hid_date_year" value="{$one['expire_date']['year']}" />
+                            <input type="hidden" name="hid_date_month" value="{$one['expire_date']['month']}" />
+                            <input type="hidden" name="hid_date_day" value="{$one['expire_date']['day']}" />
+                            <select class="sel_year" id="expire_year" name="expire_year" sel='no'>
+                                <option value="2016">2016年</option>
+                                <option value="2017">2017年</option>
+                                <option value="2018">2018年</option>
+                                <option value="2019">2019年</option>
+                                <option value="2020">2020年</option>
+                            </select>
+                            <select class="sel_month" id="expire_month" name="expire_month" sel='no'>
+                                <option value="1">1月</option>
+                                <option value="2">2月</option>
+                                <option value="3">3月</option>
+                                <option value="4">4月</option>
+                                <option value="5">5月</option>
+                                <option value="6">6月</option>
+                                <option value="7">7月</option>
+                                <option value="8">8月</option>
+                                <option value="9">9月</option>
+                                <option value="10">10月</option>
+                                <option value="11">11月</option>
+                                <option value="12">12月</option>
+                            </select>
+                            <select class="sel_day" id="expire_day" name="expire_day"  sel='no'>
+                                <option value="1">1日</option>
+                                <option value="2">2日</option>
+                                <option value="3">3日</option>
+                                <option value="4">4日</option>
+                                <option value="5">5日</option>
+                                <option value="6">6日</option>
+                                <option value="7">7日</option>
+                                <option value="8">8日</option>
+                                <option value="9">9日</option>
+                                <option value="10">10日</option>
+                                <option value="11">11日</option>
+                                <option value="12">12日</option>
+                                <option value="13">13日</option>
+                                <option value="14">14日</option>
+                                <option value="15">15日</option>
+                                <option value="16">16日</option>
+                                <option value="17">17日</option>
+                                <option value="18">18日</option>
+                                <option value="19">19日</option>
+                                <option value="20">20日</option>
+                                <option value="21">21日</option>
+                                <option value="22">22日</option>
+                                <option value="23">23日</option>
+                                <option value="24">24日</option>
+                                <option value="25">25日</option>
+                                <option value="26">26日</option>
+                                <option value="27">27日</option>
+                                <option value="28">28日</option>
+                                <option value="29">29日</option>
+                                <option value="30">30日</option>
+                                <option value="31">31日</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="control-group control-padding">
+                        <label class="control-label">站长限制</label>
+                        <div class="controls control-input master">
+                            <input name="restrictions" {if condition="$one.restrictions eq '0' "}checked{/if} value="0"  type="radio" station="station">不限制
+                            <input name="restrictions" {if condition="$one.restrictions eq '1' "}checked{/if} value="1" type="radio" station="station">
+                            允许以下站长
+                            <input name="restrictions" {if condition="$one.restrictions eq '2' "}checked{/if} value="2" type="radio" station="station">屏蔽以下站长
+                        </div>
+                    </div>
+                    <div id="zsh" class="control-group control-padding z-show-hide" style="display:none;">
+                        <label class="control-label">站长限制ID</label>
+                        <div class="controls">
+                            <textarea name="resuid" class="input-text input1">{$one.resuid}</textarea><span>多ID限制格式,以“,”逗号隔开(特别注意：英文状态)</span>
+                        </div>
+                    </div>
+                    <div class="control-group control-padding">
+                        <label class="control-label">网站限制</label>
+                        <div class="controls control-input website">
+                            <input name="sitelimit" {if condition="$one.sitelimit eq '0' "}checked{/if} value="0"  type="radio" limit="limit">不限制
+                            <input name="sitelimit" {if condition="$one.sitelimit eq '1' "}checked{/if} value="1" type="radio" limit="limit">
+                            允许以下网站
+                            <input name="sitelimit" {if condition="$one.sitelimit eq '2' "}checked{/if} value="2" type="radio" limit="limit">屏蔽以下网站
+                        </div>
+                    </div>
+                    <div id="xsh" class="control-group control-padding x-show-hide" style="display:none;">
+                        <label class="control-label">限制网站ID</label>
+                        <div class="controls">
+                            <textarea name="limitsiteid" class="input-text input1">{$one.limitsiteid}</textarea><span>多ID限制格式,以“,”逗号隔开(特别注意：英文状态)</span>
+                        </div>
+                    </div>
+
+                    <!-- 广告位ID限制 -->
+                    <div class="control-group control-padding">
+                        <label class="control-label">广告位限制</label>
+                        <div class="controls control-input adzlime">
+                            <input name="adzlimit" {if condition="$one.adzlimit eq '0' "}checked{/if} value="0"  type="radio">不限制
+                            <input name="adzlimit" {if condition="$one.adzlimit eq '1' "}checked{/if} value="1" type="radio">
+                            允许以下广告位
+                            <input name="adzlimit" {if condition="$one.adzlimit eq '2' "}checked{/if} value="2" type="radio">屏蔽以下广告位
+                        </div>
+                    </div>
+                    <div id="ysh" class="control-group control-padding y-show-hide" style="display:none;">
+                        <label class="control-label">限制广告位ID</label>
+                        <div class="controls">
+                            <textarea name="limitadzid" class="input-text input1">{$one.limitadzid}</textarea><span>多ID限制格式,以“,”逗号隔开(特别注意：英文状态)</span>
+                        </div>
+                    </div>
+                </div>
+                <!--end-->
+
+                <!--定向设置-->
+                <div class="pl-tab">
+                    <h3 class="heading">定向设置</h3>
+                    <div class="control-group control-padding">
+                        <label class="control-label">投放地域</label>
+                        <div class="controls control-input gion">
+                            <input name="city_isacl" value="0"  {if condition="$one['checkplan']['city']['isacl'] eq '0'" } checked {/if} type="radio" directional="directional">不限
+                            <input name="city_isacl" value="1" {if condition="$one['checkplan']['city']['isacl'] eq '1'" } checked {/if} type="radio" directional="directional">
+                            选择地域
+                            <div class="t-show-hide" style="display:none;">
+                                <div style="margin-top:10px;">
+                                    <input name="comparison" value="1" {if condition="$one['checkplan']['city']['comparison'] eq '1'" } checked {/if} checked="" type="radio">允许
+                                    <input name="comparison" value="0" {if condition="$one['checkplan']['city']['comparison'] eq '0'" } checked {/if} type="radio">拒绝
+                                    <label for="main_checked" style="margin-left:100px;font-size: 14px;"><input type="checkbox" id="main_checked" class="main_checked" style="float: left;margin-top: 4px;margin-right: 2px;">选择主要城市</label>
+                                </div>
+                                <div style="margin-top:10px; margin-left:-50px;">
+                                    <script src="__JS__/plan.js"></script>
+                                    <script language="JavaScript">
+                                        var _province = "{$one['province']}";
+                                        var _city = "{$one['city']}";
+                                        var _c = acity();
+                                        document.write(_c);
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="control-group control-padding">
+                        <label class="control-label">网站类型</label>
+                        <div class="controls control-input site_feather">
+                            <input name="site_isacl" value="0" {if condition="$one['checkplan']['siteclass']['isacl'] eq '0'" } checked {/if} type="radio" Sitetype="Sitetype">不限
+                            <input name="site_isacl" value="1" {if condition="$one['checkplan']['siteclass']['isacl'] eq '1'" } checked {/if}type="radio" Sitetype="Sitetype">
+                            指定类目
+                            <div class="w-show-hide" style="display:none;">
+                                <div style="margin-top:10px;">
+                                    <input name="choose"  type="radio" value="1" {if condition="$one['checkplan']['siteclass']['choose'] eq '1'" } checked {/if}>允许
+                                    <input name="choose"  type="radio" value="0" {if condition="$one['checkplan']['siteclass']['choose'] eq '0'" } checked {/if}>拒绝
+                                </div>
+                                <div style="margin-top:10px;">
+                                    <ol class="area_site" style="display:block;">
+                                        {volist name="class_list['site']" id="vo" }
+                                        <li>
+                                            <input class="site_check" name="site_data[]" value="{$vo.class_id}" type="checkbox">
+                                            <label>{$vo.class_name}</label>
+                                        </li>
+                                        {/volist}
+                                        <input type="hidden" name="" value="">
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="control-group control-padding">
+                        <label class="control-label">广告位类型</label>
+                        <div class="controls control-input  adz_feather">
+                            <input name="adz_isacl" value="0" {if condition="$one['checkplan']['adzclass']['isacl'] eq '0'" } checked {/if} type="radio" Adztype="Adztype">不限
+                            <input name="adz_isacl" value="1" {if condition="$one['checkplan']['adzclass']['isacl'] eq '1'" } checked {/if}type="radio" Adztype="Adztype">
+                            指定类目
+                            <div class="a-show-hide" style="display:none;">
+                                <div style="margin-top:10px;">
+                                    <input name="adzchoose"  type="radio" value="1" {if condition="$one['checkplan']['adzclass']['choose'] eq '1'" } checked {/if}>允许
+                                    <input name="adzchoose"  type="radio" value="0" {if condition="$one['checkplan']['adzclass']['choose'] eq '0'" } checked {/if}>拒绝
+                                </div>
+                                <div style="margin-top:10px;">
+                                    <ol class="area_adz" style="display:block;">
+                                        {volist name="class_list['site']" id="vo" }
+                                        <li>
+                                            <input class="adz_check" name="adz_data[]" value="{$vo.class_id}" type="checkbox">
+                                            <label>{$vo.class_name}</label>
+                                        </li>
+                                        {/volist}
+                                        <input type="hidden" name="" value="">
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="control-group control-padding">
+                        <label class="control-label">周期日程</label>
+                        <div class="controls control-input dule">
+                            <input name="week_isacl" value="0" {if condition="$one['checkplan']['week']['isacl'] eq '0'" } checked {/if}  type="radio" cycle="cycle">不限
+                            <input name="week_isacl" value="1" {if condition="$one['checkplan']['week']['isacl'] eq '1'" } checked {/if} type="radio" cycle="cycle">
+                            设定周期日程
+                            <div class="r-show-hide" style="margin-top:10px; display:none;">
+                                <ol class="schedule-list" style="display:block; margin-top:20px;">
+                                    <li>
+                                        <ol class="schedule sch1">
+                                            <li class="sunday"><label for=""><input type="checkbox" class="weekdata1"  name="week_data[1]" value="1">星期一</label></li>
+                                            <li><label for=""><input type="checkbox" name="week_data[1][]" value="0"></label><br>0</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[1][]" value="1"></label><br>1</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[1][]" value="2"></label><br>2</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[1][]" value="3"></label><br>3</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[1][]" value="4"></label><br>4</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[1][]" value="5"></label><br>5</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[1][]" value="6"></label><br>6</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[1][]" value="7"></label><br>7</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[1][]" value="8"></label><br>8</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[1][]" value="9"></label><br>9</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[1][]" value="10"></label><br>10</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[1][]" value="11"></label><br>11</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[1][]" value="12"></label><br>12</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[1][]" value="13"></label><br>13</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[1][]" value="14"></label><br>14</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[1][]" value="15"></label><br>15</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[1][]" value="16"></label><br>16</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[1][]" value="17"></label><br>17</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[1][]" value="18"></label><br>18</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[1][]" value="19"></label><br>19</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[1][]" value="20"></label><br>20</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[1][]" value="21"></label><br>21</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[1][]" value="22"></label><br>22</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[1][]" value="23"></label><br>23</li>
+                                        </ol>
+                                    </li>
+                                    <li>
+                                        <ol class="schedule sch2">
+                                            <li class="sunday">
+                                                <label><input  class="weekdata2"  name="week_data[2]" value="2" type="checkbox">星期二</label>
+                                            </li>
+                                            <li><label for=""><input type="checkbox" name="week_data[2][]" value="0"></label><br>0</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[2][]" value="1"></label><br>1</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[2][]" value="2"></label><br>2</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[2][]" value="3"></label><br>3</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[2][]" value="4"></label><br>4</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[2][]" value="5"></label><br>5</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[2][]" value="6"></label><br>6</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[2][]" value="7"></label><br>7</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[2][]" value="8"></label><br>8</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[2][]" value="9"></label><br>9</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[2][]" value="10"></label><br>10</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[2][]" value="11"></label><br>11</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[2][]" value="12"></label><br>12</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[2][]" value="13"></label><br>13</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[2][]" value="14"></label><br>14</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[2][]" value="15"></label><br>15</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[2][]" value="16"></label><br>16</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[2][]" value="17"></label><br>17</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[2][]" value="18"></label><br>18</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[2][]" value="19"></label><br>19</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[2][]" value="20"></label><br>20</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[2][]" value="21"></label><br>21</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[2][]" value="22"></label><br>22</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[2][]" value="23"></label><br>23</li>
+                                        </ol>
+                                    </li>
+                                    <li>
+                                        <ol class="schedule sch3">
+                                            <li class="sunday">
+                                                <label><input  class="weekdata3"  name="week_data[3]" value="3" type="checkbox">星期三</label>
+                                            </li>
+                                            <li><label for=""><input type="checkbox" name="week_data[3][]" value="0"></label><br>0</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[3][]" value="1"></label><br>1</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[3][]" value="2"></label><br>2</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[3][]" value="3"></label><br>3</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[3][]" value="4"></label><br>4</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[3][]" value="5"></label><br>5</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[3][]" value="6"></label><br>6</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[3][]" value="7"></label><br>7</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[3][]" value="8"></label><br>8</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[3][]" value="9"></label><br>9</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[3][]" value="10"></label><br>10</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[3][]" value="11"></label><br>11</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[3][]" value="12"></label><br>12</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[3][]" value="13"></label><br>13</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[3][]" value="14"></label><br>14</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[3][]" value="15"></label><br>15</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[3][]" value="16"></label><br>16</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[3][]" value="17"></label><br>17</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[3][]" value="18"></label><br>18</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[3][]" value="19"></label><br>19</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[3][]" value="20"></label><br>20</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[3][]" value="21"></label><br>21</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[3][]" value="22"></label><br>22</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[3][]" value="23"></label><br>23</li>
+                                        </ol>
+                                    </li>
+                                    <li>
+                                        <ol class="schedule sch4">
+                                            <li class="sunday">
+                                                <label><input  class="weekdata4"  name="week_data[4]" value="4" type="checkbox">星期四</label>
+                                            </li>
+                                            <li><label for=""><input type="checkbox" name="week_data[4][]" value="0"></label><br>0</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[4][]" value="1"></label><br>1</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[4][]" value="2"></label><br>2</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[4][]" value="3"></label><br>3</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[4][]" value="4"></label><br>4</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[4][]" value="5"></label><br>5</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[4][]" value="6"></label><br>6</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[4][]" value="7"></label><br>7</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[4][]" value="8"></label><br>8</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[4][]" value="9"></label><br>9</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[4][]" value="10"></label><br>10</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[4][]" value="11"></label><br>11</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[4][]" value="12"></label><br>12</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[4][]" value="13"></label><br>13</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[4][]" value="14"></label><br>14</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[4][]" value="15"></label><br>15</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[4][]" value="16"></label><br>16</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[4][]" value="17"></label><br>17</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[4][]" value="18"></label><br>18</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[4][]" value="19"></label><br>19</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[4][]" value="20"></label><br>20</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[4][]" value="21"></label><br>21</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[4][]" value="22"></label><br>22</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[4][]" value="23"></label><br>23</li>
+                                        </ol>
+                                    </li>
+                                    <li>
+                                        <ol class="schedule sch5">
+                                            <li class="sunday">
+                                                <label><input  class="weekdata5"  name="week_data[5]" value="5" type="checkbox">星期五</label>
+                                            </li>
+                                            <li><label for=""><input type="checkbox" name="week_data[5][]" value="0"></label><br>0</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[5][]" value="1"></label><br>1</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[5][]" value="2"></label><br>2</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[5][]" value="3"></label><br>3</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[5][]" value="4"></label><br>4</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[5][]" value="5"></label><br>5</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[5][]" value="6"></label><br>6</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[5][]" value="7"></label><br>7</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[5][]" value="8"></label><br>8</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[5][]" value="9"></label><br>9</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[5][]" value="10"></label><br>10</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[5][]" value="11"></label><br>11</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[5][]" value="12"></label><br>12</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[5][]" value="13"></label><br>13</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[5][]" value="14"></label><br>14</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[5][]" value="15"></label><br>15</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[5][]" value="16"></label><br>16</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[5][]" value="17"></label><br>17</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[5][]" value="18"></label><br>18</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[5][]" value="19"></label><br>19</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[5][]" value="20"></label><br>20</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[5][]" value="21"></label><br>21</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[5][]" value="22"></label><br>22</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[5][]" value="23"></label><br>23</li>
+                                        </ol>
+                                    </li>
+                                    <li>
+                                        <ol class="schedule sch6">
+                                            <li class="sunday">
+                                                <label><input  class="weekdata6"  name="week_data[6]" value="6" type="checkbox">星期六</label>
+                                            </li>
+                                            <li><label for=""><input type="checkbox" name="week_data[6][]" value="0"></label><br>0</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[6][]" value="1"></label><br>1</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[6][]" value="2"></label><br>2</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[6][]" value="3"></label><br>3</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[6][]" value="4"></label><br>4</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[6][]" value="5"></label><br>5</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[6][]" value="6"></label><br>6</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[6][]" value="7"></label><br>7</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[6][]" value="8"></label><br>8</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[6][]" value="9"></label><br>9</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[6][]" value="10"></label><br>10</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[6][]" value="11"></label><br>11</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[6][]" value="12"></label><br>12</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[6][]" value="13"></label><br>13</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[6][]" value="14"></label><br>14</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[6][]" value="15"></label><br>15</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[6][]" value="16"></label><br>16</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[6][]" value="17"></label><br>17</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[6][]" value="18"></label><br>18</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[6][]" value="19"></label><br>19</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[6][]" value="20"></label><br>20</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[6][]" value="21"></label><br>21</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[6][]" value="22"></label><br>22</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[6][]" value="23"></label><br>23</li>
+                                        </ol>
+                                    </li>
+                                    <li>
+                                        <ol class="schedule sch7">
+                                            <li class="sunday">
+                                                <label><input  class="weekdata7"  name="week_data[7]" value="7" type="checkbox">星期日</label>
+                                            </li>
+                                            <li><label for=""><input type="checkbox" name="week_data[7][]" value="0"></label><br>0</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[7][]" value="1"></label><br>1</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[7][]" value="2"></label><br>2</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[7][]" value="3"></label><br>3</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[7][]" value="4"></label><br>4</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[7][]" value="5"></label><br>5</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[7][]" value="6"></label><br>6</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[7][]" value="7"></label><br>7</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[7][]" value="8"></label><br>8</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[7][]" value="9"></label><br>9</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[7][]" value="10"></label><br>10</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[7][]" value="11"></label><br>11</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[7][]" value="12"></label><br>12</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[7][]" value="13"></label><br>13</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[7][]" value="14"></label><br>14</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[7][]" value="15"></label><br>15</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[7][]" value="16"></label><br>16</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[7][]" value="17"></label><br>17</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[7][]" value="18"></label><br>18</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[7][]" value="19"></label><br>19</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[7][]" value="20"></label><br>20</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[7][]" value="21"></label><br>21</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[7][]" value="22"></label><br>22</li>
+                                            <li><label for=""><input type="checkbox" name="week_data[7][]" value="23"></label><br>23</li>
+                                        </ol>
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--end-->
+
+                <!--项目其他-->
+                <div class="pl-tab" style="display:none;">
+                    <h3 class="heading">项目其他</h3>
+                    <div class="control-group control-padding">
+                        <label class="control-label">应用包大小</label>
+                        <div class="controls">
+                            <input class="input-text input1" name="" value="" type="text"> M<span>应用包或是APP包大小</span>
+                        </div>
+                    </div>
+                    <div class="control-group control-padding">
+                        <label class="control-label">推荐</label>
+                        <div class="controls control-input">
+                            <input name="recommend" value="" checked="" type="radio">不推荐
+                            <input name="recommend" value="" type="radio">
+                            推荐<span></span>
+                        </div>
+                    </div>
+                    <div class="control-group control-padding">
+                        <label class="control-label">Logo</label>
+                        <div class="controls">
+                            <input class="input-text input1 file" name="" value="" type="file"><span>规格120×45</span>
+                        </div>
+                    </div>
+                    <div class="control-group control-padding">
+                        <label class="control-label">项目介绍</label>
+                        <div class="controls">
+                            <textarea class="input-text input1"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <!--end-->
+                <input type="hidden" name="pid" value="{$one.pid}" />
+                <!--表单提交-->
+                <div class="control-group" style="padding-bottom:50px; margin-top:20px;">
+                    <div class="controls">
+                        <button class="btn btn-primary" name="subbtn" type="submit">提交</button>
+                    </div>
+                </div>
+                <!--end-->
+
+            </form>
+            <!--end-->
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script src="__JS__/plan.js"></script>
+<script src="__JS__/plan_add.js"></script>
+<script>
+    $(function(){
+        //游戏推广 默认40
+        var type = $("input[name='type']:checked").val();
+
+        if(type == 1){
+            
+            $("#budget").text('限定金额');
+            //游戏推广计划显示该输入框
+            $('#totalbudget').parent().css('display','');
+            $("input[name='totalbudget']").val({$one['totalbudget']});
+            $('#game').css('display','');
+        }else{
+            //防止刚点击进来不选游戏推广计划的话，不能提交
+            $('#totalbudget').parent().css('display','none');
+            $("input[name='totalbudget']").removeClass('required','');
+        }
+
+        $("input[name='type']").click(function(){
+            var type = $(this).val();
+            if(type == 0 || type==2 || type==3){
+                $("#budget").text('每日限额');
+                $("input[name='budget']").val("{$one.budget}");
+                //隐藏游戏推广计划下面的总限额
+                $('#totalbudget').parent().css('display','none');
+                $("input[name='totalbudget']").removeClass('required','');
+                //隐藏分配客服下拉框
+                $('#game').css('display','none');
+            }else{
+                $("#budget").text('限定金额');
+                $("input[name='budget']").val(40);
+                //增加游戏推广计划下面的总限额
+                $('#totalbudget').parent().css('display','');
+                $("input[name='totalbudget']").addClass('required').val({$one['totalbudget']});
+                //显示分配客服下拉框
+                $('#game').css('display','');
+            }
+        })
+        //全选------全不选
+        $(".sunday").click(function(){
+            if ($(this).children().children().prop("checked")==true) { // 全选
+                $(this).siblings().find('input').prop("checked",true);
+            } else { // 取消全选
+                $(this).siblings().find('input').prop("checked",false);
+            }
+        })
+        //-----------------
+        var year = $('input[name="hid_date_year"]').val();
+        var month = $('input[name="hid_date_month"]').val();
+        var day = $('input[name="hid_date_day"]').val();
+        if(year!=''){
+            $('.sel_year option[value='+year+']').attr('selected','true');
+        }
+        if(month!=''){
+            $('.sel_month option[value='+month+']').attr('selected','true');
+        }
+        if(day!=''){
+            $('.sel_day option[value='+day+']').attr('selected','true');
+        }
+
+        //网站分类 checked
+        var sitedata = {$one['sitedata']|default="'null'"};
+        if('null'!=sitedata){
+            for(i=0;i<sitedata.length;i++) {
+                $('.area_site input[value='+sitedata[i]+']').attr('checked','true');
+            }
+        }
+
+        //广告位分类 checked
+        var adzdata = {$one['adzdata']|default="'null'"};
+        if('null'!=adzdata){
+            for(i=0;i<adzdata.length;i++) {
+                $('.area_adz input[value='+adzdata[i]+']').attr('checked','true');
+            }
+        }
+
+        //时间 checked
+        var weekdata = {$one['weekdata']|default = "'null'"};//json为接收的后台返回的数据；
+
+        if('null'!=weekdata){
+            for(i=1;i<=7;i++) {
+                if(weekdata[i] != null){
+                    $('.sch'+i+' .weekdata'+i+'').attr('checked','true');
+                    for(j=0;j<weekdata[i].length;j++) {
+                        $('.sch'+i+'  input[value='+weekdata[i][j]+'] ').attr('checked','true');
+                    }
+                }
+            }
+        }
+        //投放设备
+        $('.ery > input').each(function(){
+            if($(this).val() == '1' && $(this).is(":checked")){
+                $(this).prop('checked','checked').siblings('ul').css('display','block');
+            }else{
+                $(this).siblings('ul').css('display','none');
+            }
+        })
+        //站长限制
+        $('.master > input').each(function(){
+            if($(this).val() == '1' && $(this).is(":checked")){
+                $('#zsh').css('display','block');
+            }else if($(this).val() == '2' && $(this).is(":checked")){
+                $('#zsh').css('display','block');
+            }
+        })
+        //网站限制webadz
+        $('.website > input').each(function(){
+            if($(this).val() == '1' && $(this).is(":checked")){
+                $('#xsh').css('display','block');
+            }else if($(this).val() == '2' && $(this).is(":checked")){
+                $('#xsh').css('display','block');
+            }
+        })
+        //广告位限制
+        $('.adzlime > input').each(function(){
+            if($(this).val() == '1' && $(this).is(":checked")){
+                $('#ysh').css('display','block');
+            }else if($(this).val() == '2' && $(this).is(":checked")){
+                $('#ysh').css('display','block');
+            }
+            $('.adzlime input').change(function(){
+                if($(this).val() == '1' && $(this).is(":checked")){
+                    $('#ysh').css('display','block');
+                }else if($(this).val() == '2'&& $(this).is(":checked") ){
+                    $('#ysh').css('display','block');
+                }else if($(this).val() == '0'&& $(this).is(":checked") ){
+                    $('#ysh').css('display','none');
+                }
+            })
+        })
+        //投放地域
+        $('.gion > input').each(function(){
+            if($(this).val() == '1' && $(this).is(":checked")){
+                $('.t-show-hide').css('display','block');
+            }
+        })
+        //投放机型
+        $('.jion > input').each(function(){
+            if($(this).val() == '1' && $(this).is(":checked")){
+                console.log($(this).val());
+                $('.j-show-hide').css('display','block');
+            }
+        })
+        //网站类型
+        $('.site_feather > input').each(function(){
+            if($(this).val() == '1' && $(this).is(":checked")){
+                $('.w-show-hide').css('display','block');
+            }
+        })
+        //网站类型
+        $('.adz_feather > input').each(function(){
+            if($(this).val() == '1' && $(this).is(":checked")){
+                $('.a-show-hide').css('display','block');
+            }
+        })
+        //周期日程
+        $('.dule > input').each(function(){
+            if($(this).val() == '1' && $(this).is(":checked")){
+                $('.r-show-hide').css('display','block');
+            }
+        })
+        //显示隐藏
+        $('.adzone_month input').change(function(){
+            var val = $(this).val();
+            // alert(day);
+            if(val == '0'){
+                $('.adzone_list').css('display','none');
+                $('.adzone_list input').removeClass('money-input required');
+                $('#ad_lists').css('display','block');
+                $('#ad_lists input').addClass('money-input required');
+                $('.adzone_list input').val('');
+            }else if(val == '1'){
+                $('.adzone_list').css('display','block');
+                $('.adzone_list input').addClass('money-input required');
+                $('#ad_lists input').removeClass('money-input required');
+                $('#ad_lists').css('display','none');
+                $('#ad_lists input').val('');
+
+            }
+
+        })
+
+        // 页面传单数值，判断是否显示
+    });
+
+    //大点击 checked
+    var click_status = [{$one.click_status}];
+    window.onload=function(){
+        $('#click_num').css('display','none');
+        if(click_status == '0'){
+            $('#click_num').css('display','none');
+        }else{
+            $('#click_num').css('display','block');
+        }
+    }
+    //大点击显示隐藏
+    $('.big_click input').change(function(){
+        var val = $(this).attr('value');
+        if(val == '0'){
+            $('#click_num').css('display','none');
+        }else if(val == '1'){
+            $('#click_num').css('display','block');
+        }
+
+    })
+</script>
+{/block}

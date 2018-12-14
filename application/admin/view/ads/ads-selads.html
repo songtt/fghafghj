@@ -1,0 +1,42 @@
+{extend name="public:base" /}
+
+{block name="main"}
+<div class="wrapper">
+<div class="row-fluid">
+  <h3 class="heading">广告筛选器</h3>
+  <div id="content">
+  <form action="/admin/Ads/saveAdsSel" name="basicform" method="post">
+  
+    <div class="control-group">
+        <label class="control-label control-label-left">点击基数</label>
+        <div class="controls control-input">
+            <input class="input-text input1" type="text" name="click" value="{$ads_sel_views}" placeholder="输入点击基数" />
+        </div>
+    </div>
+    <div class="sbut">
+      <button class="btn btn-primary" type="submit">保存设置</button>
+      <span>&nbsp;&nbsp;&nbsp;&nbsp;</span><a href="javascript:priority();"><button type="button" class="btn btn-info">启用</button></a><span>&nbsp;&nbsp;&nbsp;&nbsp;*先保存后启用</span>
+    </div> 
+   </form>
+  </div>
+</div>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+
+function priority () {
+    var href = '/admin/ads/openAsc';
+    $.post(href,'',success);
+    function success(data) {
+        if(data.status == 1){
+            layer.msg('启用成功', {icon: 1});
+        }else{
+            layer.msg('没有大于'+data.info+'的点击数', {icon: 2});
+        }
+    }
+}
+
+</script>
+{/block}

@@ -1,0 +1,186 @@
+{extend name="public:advertiser-base" /}
+
+{block name="main"}
+    <div class="main" style="padding-top:10px;">
+        <div class="mt30" style="height:30px;">
+            <div class="breadcrumbs mt30">
+                <ul>
+                    <li><a href="">我的广告列表   »</a> 新建广告</li>
+                </ul>
+            </div>
+        </div>
+        <div class="box">
+            <!--form表开始-->
+            <form class="form-hor" action="/home/advertiser/doAdd" name="addform" method="post" enctype="multipart/form-data" >
+                <div class="pl-tab">
+                    <div class="control-group">
+                        <label class="controls-label">所属广告计划</label>
+                        <div class="controls">
+                            <select id="plan_change" name="ads_pid" class="required onesel data_pac">
+                                <option value="">选择一个计划</option>
+                                {volist name="ptype_list" id="vo"}
+                                <optgroup label="{$key}" >
+                                    {volist name="vo" id="sub"}
+                                    <option value="{$sub.pid}" data="{$sub.uid}">{$sub.plan_name}</option>
+                                    {/volist}
+                                </optgroup>
+                                {/volist}
+                            </select>
+                            <span class="erro"></span>
+                            <span>属于哪个计划名下的广告</span>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="controls-label">广告名称</label>
+                        <div class="controls">
+                            <input id="ad_name" class="input300 data_pac" name="ad_name" value="" type="text"><span class="erro" style="display:none;">请输入广告名称</span>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="controls-label">广告类型</label>
+                        <div class="controls">
+                            <select id="adtpl_change" name="adtpl_id" class="required twosel data_pac">
+                                <option value="">选择一个广告类型</option>
+                                <!-- {volist name="adtype_list" id="vo"}
+                                <optgroup label="{$key}" >
+                                    {volist name="vo" id="sub"}
+                                    <option value="{$sub.tpl_id}">{$sub.tplname}</option>
+                                    {/volist}
+                                </optgroup>
+                                {/volist} -->
+                            </select>
+                            <span class="erro"></span>
+                        </div>
+                    </div>
+                    <div id="ad_ch" style="margin-bottom:20px;"></div>
+                </div>
+                <!--end-->
+
+                <!--表单提交-->
+                <div class="control-group" style="padding-bottom:50px;">
+                    <div class="controls">
+                        <button class="btn btn-primary" type="submit">提交</button>
+                    </div>
+                </div>
+                <!--end-->
+                <input id="hid_uid" type="hidden" name="uid" value="" />
+            </form>
+            <!--end-->
+        </div>
+    </div>
+{/block}
+
+ 
+{block name="js"}
+<script src="__JS__/submit.js"></script>
+<script language="JavaScript" type="text/javascript">
+    $(function(){
+        $('#plan_change').change(function(){
+            var uid = $('#plan_change option:selected').attr('data');
+            $('#hid_uid').val(uid);
+
+            var href = '/home/advertiser/changePlan';
+            var params = {ptype:$('#plan_change option:selected').parent().attr('label')};
+            $.post(href,params,success);
+            function success(data) {
+                if (data.status == 1) {
+                    $("#adtpl_change").html("");
+                    var info='';
+                    info='<option value="">选择一个广告类型</option>';
+
+                    for(var key in data.data){
+                        info+='<optgroup label='+key+'>';
+                        for(var key1 in data.data[key]){
+                            info+='<option value='+data.data[key][key1].tpl_id+'>'+data.data[key][key1].tplname+'</option>';
+                        }
+                        info+='</optgroup>';
+                    }
+                    $("#adtpl_change").append(info);
+                } else {
+                    console.log('----0');
+                }
+            }
+        });
+
+        $('#adtpl_change').on('change',function(){
+            var href = '/home/advertiser/changeAdtpl';
+            var params = {
+                tpl_id:$('#adtpl_change').val()
+            };
+            $.post(href,params,success);
+            function success(data) {
+                if (data.status == 1) {
+                    // console.log(data.data);
+                    var arr = data.data;
+                    // console.log(arr);
+                    var htmlcontrol = arr.htmlcontrol;
+                    var specs = arr.specs;
+                    var stylename = arr.stylename;
+                    // console.log(htmlcontrol);
+                    // console.log(specs);
+                    // console.log(stylename);
+                    $("#ad_ch").html("");
+                    var info='';
+                    if(specs != false){
+                        info+='<div class="control-group control-padding">';
+                        info+='<label class="controls-label">显示尺寸</label>';
+                        info+='<div class="controls">';
+                        info+='<select id="adtpl_change" name="specs" class="required twosel">';
+                        for(var i=0;i<specs.length;i++){
+                            info+='<option value="'+specs[i]+'">'+specs[i]+'&nbsp;&nbsp;'+stylename+'</option>';
+                        }
+                        info+='</select>';
+                        info+='</div>';
+                        info+='</div>';
+                    }
+                    if(false!=htmlcontrol){
+                        for (var i=0;i<htmlcontrol.control_type.length;i++) {
+                            info+='<div class="control-group control-padding">';
+                            info+='<label class="controls-label">'+htmlcontrol.control_text[i]+'</label>';
+                            if(htmlcontrol.control_type[i]=="file"){
+                                info+='<div class="controls" style="margin-top:6px;">';
+
+                                info+='<input name="file" type="radio" value="1" checked="checked">上传文件';
+                                // info+='<input name="file" type="radio" value="" onclick="show()">远程文件';
+
+                                info+='</div>';
+                                info+='<br>';
+                                info+='<div class="controls">';
+                                info+='<input id="" class="input-text input1 data_pac" type="'+htmlcontrol.control_type[i]+'" name="'+htmlcontrol.control_name[i]+'" value=""/><span class="erro" style="display:none;">请选择图片</span>';
+                                info+='</div>';
+                            }else{
+                                info+='<div class="controls">';
+                                info+='<input id="" class="input300 input-text data_pac" type="'+htmlcontrol.control_type[i]+'" name="'+htmlcontrol.control_name[i]+'" value=""  /><span class="erro" style="display:none;">请输入网站地址</span>';
+                                info+='</div>';
+                            }
+                            info+='</div>';
+                        };
+                    }
+                    $("#ad_ch").append(info);
+                } else {
+                    console.log('----0');
+                }
+            }
+        });
+
+        $("form").submit(function(){
+            var flag = true;
+            $(".data_pac").each(function(){
+                if($(this).val() == ""){
+                    $(this).next().css('display','inline');
+                    // //获取滚动条高度
+                    // // var a = $(this).offset().top;
+                    $(this).focus();
+                    $("html,body").animate({scrollTop:0}, 0);
+                    flag = false;
+                }
+            })
+            if(!flag){
+                return false;
+            }
+        })
+    })
+</script>
+{/block}
+
+

@@ -1,0 +1,46 @@
+{extend name="public:base" /}
+
+{block name="main"}
+<!--  添加  -->
+<div class="wrapper">
+    <div class="main_nav">
+        <div class="mn_left"></div>
+        <div class="mn_right">
+            <div class="mn_mt">
+                <ul>
+                    <li><a href="/bigclick/Cpatype/type">返回列表</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div>
+        <h3 class="heading">新增产品分类</h3>
+        <form class="" action="/bigclick/Cpatype/typeadd" method="post" name="addform">
+            <div class="control-group formSep st">
+                <label class="control-label">产品分类名称</label>
+                <div class="controls">
+                    <input class="input-text input1 required" name="type_name" type="text"><span class="erro">输入需产品分类的名称</span>
+                </div>
+            </div>
+            <div class="control-group formSep st">
+                <label class="control-label">产品分类备注</label>
+                <div class="controls">
+                    <input class="input-text input1 required" name="type_info" type="text"><span class="erro">输入需产品分类备注</span>
+                </div>
+            </div>
+            <div class="control-group formSep">
+                <div class="controls">
+                    <button class="btn btn-primary" type="submit">提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{/block}
+
+<!-- end wrapper -->
+
+{block name="js"}
+
+{/block}

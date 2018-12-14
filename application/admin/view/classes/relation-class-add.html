@@ -1,0 +1,44 @@
+{extend name="public:base" /}
+
+{block name="js"}
+<script>
+
+</script>
+{/block}
+
+{block name="main"}
+
+    <div class="modal-header">
+        <div class="modal_title">新建子分类</div>
+        <div class="modal_close"></div>
+    </div>
+    <div class="modal-body">
+        <div class="text" style="margin:0; padding-top:0;">
+            <form action="/admin/classes/relationclassadd" name="addform" method="post">
+                <div class="txt-fld">
+                    <label class="tit" for="">类型</label>
+                    <select id="fen">
+                        <option value="1" >网站分类</option>
+                    </select>
+                </div>
+                <div class="txt-fld">
+                    <label class="tit" for="">分类名称</label>
+                    <select name="relation" id="">
+                        {volist name='res' id='vo'}
+                        <option value="{$vo.class_id}" >{$vo.class_name}</option>
+                        {/volist}
+                    </select>
+                </div>
+                <div class="txt-fld">
+                    <label class="tit" for="">子分类</label>
+                    <input name="class_name" type="text">
+                </div>
+                <div class="btn-fld">
+                    <button class="btn btn-primary" type="submin">提交</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal-footer"></div>
+<!-- end wrapper -->
+{/block}

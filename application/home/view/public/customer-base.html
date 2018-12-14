@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="description" content="">
+<meta name="author" content=""> 
+<title>客服后台</title>
+<!-- Bootstrap Core CSS -->
+<link href="__STATIC__/css/bootstrap.min.css" rel="stylesheet" />
+<!-- Custom Fonts -->
+<link href="__STATIC__/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+<!--客户端样式-->
+<link rel="stylesheet" href="__CSS__/client.css">
+{block name="css"}
+
+{/block}
+</head>
+<body>
+    <div>
+        <!-- 导航 -->
+        <div id="navigation">
+            {include  file="public:customer-nav" /}
+        </div>
+        <div class="container-fluid" id="content">
+            <!-- 内容 -->
+            {block name="main"}content{/block}
+        </div>
+    </div>
+<!-- jQuery -->
+<script src="__STATIC__/jquery/jquery.min.js"></script>
+<script src="__STATIC__/js/bootstrap.min.js"></script>
+<script src="__STATIC__/layer/layer.js"></script>
+<script src="__JS__/client.js"></script>
+{block name="js"}
+
+{/block}
+</body>
+</html>

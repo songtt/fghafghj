@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv=Content-Type>
+    <meta name=apple-mobile-web-app-capable content=yes>
+    <meta name=viewport content="width=device-width, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no">
+    <style>
+        body {
+            margin: 0px;
+            padding: 0px
+        }
+    </style>
+</head>
+<script>
+    window.onload = function(){
+        function obj(ads,config){
+            //可视宽度
+            var awidth = window.screen.width;
+            var aheight = window.screen.height;
+            //top or bottom
+            //ar bottom = 'bottom';
+            /*
+                @js动态控制iframe中的src
+                @path可以添加外部动态地址
+            */
+            // var path = 'iframe.html';
+            /*
+                @需要跳转的地址可以添加变量
+            */
+            //
+            var a = {},Uid = 'ThisId';
+            var doc = document,M = true,N = false;a.b = "demo";
+            var scripts = doc.getElementsByTagName("script");
+            // var i = '<iframe src="'+path+'" width="100%" height="100px" marginheight="0" scrolling="no" frameborder="0" allowtransparency="true"></iframe>';
+
+            /*
+                @iframe 从后台获取
+                @iframe 内部包含的代码
+                @声明 iframe 变量 图片地址以及跳转链接
+            */
+            /*var iframe = '<a id="baseUrls" target="_blank" href="http://www.baidu.com"><img id="imgurl" style="width:100%;height:200px;" src="http://avatar.csdn.net/6/B/F/1_o9109003234.jpg"></a>'*/
+            var x=doc.createElement('div');x.className=Uid;x.id=Uid;x.innerHTML=_cont;
+            //代码
+            var _cont = '';
+            _cont += '<a class="'+a.b+'  baseUrl"  id="abaseUrl"  target="_blank" style="height:132px;">';
+            _cont += '</a>';
+            /*
+                @height获取图片高度
+                @i iframe 变量
+                  width:100%;float:left;
+            */
+           
+            _cont += '<div id="'+a.b+'" class="'+a.b+'_dasdsa">';
+            _cont += '<div style="position:absolute;right:0;top:0;z-index:999999999 !important;">';
+            _cont +='<img  id="close" style="float:right;width:auto !important;"  src="http://zjs.roowap.com/js/close.png" onclick="close()">';
+            _cont += '</div>';
+            //add2016/09/28
+            _cont += '<a id="baseUrl" class="baseUrl" target="_blank" style="width:100%;float:left;text-align:center;left:0px;bottom:0px;background-size:100% auto !important;" href="http://www.baidu.com" >';
+            _cont += '<img id="imgurl" style="width:100%;float:left;" src="http://avatar.csdn.net/6/B/F/1_o9109003234.jpg">';
+            _cont += '</a>';
+            _cont += '</div>';
+            
+            //样式
+            var _css = '';
+            //_css += '.'+Uid+'{width:'+awidth+'px;height:'+aheight+'px;}';
+            _css += '.'+a.b+'{position:fixed;right:0px;left:0px;bottom:0px;overflow:visible !important;z-index:999999999999 !important;width:100%;text-align:center;}';
+            _css += '.'+a.b+'_dasdsa{position:absolute !important;bottom:0px;left:0px;right:0px;overflow:visible !important;z-index:999999999999 !important;width:100%;text-align:center;}';
+            // _css += '.'+a.b+'{position:fixed;left:0px;'+bottom+':0px;z-index:999999999999 !important;background:transparent;}'; 
+            
+            //拼代码
+            a.CD = function(_cont){
+                if(_cont==null)return N;
+                var x = doc.createElement('div');
+                x.className = Uid;
+                x.id = Uid;
+                x.innerHTML = _cont;
+                if(doc.body){
+                    try{
+                        doc.body.appendChild(x);
+                    }catch(e){}
+                }else{
+                    try{
+                        doc.getElementsByTagName('html')[0].appendChild(x);
+                    }catch(e){}
+                }
+            }
+            //拼样式
+            a.ST = function(_css){
+                if(_css==null)return N;
+                try{
+                    var head = doc.getElementsByTagName('head')[0];
+                    //创建style
+                    var style = doc.createElement('style');
+                    style.type = 'text/css';
+                    if(style.styleSheet){
+                        style.styleSheet.cssText=_css;
+                    }else {
+                        style.appendChild(doc.createTextNode(_css));
+                        head.appendChild(style);
+                        return M;
+                    }  
+                }catch(e){
+                    return N;
+                }
+            }
+            //调用页面代码以及样式
+            try{
+                a.CD(_cont);
+                a.ST(_css);
+               addval(ads,config);
+            }catch(e){ }
+
+            var clickadb = document.getElementsByClassName("baseUrl")[0];
+            clickadb.onclick=function(){
+            	document.getElementById("baseUrl").click();
+            }
+            	
+
+
+
+            //关闭代码
+            var close = document.getElementById("close");
+            close.onclick=function(){
+                document.getElementById("ThisId").style.display = 'none'
+             }
+        }
+        obj(ads,config);    }
+</script>
+<body>
+<div id="content">
+    </div>
+
+<script>
+    
+var ads = {"imageurl":"http://www.lzbd.com//uploads/20160928/0f141dd5ca59139ae507ba282422beff.jpg","url":"www.tmall.com","baseUrl":"0/ad/c.php?id=MjM=&adid=49","htmlcontrol":""};
+var config = {"width":"640","height":"150"};
+//    var win = document.getElementById('content');
+var type = ads.htmlcontrol;
+
+//        document.getElementById("body1").style.width=;
+var width =  config.width;
+var height = config.height; 
+
+function addval (ads,config) {
+    document.getElementById('imgurl').src = ads.imageurl;
+    document.getElementById('baseUrl').href = ads.baseUrl;
+    document.getElementById('abaseUrl').href = ads.baseUrl;
+    //document.getElementById('imgurl').style ='width:'+config.width+'px;height:'+config.height+'px;';   
+}
+//获取屏幕分辨率
+//        var screenWidth=window.screen.width;
+//        var screenHeight=window.screen.height;
+
+</script>
+</body>
+</html>

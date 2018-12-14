@@ -1,0 +1,88 @@
+<!doctype html>
+<html mip>
+<head>
+  <meta charset="UTF-8">
+  <meta name="applicable-device" content="mobile">
+  <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="https://mipcache.bdstatic.com/static/v1/mip.css">
+  <!-- canonical 中的链接优先填写对应内容的移动端页面（H5）地址 -->
+  <link rel="canonical" href="https://www.example.com/your/path.html">
+  <title>banner文字</title>
+
+  <style mip-custom>
+
+    .won-recom {
+      position: relative;;
+      width: 100%;
+      height: auto;
+    }
+
+    .lz-top {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 34px;
+      z-index: 1;
+    }
+
+    .lz-wid {
+      display: inline-block;
+      width: 24px;
+      height: 34px;
+      font-size: 20px;
+      color: #fff;
+      line-height: 34px;
+      text-align: center;
+      background: #f57673;
+      float: left;
+    }
+
+    .lz-con {
+      padding: 0 10px;
+      font-size: 14px;
+      line-height: 34px;
+      color: white;
+      background: rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+
+  </style>
+
+  <script src="https://c.mipcdn.com/static/v1/mip-list/mip-list.js" async="async"></script>
+  <script src="https://c.mipcdn.com/static/v1/mip-mustache/mip-mustache.js" async="async"></script>
+
+
+</head>
+<body>
+
+<p>1111</p>
+
+<div>
+  <!-- <mip-list src="https://www.hzyuw.com/pname/10137" preLoad> -->
+  <mip-list src="http://lezun.sjzwhwy.com/ad/sdk/api.php?id=10414" preLoad>
+
+    
+    <template type="mip-mustache">
+      <a href="{{clickurl}}">
+        <div class="won-recom">
+          <mip-img src="{{imageurl}}">
+          </mip-img>
+          <div class="lz-top">
+            <span class="lz-wid">1</span>
+            <p class="lz-con">{{text}}</p>
+          </div>
+        </div>
+        <mip-pix class="lzadtracker" src="https://{{viewurl}}"></mip-pix>
+      </a>
+    </template>
+  </mip-list>
+</div>
+<p>0000</p>
+
+<script src="https://mipcache.bdstatic.com/static/v1/mip.js"></script>
+
+</body>
+</html>

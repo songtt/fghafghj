@@ -1,0 +1,22 @@
+
+:php:S125;"Remove this commented out code.(Îòí¯8å³…ŒÝ,
+B	php:S14813"-Remove this unused "$oldmask" local variable.(¨ú†œ
+P	php:S1788‰":Move arguments "$ip" after arguments without default value(ðÇ›º
+>	php:S1125")Remove the literal "false" boolean value.(Ðÿ¬Œ
+8php:S1255"Remove this commented out code.( €»Óúÿÿÿÿ
+d	php:S1192O"ODefine a constant instead of duplicating this literal "HTTP_CLIENT_IP" 7 times.(êÙÑ¦
+=	php:S1125"(Remove the literal "true" boolean value.(Ðÿ¬Œ
+=php:S1086")Either remove or fill this block of code.(ÄÏ™¼
+n	php:S3776A"TRefactor this function to reduce its Cognitive Complexity from 26 to the 15 allowed.(Žîáªûÿÿÿÿ
+C	php:S1125")Remove the literal "false" boolean value.(²·ýÜýÿÿÿÿ
+a	php:S1192Q"LDefine a constant instead of duplicating this literal "REMOTE_ADDR" 7 times.(òßª‚
+?php:S125"Remove this commented out code.(åÉî ÿÿÿÿÿ8æ´ºŒÝ,
+y	php:S1488a"_Immediately return this expression instead of assigning it to the temporary variable "$realip".( ÝÂšþÿÿÿÿ
+j	php:S1192"PDefine a constant instead of duplicating this literal "HTTP_USER_AGENT" 7 times.(ÿ¸ñëøÿÿÿÿ
+8php:S125)"Remove this commented out code.(Ù³ç«øÿÿÿÿ
+B	php:S1125"(Remove the literal "true" boolean value.(ÏÌüÙýÿÿÿÿ
+o	php:S1192F"UDefine a constant instead of duplicating this literal "HTTP_X_FORWARDED_FOR" 7 times.(ÉüÙìüÿÿÿÿ
+B	php:S1125"(Remove the literal "true" boolean value.(²·ýÜýÿÿÿÿ
+b	php:S1192k"HDefine a constant instead of duplicating this literal "Android" 4 times.(Õ¬è¡ÿÿÿÿÿ
+C	php:S1125")Remove the literal "false" boolean value.(ÏÌüÙýÿÿÿÿ
+i	php:S1142f"OReduce the number of returns of this function 4, down to the maximum allowed 3.(ìÜ…ôùÿÿÿÿ

@@ -1,0 +1,143 @@
+{extend name="public:base" /}
+{block name="css"}
+<link href="__CSS__/daterangepicker-bs3.css" rel="stylesheet" />
+{/block}
+{block name="main"}
+<!--  添加  -->
+<div class="wrapper">
+    <div id="repo_data" class="tb_sts" style="position:absolute; top:82px; right:44px;">
+        <a href="" class="payTab"><i class="fa fa-plus-circle"></i>搜索引擎</a>
+    </div>
+    <h3 class="heading head_trend">搜索引擎<span><a href="">今天</a></span><span><a href="">昨天</a></span><span><a href="">最近7天</a></span><span><a href="">最近30天</a></span><span><a href="">所有数据</a></span></h3>
+    <div class="tb_sts">
+        <form class="" action="" method="post" name="">
+            搜索：
+            <input class="input-text input1" type="hidden" name="stats" value="" />
+            <input class="input-text" name="numid" type="text" value="" value="" style="width:200px;">
+            <select name="id" id="" style="width:90px;">
+                <option value="pid">计划ID</option>
+                <option value="uid">站长ID</option>
+                <option value="ad_id">广告ID</option>
+                <option value="adz_id ">广告位ID</option>
+            </select>
+            <select id="selectime" name="time" id="" style="width:204px;">
+                <option id="fatime" value="">111</option>
+                <option value="">所有时间段</option>
+                <option value="" >今天</option>
+                <option value="" >昨天</option>
+                <option value="" >最近七天</option>
+                <option value="" >最近30天</option>
+                <option value="" >上个月</option>
+            </select>
+            <img src="/admin/img/calendar.png" id="reservation">
+            <button type="input"><i class="fa fa-search"></i></button>
+        </form>
+    </div>
+    <div class="box-content" style="margin-top:15px;">
+        <div id="container" style="min-width:700px;height:400px"></div>
+        <div class="fold" style="margin-bottom:30px;"></div>
+    </div>
+    <form  action="" name="delete" id="delete" method="post">
+    <table class="dataTable table-hover">
+        <tr>
+            <th>日期</th>
+            <th>搜索引擎</th>
+            <th>搜索词</th>
+            <th>目标地址</th>
+            <th>搜索次数</th>
+        </tr>
+        <tr>
+            <td>2016-10-12</td>
+            <td>54545645</td>
+            <td>2019888888888888888888888888888888888888888888845</td>
+            <td>2545</td>
+            <td>dsadsa</td>
+        </tr>
+    </table>
+    </form>
+    <div class="row"></div>
+</div>
+
+{/block}
+
+<!-- end wrapper -->
+
+{block name="js"}
+<!-- <script src="__JS__/report.js"></script> -->
+<script src="__STATIC__/js/moment.min.js"></script>
+<script src="__JS__/daterangepicker.js"></script>
+<script src="__JS__/moment.js"></script>
+<script type="text/javascript" src="//cdn.hcharts.cn/highcharts/highcharts.js"></script>
+<script type="text/javascript">
+    $(function(){
+        
+        $('#container').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false
+            },
+            title: {
+                text: '搜索引擎分析'
+            },
+            credits: {
+                enabled: false
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                        style: {
+                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                        }
+                    }
+                }
+            },
+            series: [{
+                type: 'pie',
+                name: 'Browser share',
+                data: [
+                    ['Son',   45.0],
+                    ['Sol',       26.8],
+                    {
+                        name: 'Chrome',
+                        y: 12.8,
+                        sliced: true,
+                        selected: true
+                    },
+                    ['So',    8.5],
+                    ['Sog',     6.2],
+                    ['Others',   0.7]
+                ]
+            }]
+        });
+
+        $('#reservation').daterangepicker(null, function(start, end, label) {
+            var a = start.format();
+            var b = end.format();
+            //start time
+            var c = a.substr(0,10);
+            //end time
+            var d = b.substr(0,10);
+            //点击选中第一个
+            $("#selectime option:first").prop("selected","selected");
+            $("#fatime").text(c+"至"+d);
+            $("#fatime").val(value = c+""+d);
+        });
+    });
+    // 批量删除
+    function delLst(){
+        layer.confirm('确定删除吗？', {
+            btn: ['确定','取消'] //按钮
+        }, function(){
+            $('form').submit();
+        });
+    }
+</script>
+{/block}

@@ -1,0 +1,96 @@
+{include  file="public:header" /}
+<script src="__JS__/geetest.5.5.39.js"></script>
+<div style="width:100%; height:100%; background:#f8f8f8;">
+    <div id="itemBox" class="item-box">
+        <form class="form-login" method="post" name="loginform" id="formId">
+            <h2>注册新用户</h2>
+            <input class="form-control" type="text" name="uname" value="" placeholder="用户名"/>
+            <input style="margin:10px 0;" class="form-control" type="password" name="pwd" value="" placeholder="密码"/>
+            <select style="margin-bottom:10px;" class="form-control" name="group_id" id="">
+                {volist name="res" id="vo" }
+                <option value="{$vo.id}" >{$vo.title}</option>
+                {/volist}
+            </select>
+
+            <button style="margin-top:10px;" class="btn btn-lg btn-primary btn-block" id="popup-submit" type="submit">注册</button>
+            <div id="popup-captcha"></div>
+        </form>
+    </div>
+</div>
+
+{block name="js"}
+<script src="__STATIC__/layer/layer.js"></script>
+<script src="//static.geetest.com/static/tools/gt.js"></script>
+<script src="//code.jquery.com/jquery-1.12.3.min.js"></script>
+<script type="text/javascript">
+    var captchaObja = '';
+    $('#formId').submit(function(){
+        //点击按钮提交
+        var href = '/admin/index/reg';
+        var data = $("#formId").serialize();
+        $.post(href,data,success);
+        function success(data) {
+            if (data.status == 1) {
+                captchaObja.show();
+            } else {
+                layer.msg(data.info, {icon: 1});
+                setTimeout(function(){},2000);
+                return false;
+            }
+        }
+        return false;
+    });
+    var handlerPopup = function (captchaObj) {
+        // 成功的回调
+        captchaObj.onSuccess(function () {
+            var validate = captchaObj.getValidate();
+            $.ajax({
+                url: "/admin/index/verifyAgain", // 进行二次验证
+                type: "post",
+                dataType: "json",
+                data: {
+                    type: "pc",
+                    username: $('#username1').val(),
+                    password: $('#password1').val(),
+                    geetest_challenge: validate.geetest_challenge,
+                    geetest_validate: validate.geetest_validate,
+                    geetest_seccode: validate.geetest_seccode
+                },
+                success: function (data) {
+                    if (data && (data.status === "success")) {
+                        window.location.href='/admin/index/login';
+                    } else {
+                        $(document.body).html('<h1>登录失败</h1>');
+                    }
+                }
+            });
+
+        });
+        captchaObja = captchaObj;
+        // 将验证码加到id为captcha的元素里
+        captchaObj.appendTo("#popup-captcha");
+    };
+
+    // 验证开始需要向网站主后台获取id，challenge，success（是否启用failback）
+    $.ajax({
+        url: "/admin/index/verify?type=pc&t=" + (new Date()).getTime(), // 加随机数防止缓存
+        type: "get",
+        dataType: "json",
+        success: function (data) {
+            // 使用initGeetest接口
+            // 参数1：配置参数
+            // 参数2：回调，回调的第一个参数验证码对象，之后可以使用它做appendTo之类的事件
+            initGeetest({
+                gt: data.gt,
+                challenge: data.challenge,
+                product: "popup", // 产品形式，包括：float，embed，popup。注意只对PC版验证码有效
+                offline: !data.success // 表示用户后台检测极验服务器是否宕机，一般不需要关注
+                // 更多配置参数请参见：http://www.geetest.com/install/sections/idx-client-sdk.html#config
+            }, handlerPopup);
+        }
+    });
+</script>
+
+{/block}
+
+{include  file="public:footer" /}

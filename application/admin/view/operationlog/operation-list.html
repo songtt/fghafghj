@@ -1,0 +1,92 @@
+{extend name="public:base" /}
+{block name="css"}
+<link href="__CSS__/daterangepicker-bs3.css" rel="stylesheet" />
+{/block}
+{block name="main"}
+
+<!--  添加  -->
+<div class="wrapper">
+    <div class="row-fluid">
+        <div id="repo_data" class="tb_sts" style="position:absolute; top:110px; right:30px;">
+        </div>
+        <h3 class="heading">操作日志列表</h3>
+        <div class="row">
+            <form  action="/admin/operationlog/list" name="conditions" method="post">
+                <div class="plan6">
+                    搜索：
+                    <input class="input-text input1" name="search" value="{$param.search|default=''}" type="text">
+                    <select name="searchName">
+                        <option value="name">操作人</option>
+                        <option value="operation"{if condition="$param.searchName eq 'operation'"} selected {/if}">操作内容</option>
+                    </select>
+
+                    <select id="selectime" name="time" id="" style="width:204px;">
+                        <option id="fatime" value="{$param.time.nowval}">{$param.time.now}</option>
+                        <option value="{$param.time.allday}" {if condition="$param.time.nowval eq $param.time.allday"} selected {/if}>所有时间段</option>
+                        <option value="{$param.time.today}" {if condition="$param.time.nowval eq $param.time.today"} selected {/if}>今天</option>
+                        <option value="{$param.time.yesterday}" {if condition="$param.time.nowval eq $param.time.yesterday"} selected {/if}>昨天</option>
+                        <option value="{$param.time.lastseven}" {if condition="$param.time.nowval eq $param.time.lastseven"} selected {/if}>最近七天</option>
+                        <option value="{$param.time.lastthirty}" {if condition="$param.time.nowval eq $param.time.lastthirty"} selected {/if}>最近30天</option>
+                        <option value="{$param.time.lastmonth}" {if condition="$param.time.nowval eq $param.time.lastmonth"} selected {/if}>上个月</option>
+
+                    </select>
+                    <img src="/admin/img/calendar.png" id="reservation">
+
+                    <button type="input" style="width:60px"><i class="fa fa-search"></i></button>
+                </div>
+            </form>
+        </div>
+        <div class="dataTables-wrapper">
+            <table class="dataTable table-hover" name="ads-list" >
+                <tr role="row">
+                    <th>操作人</th>
+                    <th>操作内容</th>
+                    <th>操作时间</th>
+                </tr>
+                {volist name="one" id="vo"}
+                <tr class="unread">
+                    <td>{$vo.name|default='未填写'}</td>
+                    <td>{$vo.operation|default='未填写'}</td>
+                    <td>{$vo.time|default='未填写'}</td>
+                </tr>
+                {/volist}
+            </table>
+        </div>
+        <div class="row">
+            {$page}
+        </div>
+    </div>
+</div>
+
+{/block}
+
+<!-- end wrapper -->
+
+{block name="js"}
+<!-- <script src="__JS__/report.js"></script> -->
+<script src="__STATIC__/js/moment.min.js"></script>
+<script src="__JS__/daterangepicker.js"></script>
+<script src="__JS__/moment.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        var time = $('select[name="time"] option:selected').val();
+        var start = time.substr(0,10);
+        var end = time.substr(10);
+        $('#reservation').daterangepicker({
+            startDate: start,
+            endDate: end,
+        }, function(start, end, label) {
+            var a = start.format();
+            var b = end.format();
+            //start time
+            var c = a.substr(0,10);
+            //end time
+            var d = b.substr(0,10);
+            //点击选中第一个
+            $("#selectime option:first").prop("selected","selected");
+            $("#fatime").text(c+"至"+d);
+            $("#fatime").val(value = c+""+d);
+        });
+    });
+</script>
+{/block}

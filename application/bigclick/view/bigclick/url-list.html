@@ -1,0 +1,95 @@
+{extend name="public:base" /}
+
+{block name="main"}
+<div class="wrapper">
+    <div class="row-fluid">
+         <div id="repo_data" class="tb_sts" style="position:absolute; top:110px; right:30px;">
+            <a href="/bigclick/bigclick/urllist?status=all"  {if condition="$one.status eq 'all'"} class="repo_data" {/if} >全部</a>
+            <a href="/bigclick/bigclick/urllist?status=1" {if condition="$one.status eq '1'"} class="repo_data" {/if}>激活</a>
+             <a href="/bigclick/bigclick/urllist?status=0" {if condition="$one.status eq '0'"} class="repo_data" {/if} >锁定</a>
+         </div>
+        <h3 class="heading">链接管理</h3>
+        <div class="dataTables-wrapper">
+            <div class="tb-lis users_lis">
+                <a href="/bigclick/bigclick/urlAdd"><i class="fa fa-plus-circle"> 新增链接</i></a>
+                <div class="tb_sts">
+                   <form  action="/bigclick/bigclick/urllist?status=all" name="adzone" method="post">
+                        搜索：
+                        <input class="input-text input1" name="search" value="{$one.search|default=''}" type="text" style="width:160px">
+                        <select name="index">
+                            <option value="url"  {if condition="$one.index eq 'url'"} selected {/if}>链接名称</option>
+                            <option value="pro_name" {if condition="$one.index eq 'pro_name'"} selected {/if}>产品名称</option>
+                        </select>
+                       <button type="input" style="width:100px"><i class="fa fa-search"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+            <table class="dataTable table-hover" style="table-layout:fixed;" name="users-list" >
+                <tr role="row">
+                    <th rowspan="1" colspan="1" style="width:13px;"><input class="checkedAll" id="" name="site" type="checkbox" data-name="name-data"></th>
+                    <th>ID</th>
+                    <th>产品名称</th>
+                    <th>url链接名称</th>
+                    <th>url链接</th>
+                    <th>投放方式</th>
+                    <th>开始日期</th>
+                    <th>投放周期</th>
+                    <th>投放日期</th>
+                    <th>投放小时</th>
+                    <th>投放频率</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+                {volist name="list" id="vo"}
+                <tr class="unread">
+                    <td rowspan="1" colspan="1" style="width:13px;"><input id="" name="site" type="checkbox" data-name="name-data"></td>
+                    <td><a class="detailed_info">{$vo.url_id}</a></td>
+                    <td>{$vo.pro_name}</td>
+                    <td>{$vo.url_name}</td>
+                    <td style="word-wrap:break-word;word-break:break-all;">{$vo.url}</td>
+                    <td>{$vo.delivery_mode}</td>
+                    {if condition="$vo.delivery_mode eq '周期投放'"}
+                    <td style="word-wrap:break-word;word-break:break-all;">{$vo.start_day}</td>
+                    <td style="word-wrap:break-word;word-break:break-all;">{$vo.revolution}</td>
+                    <td>/</td>
+                    {else /}
+                    <td>/</td>
+                    <td>/</td>
+                    <td style="word-wrap:break-word;word-break:break-all;">{$vo.day}</td>
+                    {/if}
+                    <td style="word-wrap:break-word;word-break:break-all;">{$vo.hour|default='不存在'}</td>
+                    <td>{$vo.percent|default='不存在'}%</td>
+                    <td>
+                        <span class="common-button ajax-status">
+                            {switch name="$vo.status" }
+                                {case value="0"}<span class="sta_er">锁定</span>{/case}
+                                {case value="1"}<span class="sta_bl">活动</span>{/case}
+                            {/switch}
+                        </span>
+                    </td>
+                    <td>
+                        <a href="javascript:;"  class="data-lock"  data='{"url_id":"{$vo.url_id}","status":"0"}' durl='/bigclick/bigclick/urlEditStatus' statuscls='ajax-status'>锁定</a>
+                        <a href="javascript:;"  class="data-activation"  data='{"url_id":"{$vo.url_id}","status":"1"}' durl='/bigclick/bigclick/urlEditStatus' statuscls='ajax-status'>激活</a>
+                        <a href="/bigclick/bigclick/urledit?id={$vo.url_id}">编辑</a>
+                        <a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                        <a href="javascript:;" class="ajax-del" data='{"id":{$vo.url_id}}' durl="/bigclick/bigclick/urlDel">删除</a>
+                    </td>
+                </tr>
+                {/volist}
+
+            </table>
+            <div class="row">
+            {$page}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- end wrapper -->
+{/block}
+
+{block name="js"}
+<script type="text/javascript">
+</script>
+{/block}

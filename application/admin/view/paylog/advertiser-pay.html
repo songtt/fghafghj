@@ -1,0 +1,126 @@
+{extend name="public:base" /}
+
+{block name="main"}
+<div class="wrapper">
+    <div class="row-fluid">
+        <h3 class="heading">手动充值</h3>
+        <div class="row-plan row-fluid" style="padding-top:20px;">
+            <div class="text" style="margin:0; padding-top:0;">
+                <form action="/admin/paylog/addLog" name="addform" method="post">
+                    <div class="control-group control-padding">
+                        <label class="control-label" for="">广告商用户名</label>
+                        <div class="controls">
+                            <input class="input-text input1" name="uid" type="hidden" value="">
+                            <input class="required input-text input1" id="username" name="username" type="text"> <span class="erro">请输入广告商名称</span><span id="name_text"></span>
+                        </div>
+                    </div>
+                    <div class="control-group control-padding">
+                        <label class="control-label" for="">充值金额</label>
+                        <div class="controls">
+                            <input class="required input-text input1" id="money" name="money" type="text"> <span class="erro">请输入充值金额</span><span id="money_text"></span>
+                        </div>
+                    </div>
+                    <div class="control-group control-padding">
+                            <label class="control-label">备注</label>
+                            <div class="controls">
+                                <input id="" class="input-text input1" type="text" name="payinfo" value=""  />
+                            </div>
+                        </div>
+                    <div class="control-group control-padding" style="margin-top:10px;">
+                        <div class="controls">
+                            <button class="btn btn-primary" type="submin" id="submit">提交</button>
+                        </div>
+                    </div>      
+                </form>
+            </div>
+        </div>
+    </div>
+</div>        
+<!-- end wrapper -->
+{/block}
+
+{block name="js"}
+<script>
+//    mouseout 鼠标离开元素事件 keyup
+    $(function(){
+        $("input[name='username']").keyup(function(){
+            $.ajax({
+                type: 'POST',
+                url : '/admin/users/advUserOne',
+                data: {username:$('#username').val(),money:$('#money').val()},
+                dataType:'json',
+
+                success:function(data){
+                    if(data ==0){
+                        $('#name_text').text("没有这个广告商，请重新输入").css({'color':'red','font-size':'12px'});
+
+                        $("#submit").attr("disabled",true);
+                    }else{
+                        $('#name_text').text(' ');
+                        $("input[name='uid']").val(data);
+                        $("#submit").removeAttr("disabled",false);
+                    }
+                }
+            })
+        })
+
+        $("input[name='username']").mouseout(function(){
+            $.ajax({
+                type: 'POST',
+                url : '/admin/users/advUserOne',
+                data: {username:$('#username').val(),money:$('#money').val()},
+                dataType:'json',
+
+                success:function(data){
+                    if(data ==0){
+                        $('#name_text').text("没有这个广告商，请重新输入").css({'color':'red','font-size':'12px'});
+                        $("#submit").attr("disabled",true);
+                    }else{
+                        $('#name_text').text(' ');
+                        $("input[name='uid']").val(data);
+                        $("#submit").removeAttr("disabled",false);
+                    }
+                }
+            })
+        })
+
+        $("input[name='money']").keyup(function(){
+            $.ajax({
+                type: 'POST',
+                url : '/admin/users/advUserOne',
+                data: {username:$('#username').val(),money:$('#money').val()},
+                dataType:'json',
+
+                success:function(data){
+                    if(data ==1){
+                        $('#money_text').text("充值金额不能小于最低充值").css({'color':'red','font-size':'12px'});
+                        $("#submit").attr("disabled",true);
+                    }else{
+                        $('#money_text').text(' ');
+                        $("#submit").removeAttr("disabled",false);
+                    }
+                }
+            })
+        })
+
+        $("input[name='money']").mouseout(function(){
+            $.ajax({
+                type: 'POST',
+                url : '/admin/users/advUserOne',
+                data: {username:$('#username').val(),money:$('#money').val()},
+                dataType:'json',
+
+                success:function(data){
+                    if(data ==1){
+                        $('#money_text').text("充值金额不能小于最低充值").css({'color':'red','font-size':'12px'});
+                        $("#submit").attr("disabled",true);
+                    }else{
+                        $('#money_text').text(' ');
+                        $("#submit").removeAttr("disabled",false);
+                    }
+                }
+            })
+        })
+    })
+</script>
+{/block}

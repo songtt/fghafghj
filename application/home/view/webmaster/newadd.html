@@ -1,0 +1,96 @@
+{extend name="public:station-base" /}
+
+{block name="main"}
+    <div class="main_left">
+        <div class="subnav">
+            <!-- <div class="subnav-title">
+                <a href="" class="toggle-subnav">
+                    <i></i>
+                    <span>我的概括</span>
+                </a>
+            </div> -->
+            <ul class="subnav-menu">
+                <li class="current"><a href="/home/webmaster/myCenter">我的概括</a></li>
+                <li><a href="/home/webmaster/account">账户设置</a></li>
+                <li><a href="/home/webmaster/siteList">网站管理</a></li>
+                <li><a href="/home/webmaster/record">付款记录</a></li>
+                <!--<li><a href="/home/webmaster/message">消息中心</a></li>-->
+           <!--  </ul>
+                <li><a href="http://www.lzbd.com/home/Webmaster/myCenter">我的概括</a></li>
+                <li><a href="http://www.lzbd.com/home/Webmaster/account">账户设置</a></li>
+                <li><a href="http://www.lzbd.com/home/Webmaster/siteList">网站管理</a></li>
+                <li><a href="">付款记录</a></li> -->
+                <!-- <li><a href="">消息中心</a></li> -->
+            </ul>
+        </div>
+    </div>
+    <div class="main" style="padding-top:10px;">
+        <div class="breadcrumbs mt30">
+            <ul>
+                <li><a href="">我的广告位   »</a> 新建广告位</li>
+            </ul> 
+        </div>
+        <div class="box">
+            <form action="" class="form-hor">
+                <div class="box-content">
+                    <div class="box-title" style="margin-bottom:40px;">
+                        <h3>
+                            <i></i>基本信息
+                        </h3>
+                    </div>
+                    <div class="control-group">
+                        <label class="controls-label">计费方式</label>
+                        <div class="controls">
+                            <input type="radio" name="" value="">CPC
+                            <input type="radio" name="" value="">CPM
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label for="" class="controls-label">广告位名称</label>
+                        <div class="controls">
+                            <input type="text" name="" class="input300" value="" >
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label for="" class="controls-label">广告类型</label>
+                        <div class="controls">
+                            <select style="width:160px;">
+                                <option>移动插屏 - 大大</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label for="" class="controls-label">广告尺寸</label>
+                        <div class="controls">
+                            <select id="claid" style="width:160px;">
+                                <option value="">460x60</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label for="" class="controls-label">显示效果</label>
+                        <div class="controls">
+                            <select id="claid" style="width:160px;">
+                                <option value="">居中插屏</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label for="" class="controls-label">广告过滤</label>
+                        <div class="controls">
+                            <input type="radio" name="" value="" >智能轮播
+                            <input type="radio" name="" value="" >手动选择
+                        </div>
+                    </div>
+                    <div class="form-actions" style="margin-top:60px; margin-bottom:60px;">
+                        <button type="submit" class="btn btn-primary">保存并获取代码</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{/block}
+
+{block name="js"}
+
+{/block}

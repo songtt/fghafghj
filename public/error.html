@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      width: 100%;
+      height: 100%;
+      background-color: #DEE7EE;
+      font-family: Helvetica, "Open Sans", Arial, "Hiragino Sans GB", "Microsoft YaHei", 微软雅黑, STHeiti, "WenQuanYi Micro Hei", SimSun, sans-serif;
+    }
+    .wrapper {
+      width: 929px;
+      height: 423px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 200px;
+      background-image: url("http://<?php echo $_SERVER['SERVER_NAME']?>/static/404.png");
+      position: relative;
+    }
+    span {
+      display: block;
+      width: 200px;
+      height: 100px;
+      background-color: #fff;
+      position: absolute;
+      right: 152px;
+      top: 180px;
+      font-size: 28px;
+    }
+  </style>
+</head>
+<body>
+<div class = "wrapper">
+  <span>该功能在升级！</span>
+</div>
+</body>
+</html>

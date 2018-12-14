@@ -1,0 +1,11 @@
+$(function(){
+	$(".fold").bind("click",function(){
+		if($(this).siblings(".highcharts").is(":hidden")){
+			$(this).siblings(".highcharts").show();
+			$(this).children().css("background-image","url(../img/fold_t.jpg)");
+		}else{
+			$(this).siblings(".highcharts").hide();
+			$(this).children().css("background-image","url(../img/fold_m.jpg)");
+		}
+	})
+})

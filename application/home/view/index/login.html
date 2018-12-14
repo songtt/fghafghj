@@ -1,0 +1,82 @@
+<!DOCTYPE HTML>
+<html>
+<link href="/admin/CSS/main.css" rel="stylesheet" />
+<link href="/admin/CSS/font-awesome.min.css" rel="stylesheet">
+<link href="__STATIC__/css/bootstrap.min.css" rel="stylesheet" />
+
+<body>
+<div style="width:300px; height:100%; padding: 50px 0; margin:160px auto;">
+    <form  method="post" class="form-login" id="formId">
+        <h2>用户登录</h2>
+        <input class="form-control" type="text" name="username" value="" placeholder="请输入用户名"/>
+        <input style="margin:10px 0;" class="form-control" type="password" name="password" value="" placeholder="请输入密码"/>
+
+
+        <div class="control-group"><br/>
+              <span>
+                  *&nbsp;验证码<input class="input-text input1 verify" type="text" name="verify" value="" />&nbsp;&nbsp;&nbsp;
+                  <img class="verifyimg reloadverify" style="cursor:pointer; width: 130px; height: 50px;" alt="点击切换" src="/home/index/verify" >
+            </span>
+
+        </div>
+
+        <button class="btn btn-lg btn-primary btn-block" id="embed-submit" type="submit">登录</button>
+        <!--<a class="login-register" href="/index/index/register" >注册新用户</a>-->
+    </form>
+</div>
+</body>
+</html>
+
+
+{block name="js"}
+<script src="__STATIC__/jquery/jquery.min.js"></script>
+<script src="__STATIC__/layer/layer.js"></script>
+<script type="text/javascript">
+    $('#formId').submit(function(){
+        //点击按钮提交
+        var href = '/home/index/login';
+        var data = $("#formId").serialize();
+
+        $.post(href,data,success);
+        function success(data) {
+            var aa = document.createElement("a");
+            var bodys=document.getElementsByTagName("body")[0];
+            if (data.status == 0) {
+                layer.msg(data.info, {icon: 1});
+                setTimeout(function(){},2000);
+                return false;
+            }else if(data.data == 'myCenter'){
+                aa.setAttribute("href",'/home/webmaster/'+data.data);
+                bodys.appendChild(aa);
+                aa.click();
+            }else if(data.data == 'homePage'){
+                aa.setAttribute("href",'/home/advertiser/'+data.data);
+                bodys.appendChild(aa);
+                aa.click();
+            }else if(data.info == '客服登录成功！'){
+                aa.setAttribute("href",'/home/customer/'+data.data);
+                bodys.appendChild(aa);
+                aa.click();
+            }else{
+                aa.setAttribute("href",'/home/business/'+data.data);
+                bodys.appendChild(aa);
+                aa.click();
+            }
+        }
+        return false;
+    });
+    $(function(){
+        //刷新验证码
+        var verifyimg = $(".verifyimg").attr("src");
+
+        $(".reloadverify").click(function(){
+
+            if( verifyimg.indexOf('?')>0){
+                $(".verifyimg").attr("src", verifyimg+'&random='+Math.random());
+            }else{
+                $(".verifyimg").attr("src", verifyimg.replace(/\?.*$/,'')+'?'+Math.random());
+            }
+        });
+    });
+</script>
+{/block}

@@ -1,0 +1,169 @@
+{extend name="public:base" /}
+
+<!-- block main start -->
+{block name="main"}
+<!--body  -->
+
+<div class="wrapper">
+    <div class="row-fluid">
+        <div id="repo_data" class="tb_sts" style="position:absolute; top:110px; right:30px;">
+            <a href="/admin/paylog/clearing"><i class="fa fa-plus-circle"></i>未支付</a>
+            <a href="/admin/paylog/paypal" class="payTab"><i class="fa fa-plus-circle"></i>等待支付</a>
+            <a href="/admin/paylog/paid"><i class="fa fa-plus-circle"></i>已支付</a>
+        </div>
+        <h3 class="heading">等待支付</h3>
+        <div class="dataTables-wrapper">
+            
+            <!-- div class="information">
+                <p>未支付信息：[农业银行]：¥1212312</p>
+                <p>合计：¥12213232</p>
+            </div>
+            <div class="tb-lis">
+                <a href=""><i class="fa fa-plus-circle"></i>手动结算</a>
+                <a href=""><i class="fa fa-plus-circle"></i>支付汇总</a> -->
+               <!--  <div style="display:none;">
+                    <a href="#"><i class="fa fa-flag-o"></i>已审核</a>
+                    <a href="#"><i class="fa fa-flag-o"></i>已锁定</a>
+                    <a href="#"><i class="fa fa-flag-o"></i>限额过期</a>
+                    <a href="#"><i class="fa fa-flag-o"></i>修改待审</a> -->
+              <!--   </div>
+            </div> -->
+             <!--批量操作，暂时隐藏，下一期进行开发-->
+            <!-- <form action="/admin/ads/batchDel" name="listform" method="post"> -->
+                <div class="row">
+                    <div class="plan6">
+                        <div class="dataTables-length">
+                          <!--   批量操作：
+                            <a href="javascript:;"  ><button class="btn btn-primary" type="button" style="padding:2px 12px;">删除</button></a>
+                            
+                        </div>
+                    </div>
+                    <div class="plan6">
+                                        <div class="dataTables-filter"> -->
+                        <form action="/admin/paylog/paypal" name="palform" method="post">
+                            搜索：
+                            <input class="input-text input1" name="search" value="{$params.search|default=''}" type="text">
+                            <select name="payinfo">
+                                  <option value="username" {if condition="$params.payinfo eq 'username'"} selected {/if}>站长名称</option>
+                                    <option value="uid" {if condition="$params.payinfo eq 'uid'"} selected {/if}>站长ID</option>
+                                    <option value="uname" {if condition="$params.payinfo eq 'uname'"} selected {/if}>所属客服</option>
+                                <!-- <option value="">站长名称2</option> -->
+                            </select>
+                                <button type="input" style="width:100px"><i class="fa fa-search"></i></button>
+                                <!-- <span id="plan-search" class="plan-search"><i class="fa fa-search"></i></span> -->
+                        </form>
+                        </div>
+                    </div>
+                  <form action="/admin/paylog/handPay" name="payinfo" id="payinfo" method="post">
+                            <div class="plan6">
+                                <div class="dataTables-filter">
+                                     <!-- 批量操作：
+                                    <a href="javascript:;"  ><button class="btn btn-primary" type="button" onclick="delLst();" style="padding:2px 12px;">删除</button></a> -->
+                                      批量操作：
+                                    <a href="javascript:;"  ><button class="btn btn-primary" type="button" onclick="handpay();" style="padding:2px 12px;">手动结算</button></a>
+                                </div>
+                            </div>
+                </div>
+                <table class="dataTable table-hover" name="paylog-payPal" >
+                    <tr role="row">
+                        <th rowspan="1" colspan="1" style="width:13px;"><input id="" class="checkedAll" name="" type="checkbox" data-name="name-data"></th>
+                        <th>站长ID</th>
+                        <th>站长名称</th>
+                        <th>所属客服</th>
+                        <th>款项</th>
+                        <th>日期</th>
+                        <th>应付费用</th>
+                        <!-- <th>账户余额</th> -->
+                        <th>操作人</th>
+                        <th>备注</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                      {volist name="paylog" id="vo"}
+                    <tr class="unread">
+                        <td rowspan="1" colspan="1" style="width:13px;"><input id="" name="id[]" value="{$vo.id},{$vo.uid},{$vo.status},{$vo.actualMoney},{$vo.money}" type="checkbox" data-name="name-data"></td>
+                        <td>{$vo.uid}</a></td>
+                        <td><a class="detailed_info">{$vo.username}</a></td>
+                        <td>{if condition="$vo.uname eq null"}没有分配{else /}{$vo.uname}{/if}</td>
+                        <td>周款</td>
+                        <!-- <td>{$vo.ctime|date="Y-m-d H:i:s",###}</td> -->
+                        <td>{$vo.ctime | date="Y-m-d",###}</td>
+                        <td>{$vo.actualMoney |process_decimal}</td>
+                        <!-- <td>{$vo.money}</td> -->
+                        <td>{$vo.clearingtype}</td>
+                        <td>{$vo.payinfo |default='空'}</td>
+                        {if condition="$vo.status eq 0"}<td>等待支付</td> {else /}<td>已支付</td>{/if}
+                        <td><a href="/admin/paylog/delepay?id={$vo.id}&uid={$vo.uid}&sum={$vo.actualMoney}&money={$vo.money}">删除</a></td>
+                    </tr>
+                        
+                    </tr>
+                    <tr class="u_info">
+                    <td colspan="103">
+                        <table class="tab_info" border="0" cellpadding="0" cellspacing="0" width="100%">
+                            <tr>
+                                <td height="30">
+                                 <strong>基本信息</strong>
+                                        <span class="span7" style="padding-left:20px;">
+                                        <a href="/admin/users/webmaster/type/uid/search/{$vo.uid}">站长管理</a>
+                                        </span>
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                            <td bgcolor="#fff">
+                                    <table>
+                                        <tr>
+                                            <td style="text-indent:4em;">银行信息:&nbsp</td>
+                                            <td>{$vo.bank_name|default='空'}</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-indent:4em;">收款姓名:&nbsp</td>
+                                            <td>{$vo.account_name|default='空'}</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-indent:4em;">收款帐号:&nbsp</td>
+                                            <td>{$vo.bank_card|default='空'}</td>
+                                        </tr>
+                                        <tr>
+                                        <tr>
+                                            <td style="text-indent:4em;">未结算金额:&nbsp</td>
+                                            <td>{$vo.money|default='0.00'}</td>
+                                        </tr>
+                                    </table>
+                                </table>
+                    {/volist}
+                </table>
+            </form>
+        </div> 
+        <div class="row">
+             {$page}  
+        </div>
+    </div>
+</div>
+<!-- end wrapper -->
+{/block}
+
+{block name="js"}
+<script>
+    // 批量删除
+    function delLst(){
+        layer.confirm('确定删除吗？', {
+          btn: ['确定','取消'] //按钮
+        }, function(){
+            $('form').submit();
+        });
+    }
+    // 批量结算
+     function handpay(){
+        layer.confirm('确定结算吗？', {
+          btn: ['确定','取消'] //按钮
+        }, function(){
+            $('form').submit();
+        });
+    }
+
+   
+</script>
+{/block}
+<!-- block main end -->
+ 

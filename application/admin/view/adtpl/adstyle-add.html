@@ -1,0 +1,231 @@
+{extend name="public:base" /}
+
+{block name="main"}
+<div class="wrapper">
+    <div>
+    <h3 class="heading">新增广告样式</h3>
+    <form action="/admin/adtpl/adstyleAdd" method="post">
+        <div class="control-group formSep st">
+            <label class="control-label">广告模式</label>
+            <div class="controls">
+                <select id="adtypeid" name="adtypeid">
+                    {volist name="$type_list" id="vo"}
+                    <option value="{$vo.tpl_id}">{$vo.tplname}</option>
+                   {/volist}
+                </select>
+            </div>
+        </div>
+        <div class="control-group formSep"> 
+            <label class="control-label">样式名称</label>
+            <div class="controls">
+                <input class="input1 input-text style_name" type="text" name="name" value=""/><div class="erro" style="display:none;">请输入样式名称</div>
+            </div>
+        </div>
+        <!--<div>
+            <label class="">加载方式</label>
+            <input name="type" type="radio"  value="SCRIPT_IFRAME"> SCRIPT_IFRAME
+            <input name="type" type="radio"  value="SCRIPT"> SCRIPT
+            <input name="type" type="radio"  value=" IFRAME">  IFRAME
+            <input name="type" type="radio"  value="URL_JUMP"> URL_JUMP
+        </div>-->
+    <!--    <div>
+            <label class="">广告位自定义尺寸</label>
+            <input name="statstype[]" type="radio" value="1"> 不可以
+            <input name="statstype[]" type="radio"  value="2"> 可以
+        </div>
+        <div>
+            <label class="">广告位配色</label>
+            <input name="statstype[]" type="radio"  value="1"> 不需要
+            <input name="statstype[]" type="radio"  value="2"> 需要
+        </div>-->
+        <div class="control-group formSep">
+            <label class="control-label">排序</label>
+            <div class="controls">
+                <input class="input1 input-text" name="sort" type="text"  value=""><span>1~100数字</span>
+            </div>
+        </div>
+        <div class="control-group formSep">
+            <label class="control-label">附加HTML属性</label>
+            <div class="controls">
+                <table class="c_f_i" border="0" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td>
+                            <table class="c_f_f" border="0" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td>属性标题</td>
+                                    <td>属性type</td>
+                                    <td>属性name</td>
+                                    <td>属性checked</td>
+                                    <td>属性默认值</td>
+                                </tr>
+                                <tr>
+                                    <td><input class="input-text" name="control_text[]" type=""  value=""></td>
+                                    <td><select name="control_type[]">
+                                        <option value="text">text</option>
+                                        <option value="file">file</option>
+                                        <option value="checkbox">checkbox</option>
+                                        <option value="radio">radio</option>
+                                    </select>
+                                    </td>
+                                    <td><input class="input-text" name="control_name[]" type=""  value=""></td>
+                                    <td><input class="input-text" name="control_id[]" type=""  value=""></td>
+                                    <td><input class="input-text" name="control_describe[]" type=""  value=""></td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td width="100">
+                            <a id="increase" class="newbtn" href="javascript:;">增加一行</a>
+                        </td> 
+                    </tr>
+                </table>
+            </div> 
+        </div>
+        <div class="control-group formSep">
+            <label class="control-label">
+                绑定尺寸<br><br><input type="checkbox" name="" id="checkads">全选
+            </label>
+            <div class="controls controls-sizes">
+                 {volist name="adspecs_list" id="vo" mod="7"}
+                 <input class="checkads" type="checkbox" name="specs[]" value="{$vo.width}*{$vo.height}">{$vo.width}*{$vo.height}&nbsp;
+                 {eq name="mod" value="6"}<br><br>{/eq}
+                 {/volist}
+
+                <span class="erro" style="display:none; margin-top:10px;">请选择尺寸</span>
+            </div>
+        </div>
+        <div class="control-group formSep">
+            <label class="control-label">view_js</label>
+            <div class="controls">
+                <textarea class="input-text" name="viewjs"  style="width:600px; height:200px"></textarea>
+            </div>
+        </div>
+        <div class="control-group formSep">
+            <label class="control-label">样式代码</label>
+            <div class="controls">
+                <textarea class="input-text" name="yang"  style="width:600px; height:200px"></textarea>
+            </div>
+        </div>
+        <div class="control-group formSep">
+            <div class="controls">
+                <input class="btn btn-primary" type="submit" name="ti" value="提交"/>
+            </div>
+        </div>   
+        <div style="height:60px;"></div>
+    </form>
+</div>
+<!-- end wrapper -->
+{/block}
+{block name="js"}
+<script>
+    $(function(){
+        //增加
+        $('#increase').click(function(){
+            $("tr").last().after(
+                    "<tr class='dele'>"+
+                    "<td><input class='input-text' name='control_text[]' type='text' value=''></td>"+
+                    "<td>"+
+                        "<select name='control_type[]'>"+
+                        "<option value='text'>text</option>"+
+                        "<option value='file'>file</option>"+
+                        "<option value='checkbox'>checkbox</option>"+
+                        "<option value='radio'>radio</option>"+
+                        "</select>"+
+                    "</td>"+
+                    "<td><input class='input-text' name='control_name[]' type='text' value=''></td>"+
+                    "<td><input class='input-text' name='control_id[]' type='text' value=''></td>"+
+                    "<td><input class='input-text' name='control_describe[]' type='text' value=''></td>"+
+                    "<td>"+
+                            "<a class='delext' href='javascript:test();'>删除</a>"+
+                    "</td>"+
+                    "</tr>");
+        })
+        //全选
+        $('#checkads').click(function(){
+            if($('.checkads').prop('checked')==true){
+                $(this).prop('checked',false);
+                $('.checkads').prop('checked',false);
+            }else{
+                $(this).prop('checked',true);
+                $('.checkads').prop('checked',true); 
+                $(".controls-sizes").children("span").css("display","none");
+                //全选之后获取所有value
+                for(var i=0;i<checkads.length;i++){
+                    if(checkads[i].checked){
+                        //全选之后的所有value值
+                        value_ = checkads[i].value;
+                    }else{
+                        return false;
+                    }
+                } 
+            }
+        })
+        //表单提交
+        var checkads = $(".checkads");
+        var value_ = new Array;
+        $("form").submit(function(){
+            var flag = true;
+            $(".style_name").each(function(){
+                if($(this).val() == ""){
+                    $(this).next().css('display','inline');
+                    // //获取滚动条高度
+                    // // var a = $(this).offset().top;
+                    $(this).focus();
+                    $("html,body").animate({scrollTop:0}, 0);
+                    flag = false;
+                }
+            })
+            var checkboxFlag = $("input[type=checkbox]:checked").val();
+            var name = $('input[name="name"]').val();
+            if(undefined!=checkboxFlag){
+                $(".controls-sizes").children("span").css("display","none");
+                if(name!=''){
+                    $(".controls-sizes").children("div").css("display","none");
+                    return true;
+                }else{
+                    $(".controls-sizes").children("div").css("display","block");
+                    return false;
+                }
+
+            }else{
+                $(".controls-sizes").children("span").css("display","block");
+                return false;
+            }
+
+
+
+           
+            return false;
+            if(!flag){
+                return false;
+            }
+        })
+        $(".checkads").change(function(){
+            var value = $(this).val();
+            if(value==""){
+                $(".controls-sizes").children("span").css("display","block");
+                return true;  
+            }else{  
+                $(".controls-sizes").children("span").css("display","none");
+                return false;  
+            }
+        })
+        $(".style_name").keyup(function(){  
+            var value = $(this).val();
+            if(value==""){
+                $(this).next().css('display','inline');
+                return true;  
+            }else{  
+                $(this).next().css('display','none');
+                return false;  
+            }  
+        })
+    })
+    //删除
+    function test(){
+        $('.delext').click(function(){
+            $(this).parent().parent().remove();
+        })
+    }
+</script>
+
+{/block}

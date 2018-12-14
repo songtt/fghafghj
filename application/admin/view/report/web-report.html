@@ -1,0 +1,277 @@
+{extend name="public:base" /}
+{block name="css"}
+<link href="__CSS__/daterangepicker-bs3.css" rel="stylesheet" />
+{/block}
+{block name="main"}
+
+<!--  添加  -->
+<div class="wrapper">
+    <h3 class="heading">数据报表</h3>
+    <div class="tb_sts">
+        <form class="" action="/admin/report/webReport" method="post" name="">
+            <div id="repo_data" style="position:absolute; top:26px!important; right:30px;">
+                <a href="/admin/report/planReport?stats=plan_list&id={$data.data.id}&numid={$data.data.numid}&sort={$data.data.sort}&type={$data.data.type}&time={$data.data.time}"
+                   {if condition="$data.data.stats eq 'plan_list'"} class="repo_data" {/if}>计划报表</a>
+                <a href="/admin/report/webReport?stats=user_list&id={$data.data.id}&numid={$data.data.numid}&sort={$data.data.sort}&type={$data.data.type}&time={$data.data.time}"
+                   {if condition="$data.data.stats eq 'user_list'"} class="repo_data" {/if}>站长报表</a>
+                <a href="/admin/report/adsReport?stats=ads_list&id={$data.data.id}&numid={$data.data.numid}&sort={$data.data.sort}&type={$data.data.type}&time={$data.data.time}"
+                   {if condition="$data.data.stats eq 'ads_list'"} class="repo_data" {/if}>广告报表</a>
+                <a href="/admin/report/zoneReport?stats=zone_list&id={$data.data.id}&numid={$data.data.numid}&sort={$data.data.sort}&type={$data.data.type}&time={$data.data.time}"
+                   {if condition="$data.data.stats eq 'zone_list'"} class="repo_data" {/if}>广告位报表</a>
+                <a href="/admin/report/advReport?stats=adv_list&id={$data.data.id}&numid={$data.data.numid}&sort={$data.data.sort}&type={$data.data.type}&time={$data.data.time}"
+                   {if condition="$data.data.stats eq 'adv_list'"} class="repo_data" {/if}>广告商报表</a>
+                <a href="/admin/report/siteReport?stats=site_list&id={$data.data.id}&numid={$data.data.numid}&sort={$data.data.sort}&type={$data.data.type}&time={$data.data.time}"
+                   {if condition="$data.data.stats eq 'site_list'"} class="repo_data" {/if}>网站报表</a>
+                <a href="/admin/report/classReport?stats=classes_list&id={$data.data.id}&numid={$data.data.numid}&sort={$data.data.sort}&type={$data.data.type}&time={$data.data.time}"
+                   {if condition="$data.data.stats eq 'classes_list'"} class="repo_data" {/if}>网站分类报表</a>
+               <a href="/admin/report/adzClassReport?stats=adzClass_list&id={$data.data.id}&numid={$data.data.numid}&sort={$data.data.sort}&type={$data.data.type}&time={$data.data.time}"
+                    {if condition="$data.data.stats eq 'adzClass_list'"} class="repo_data" {/if}>广告位分类报表</a>
+            </div>
+            <!--数据报表content-->
+            搜索：
+            <input class="input-text input1" type="hidden" name="stats" value="{$data.data.stats}" />
+            <!--排重点击总数-->
+            <input class="input-text input1" type="hidden" name="ratio"  value="{$ratio}" />
+            <input class="input-text" name="numid" type="text" {if condition="$data.data.numid eq '0'"} value="" {else /} value="{$data.data.numid}" {/if} style="width:80px;">
+            <select name="id" id="" style="width:90px;">
+                <option value="pid" {if condition="$data.data.id eq 'pid'"} selected {/if}>计划ID</option>
+                <option value="uid" {if condition="$data.data.id eq 'uid'"} selected {/if}>站长ID</option>
+                <option value="ad_id" {if condition="$data.data.id eq 'ad_id'"} selected {/if}>广告ID</option>
+                <option value="adz_id" {if condition="$data.data.id eq 'adz_id'"} selected {/if}>广告位ID</option>
+                <option value="adv_id" {if condition="$data.data.id eq 'adv_id'"} selected {/if}>广告商ID</option>
+                <option value="site_id" {if condition="$data.data.id eq 'site_id'"} selected {/if}>网站ID</option>
+                <option value="class_name" {if condition="$data.data.id eq 'class_name'"} selected {/if}>网站分类名称</option>
+            </select>
+            <select name="sort" id="" style="width:90px;">
+                <option value="ctime" {if condition="$data.data.sort eq 'ctime'"} selected {/if}>日期</option>
+                <option value="views" {if condition="$data.data.sort eq 'views'"} selected {/if}>浏览数</option>
+                <option value="web_num" {if condition="$data.data.sort eq 'web_num'"} selected {/if}>结算数</option>
+                <option value="click_num" {if condition="$data.data.sort eq 'click_num'"} selected {/if}>点击率</option>
+                <option value="web_deduction" {if condition="$data.data.sort eq 'web_deduction'"} selected {/if}>扣量数</option>
+                <option value="sumpay" {if condition="$data.data.sort eq 'sumpay'"} selected {/if}>佣金</option>
+                <option value="sumprofit" {if condition="$data.data.sort eq 'sumprofit'"} selected {/if}>盈利</option>
+                <option value="click_cost" {if condition="$data.data.sort eq 'click_cost'"} selected {/if} >点击成本</option>
+                <option value="ui_web" {if condition="$data.data.sort eq 'ui_web'"} selected {/if} >独立ip</option>
+                <!--<option value="heavy_click_num" {if condition="$data.data.sort eq 'heavy_click_num'"} selected {/if}>排重点击</option>-->
+            </select>
+            <select name="type" id="" style="width:90px;">
+                <option value="0" {if condition="$data.data.type eq '0'"} selected {/if}>所有类型</option>
+                <option value="cpc" {if condition="$data.data.type eq 'cpc'"} selected {/if}>Cpc类型</option>
+                <option value="cpm" {if condition="$data.data.type eq 'cpm'"} selected {/if}>Cpm类型</option>
+                <option value="cpv" {if condition="$data.data.type eq 'cpv'"} selected {/if}>Cpv类型</option>
+                <option value="cps" {if condition="$data.data.type eq 'cps'"} selected {/if}>Cps类型</option>
+                <option value="cpa" {if condition="$data.data.type eq 'cpa'"} selected {/if}>Cpa类型</option>
+            </select>
+            <select id="selectime" name="time" id="" style="width:204px;">
+                <option id="fatime" value="{$data.data.nowval}">{$data.data.now}</option>
+                <option value="{$data.data.allday}" {if condition="$data.data.time eq $data.data.allday"} selected {/if}>所有时间段</option>
+                <option value="{$data.data.today}" {if condition="$data.data.time eq $data.data.today"} selected {/if}>今天</option>
+                <option value="{$data.data.yesterday}" {if condition="$data.data.time eq $data.data.yesterday"} selected {/if}>昨天</option>
+                <option value="{$data.data.lastseven}" {if condition="$data.data.time eq $data.data.lastseven"} selected {/if}>最近七天</option>
+                <option value="{$data.data.lastthirty}" {if condition="$data.data.time eq $data.data.lastthirty"} selected {/if}>最近30天</option>
+                <option value="{$data.data.lastmonth}" {if condition="$data.data.time eq $data.data.lastmonth"} selected {/if}>上个月</option>
+            </select>
+            <img src="/admin/img/calendar.png" id="reservation">
+            <button type="input" style="width:150px;"><i class="fa fa-search"></i></button>
+        </form>
+    </div>
+    <form  action="/admin/Report/delReport" name="delete" id="delete" method="post">
+    <input type="hidden" name="numid" value="{$data.data.numid}"/>
+    <input type="hidden" name="number" value="{$data.data.id}"/>
+    <input type="hidden" name="stats" value="{$data.data.stats}"/>
+    <input type="hidden" name="time" value="{$data.data.time}"/>
+    <input type="hidden" name="sort" value="{$data.data.sort}"/>
+    <div class="row">
+        <div class="plan6">
+            <div class="dataTables-length">
+                批量操作：
+                <a href="javascript:;"  ><button class="btn btn-primary" type="button" onclick="delLst();" style="padding:2px 12px;">删除</button></a>&nbsp;&nbsp;
+                <i class="fa fa-plus-circle"></i><a href="#" id="excel" style="color:#09a26f;"> 导出Excel</a>
+            </div>
+        </div>
+    </div>
+    <table class="dataTable table-hover">
+        <tr>
+            <th><input id="" name="" type="checkbox" class="checkedAll" data-name="data-name"></th>
+            <th>日期</th>
+            <th>站长id</th>
+            <th>站长名称</th>
+            <th>浏览数</th>
+            <th>点击数</th>
+            <th>跳转数</th>
+            <th>独立访客</th>
+            <th>独立IP</th>
+            {if condition="$judge_name eq 'admin'"}<th>扣量数</th>{/if}
+            <th>结算数</th>
+            <th>CRT</th>
+            <th>点击率</th>
+            <!--{if condition="$type =='pid' || $type == 'uid' || $type =='adz_id'"}<td>排重点击</td>{/if}-->
+            <th>排重点击</th>
+            <th>点击成本</th>
+            {if condition="!($judge_name eq 'yanfabu' || $judge_name eq 'yfbtest')"}
+            <th>跑量佣金</th>
+            <th>包天价钱</th>
+            {/if}
+            {if condition="($judge_name eq 'admin' || $judge_name eq 'yfb001' || $judge_name eq 'yyblizz'|| $judge_name eq 'yunyingbu1'|| $judge_name eq 'yunyingbu2' || $judge_name eq 'yunyingbu3')"}
+            <th>跑量盈利</th>
+            {/if}
+            <!--<td>实际盈利</td>-->
+        </tr>
+        <tr>
+            <th>汇总</th>
+            {if condition="$data.data.views neq ''"}
+            <th></th>
+            <th></th>
+            <th></th>
+            <th>{$data.data.views|default='0'}</th>
+            <th>{$data.data.click_num|default='0'}</th>
+            <th>{$data.data.jump|default='0'}</th>
+            <th>{$data.data.uv_web|default='0'}</th>
+            <th>{$data.data.ui_web|default='0'}</th>
+            {if condition="$judge_name eq 'admin'"}<th>{$data.data.web_deduction|default='0'|num_Round}</th>{/if}
+            <th>{$data.data.web_num|default='0'|num_Round}</th>
+            <th>{$data.data.crt|default='0'}%</th>
+            <th>{$data.data.ctr|default='0'}%</th>
+<!--             {if condition="$type =='pid' || $type == 'uid' || $type =='adz_id'"}<th id="all_web_click_num">{$data.data.web_click_num|default='0'}</th>{/if} -->
+            <th>{$data.data.web_click_num|default='0'|num_Round}</th>
+            <th>{$data.data.click_cost|default='0'}</th>
+            {if condition="!($judge_name eq 'yanfabu' || $judge_name eq 'yfbtest')"}
+            <th>{$data.data.sumpay|default='0'|process_decimal}</th>
+            <th>{$data.data.cpd|default='0'}</th>
+            {/if}
+            {if condition="($judge_name eq 'admin' || $judge_name eq 'yfb001' || $judge_name eq 'yyblizz'|| $judge_name eq 'yunyingbu1'|| $judge_name eq 'yunyingbu2' || $judge_name eq 'yunyingbu3')"}
+            <th>{$data.data.sumprofit|default='0'|process_decimal}</th>
+            {/if}
+            <!--<th>{$data.data.fact_sumprofit|default='0'}</th>-->
+            {/if}
+        </tr>
+            {volist name="data.res" id="vo" }
+            <tr>
+            <td><input id="" name="id[]" value="{$vo.uid}.{$vo.day}.uid" type="checkbox" data-name="data-name"></td>
+            <td>{$vo.day|default=''}</td>
+            <td>{$vo.uid|default='不存在'}</td>
+            <td><a class="detailed_info">{$vo.username|default='已删除'}</a></td>
+            <td>{$vo.views|default='0'}</td>
+            <td>{$vo.click_num|default='0'}</td>
+            <td>{$vo.jump|default='0'}</td>
+            <td>{$vo.uv_web|default='0'}</td>
+            <td>{$vo.ui_web|default='0'}</td>
+            {if condition="$judge_name eq 'admin'"}<td>{$vo.web_deduction|default='0'|num_Round}</td>{/if}
+            <td>{$vo.web_num|default='0'|num_Round}</td>
+            <td>{$vo.crt|default='0'}%</td>
+            <td>{$vo.ctr|default='0'}%</td>
+<!--             {if condition="$type =='pid' || $type == 'uid' || $type =='adz_id'"}<td class="web_click_num" data="{$vo.click_num|default='0'}/{$data.data.click_num|default='0'}">{$vo.web_click_num|default='0'}</td>{/if} -->
+            <td>{$vo.web_click_num|default='0'|num_Round}</td>
+            <td>{$vo.click_cost|default='0'}</td>
+            {if condition="!($judge_name eq 'yanfabu' || $judge_name eq 'yfbtest')"}
+            <td>{$vo.sumpay|default='0'|process_decimal}</td>
+            <td>{$vo.cpd|default='0'}</td>
+            {/if}
+            {if condition="($judge_name eq 'admin' || $judge_name eq 'yfb001' || $judge_name eq 'yyblizz'|| $judge_name eq 'yunyingbu1'|| $judge_name eq 'yunyingbu2' || $judge_name eq 'yunyingbu3')"}
+            <td>{$vo.sumprofit|default='0'|process_decimal}</td>
+            {/if}
+            <!--<td>{$vo.fact_sumprofit|default='0'}</td>-->
+            </tr>
+            <tr class="u_info">
+                <td colspan="103">
+                    <table class="tab_info" border="0" cellpadding="0" cellspacing="0" width="100%">
+                        <tr>
+                            <td height="30">
+                                <strong>查看该站长下</strong>
+                                <span class="span7" style="padding-left:20px;">
+                                    <a href="/admin/report/planReport?numid={$vo.uid}&id=uid&stats=plan_list&time={$data.data.time}&type={$data.data.type}&sort={$data.data.sort}&ratio={$vo.web_click_num|default='0'}">计划报表</a>
+                                </span>
+                                <span class="span7" style="padding-left:20px;">
+                                    <a href="/admin/report/webReport?numid={$vo.uid}&id=uid&stats=user_list&time={$data.data.time}&type={$data.data.type}&sort={$data.data.sort}&ratio={$vo.web_click_num|default='0'}">站长报表</a>
+                                </span>
+                                <span class="span7" style="padding-left:20px;">
+                                    <a href="/admin/report/adsReport?numid={$vo.uid}&id=uid&stats=ads_list&time={$data.data.time}&type={$data.data.type}&sort={$data.data.sort}">广告报表</a>
+                                </span>
+                                <span class="span7" style="padding-left:20px;">
+                                    <a href="/admin/report/zoneReport?numid={$vo.uid}&id=uid&stats=zone_list&time={$data.data.time}&type={$data.data.type}&sort={$data.data.sort}&ratio={$vo.web_click_num|default='0'}">广告位报表</a>
+                                </span>
+                                <span class="span7" style="padding-left:20px;">
+                                    <a href="/admin/report/advReport?numid={$vo.uid}&id=uid&stats=adv_list&time={$data.data.time}&type={$data.data.type}&sort={$data.data.sort}">广告商报表</a>
+                                </span>
+                                <span class="span7" style="padding-left:20px;">
+                                    <a href="/admin/report/siteReport?numid={$vo.uid}&id=uid&stats=site_list&time={$data.data.time}&type={$data.data.type}&sort={$data.data.sort}">网站报表</a>
+                                </span>
+                                 <span class="span7" style="padding-left:20px;">
+                                    <a href="/admin/report/classReport?numid={$vo.uid}&id=uid&stats=classes_list&time={$data.data.time}&type={$data.data.type}&sort={$data.data.sort}">网站分类报表</a>
+                                </span>
+                                <span class="span7" style="padding-left:20px;">
+                                    <a href="/admin/report/adzClassReport?numid={$vo.uid}&id=uid&stats=adzClass_list&time={$data.data.time}&type={$data.data.type}&sort={$data.data.sort}">广告位分类报表</a>
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            {/volist}
+    </table>
+    </form>
+    
+    <div class="row">{$data.show}</div>
+</div>
+
+{/block}
+
+<!-- end wrapper -->
+
+{block name="js"}
+<!-- <script src="__JS__/report.js"></script> -->
+<script src="__STATIC__/js/moment.min.js"></script>
+<script src="__JS__/daterangepicker.js"></script>
+<script src="__JS__/moment.js"></script>
+<script type="text/javascript">
+    // 批量删除
+    function delLst(){
+        layer.confirm('确定删除吗？', {
+            btn: ['确定','取消'] //按钮
+        }, function(){
+            $('form').submit();
+        });
+    }
+
+    $(document).ready(function() {
+        var time = $('select[name="time"] option:selected').val();
+        var start = time.substr(0,10);
+        var end = time.substr(10);
+        $('#reservation').daterangepicker({
+            startDate: start,
+            endDate: end,
+        }, function(start, end, label) {
+            var a = start.format();
+            var b = end.format();
+            //start time
+            var c = a.substr(0,10);
+            //end time
+            var d = b.substr(0,10);
+            // console.log(a+'----'+b+'----'+c+'----'+d);
+            //点击选中第一个
+            $("#selectime option:first").prop("selected","selected");
+            $("#fatime").text(c+"至"+d);
+            $("#fatime").val(value = c+""+d);
+        });
+        //页面跳转之后 的状态以及颜色
+        $('#repo_data').children("a").each(function(){
+            // $(this).removeClass("repo_data");
+            if($(this)[0].href==String(window.location)){
+                $(this).addClass("repo_data");
+                $(this).siblings().removeClass("repo_data");
+            }
+        });
+    });
+
+    $('#excel').click(function(){
+        var stats = '{$data.data.stats}';
+        var numid = $('input[name="numid"]').val();
+        var id = $('select[name="id"] option:selected').val();
+        var sort = $('select[name="sort"] option:selected').val();
+        var type = $('select[name="type"] option:selected').val();
+        var time = $('select[name="time"] option:selected').val();
+
+        window.location.href="/admin/report/webExcel?stats="+stats+"&numid="+numid+"&id="+id+"&sort="+sort+"&type="+type+"&time="+time;
+    })
+</script>
+{/block}

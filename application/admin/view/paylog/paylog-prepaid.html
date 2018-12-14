@@ -1,0 +1,181 @@
+{extend name="public:base" /}
+{block name="css"}
+<link href="__CSS__/daterangepicker-bs3.css" rel="stylesheet" />
+{/block}
+<!-- block main start -->
+{block name="main"}
+<!--body  -->
+
+<div class="wrapper">
+    <div class="row-fluid">
+        <div id="repo_data" class="tb_sts" style="position:absolute; top:110px; right:30px;">
+            <!-- <a href="/admin/paylog/rechaegelog" class="payTab"><i class="fa fa-plus-circle"></i>全部信息</a> -->
+      <!--       <a href="/admin/paylog/payPal"><i class="fa fa-plus-circle"></i>充值失败</a>
+            <a href="/admin/paylog/paid"><i class="fa fa-plus-circle"></i>已完成充值</a>
+            <a href="/admin/paylog/paid"><i class="fa fa-plus-circle"></i>手动增加的</a>
+            <a href="/admin/paylog/paid"><i class="fa fa-plus-circle"></i>手动扣除的</a> -->
+        </div>
+        <h3 class="heading">充值管理</h3>
+        <div class="dataTables-wrapper">
+            <div class="tb-lis">
+                <a href="/admin/paylog/addLog"><i class="fa fa-plus-circle"></i>手动充值</a>
+                <div style="display:none;">
+                    <a href="#"><i class="fa fa-flag-o"></i>已审核</a>
+                    <a href="#"><i class="fa fa-flag-o"></i>已锁定</a>
+                    <a href="#"><i class="fa fa-flag-o"></i>限额过期</a>
+                    <a href="#"><i class="fa fa-flag-o"></i>修改待审</a>
+                </div> 
+                
+        </div>
+        <div> 
+            <i class="fa fa-plus-circle"></i><a href="#" id="excel"  style="color:#09a26f;">导出充值记录Excel</a>
+        </div>
+      </div>      
+             <!--批量操作，暂时隐藏，下一期进行开发-->
+            <div class="row">
+             <div class="plan6">
+                        <div class="dataTables-length">
+                            <form action="/admin/paylog/rechaegelog" id="sou" method="post">
+                                搜索：
+                            <input class="input-text input1" name="search" id="fatime" value="{$params.search|default=''}" type="text">
+                            <select name="recharges">
+                                <option value="username" {if condition="$params.recharges eq 'username'"} selected {/if}>广告商名称</option>
+                                <option value="uid" {if condition="$params.recharges eq 'uid'"} selected {/if}>广告商ID</option>
+                                <option value="date" {if condition="$params.recharges eq 'date'"} selected {/if}>日期</option>
+                            </select>
+                                <img src="/admin/img/calendar.png" id="dataid"> 
+                                <button type="input" style="width:100px"><i class="fa fa-search"></i></button>
+                            </form>
+                        </div>
+                    </div>
+
+               <!--  <div class="row">
+                    <div class="plan6">
+                        <div class="dataTables-length">
+                             批量操作：
+                            <a href="javascript:;"  ><button class="btn btn-primary" type="button" style="padding:2px 12px;">删除</button></a>
+                            <select>
+                                <option value="">所有网管</option>
+                                <option value="">所有网管1</option>
+                                <option value="">所有网管2</option>
+                            </select>
+                        </div>
+                    </div>
+                </div> -->
+            <form action="/admin/paylog/deleLog" name="delete" id="delete" method="post">
+                    <div class="plan6">
+                        <div class="dataTables-filter">
+                             批量操作：
+                            <a href="javascript:;"  ><button class="btn btn-primary" type="button" onclick="delLst();" style="padding:2px 12px;">删除</button></a>
+                        </div>
+                    </div>
+                   
+                </div>
+                <table class="dataTable table-hover" name="paylog-prepaid" >
+                    <tr role="row">
+                        <th rowspan="1" colspan="1" style="width:13px;"><input id="" class="checkedAll" name="" type="checkbox" data-name="name-data"></th>
+                        <th>ID</th>
+                        <th>会员名称</th>
+                        <th>日期</th>
+                        <!-- <th>订单</th> --> 
+                        <th>充值金额</th>
+                        <!-- <th>余额</th> -->
+                        <th>充值人</th>
+                        <th>备注</th>
+                        <th>状态</th>
+                    </tr>
+                      {volist name="paylog" id="vo"}
+                    <tr class="unread">
+                        <td rowspan="1" colspan="1" style="width:13px;"><input id="" name="id[]" value="{$vo.id}" type="checkbox" data-name="name-data"></td>
+                        <td>{$vo.uid}</td>
+                        <td>{$vo.username}</td>
+                        <td>{$vo.ctime|date="Y-m-d H:i:s",###}</td>
+                        <td>{$vo.money}</td>
+                        <td>{$vo.clearingadmin}</td>
+                        <td rowspan="1" colspan="1" style="width:300px;">{$vo.payinfo|default='空'}</td>
+                        <td>充值成功</td>
+                    </tr>
+                   <!--    <tr class="u_info">
+                    <td colspan="103">
+                        <table class="tab_info" border="0" cellpadding="0" cellspacing="0" width="100%">
+                            <tr>
+                                <td height="30">
+                                    <strong>基本信息</strong>
+                                    <span class="span7" style="padding-left:20px;">
+                                        <a href="">查看充值记录</a>
+                                    </span>
+                                </td>
+                            </tr> -->
+                           <!--  <tr>
+                                <td bgcolor="#fff">
+                                    <table class="master_table">
+                                        <tr>
+                                            <td>充值人:</td>
+                                            <td class="color_h">{$vo.bank_name|default=''}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>充值方式:</td>
+                                            <td class="color_h">{$vo.account_name|default=''}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>充值金额:</td>
+                                            <td class="color_h">{$vo.bank_card|default=''}</td>
+                                        </tr>
+                                        <tr>
+                                        <tr>
+                                            <td>实付金额:</td>
+                                            <td class="color_h">{$vo.money}</td>
+                                        </tr>
+                                    </table>
+                                </table> -->
+
+                    {/volist}
+                </table>
+        </div>
+    </form>
+        <div class="row">
+            {$page} 
+        </div>
+    </div>
+</div>
+<!-- end wrapper -->
+{/block}
+
+{block name="js"}
+<script src="__STATIC__/js/moment.min.js"></script>
+<script src="__JS__/daterangepicker.js"></script>
+<script src="__JS__/moment.js"></script>
+<script type="text/javascript">
+    // 批量删除
+    function delLst(){
+        layer.confirm('确定删除吗？', {
+          btn: ['确定','取消'] //按钮
+        }, function(){
+            $('form').submit();
+        });
+    }
+
+    //选择日期
+    $('#dataid').daterangepicker(null, function(start, end, label) {
+        console.log(start.toISOString(), end.toISOString(), label);
+        var a = start.format();
+        var b = end.format();
+        //start time
+        var c = a.substr(0,10);
+        //end time
+        var d = b.substr(0,10);
+        //点击选中第一个
+        $("#fatime").text(c+"至"+d);
+        $("#fatime").val(value = c+"至"+d);
+    });
+
+    //导出excel
+     $('#excel').click(function(){
+        var  search= $('input[name="search"]').val();
+        var select = $('select[name="recharges"] option:selected').val();
+        window.location.href="/admin/paylog/advexcel?select="+select+"&search="+search;
+    })
+</script>
+{/block}
+<!-- block main end -->
+ 

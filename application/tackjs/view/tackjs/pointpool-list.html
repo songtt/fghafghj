@@ -1,0 +1,77 @@
+{extend name="public:base" /}
+
+{block name="main"}
+<div class="wrapper">
+    <div class="row-fluid">
+        <div id="repo_data" class="tb_sts" style="position:absolute; top:110px; right:30px;">
+            <a href="/tackjs/tackjs/pointpoollist?status=all&search={$pageParam.search | default=''}&select={$pageParam.select | default=''}"  {if condition="$pageParam.status eq 'all'"} class="repo_data"   {/if} >全部</a>
+            <a href="/tackjs/tackjs/pointpoollist?status=0&search={$pageParam.search | default=''}&select={$pageParam.select | default=''}" {if condition="$pageParam.status eq '0'"} class="repo_data" {/if} >锁定</a>
+            <a href="/tackjs/tackjs/pointpoollist?status=1&search={$pageParam.search | default=''}&select={$pageParam.select | default=''}" {if condition="$pageParam.status eq '1'"} class="repo_data" {/if}>激活</a>
+        </div>
+        <h3 class="heading">点弹池管理</h3>
+        <div class="dataTables-wrapper">
+            <div class="tb-lis users_lis">
+                <a href="/tackjs/tackjs/addpointpool"><i class="fa fa-plus-circle"> 新增点弹链接
+                </i></a>
+                <div class="tb_sts">
+                    <form  action="/tackjs/tackjs/pointpoollist" name="tack" method="post">
+                        搜索：
+                        <input class="input-text input1" name="search" value="{$pageParam.search|default=''}" type="text" style="width:160px">
+                        <select name="select">
+                            <option value="url_name" {if condition="$pageParam.select eq 'url_name'"} selected {/if}>链接名称</option>
+                            <option value="url" {if condition="$pageParam.select eq 'url'"} selected {/if}>URL</option>
+                            <option value="id" {if condition="$pageParam.select eq 'id'"} selected {/if}>ID</option>
+                        </select>
+                        <button type="input" style="width:100px"><i class="fa fa-search"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <table class="dataTable table-hover" name="users-list" >
+            <tr role="row">
+                <th rowspan="1" colspan="1" style="width:13px;"><input class="checkedAll" id="" name="site" type="checkbox" data-name="name-data"></th>
+                <th>ID</th>
+                <th>链接名称</th>
+                <th>链接URL</th>
+                <th>链接应用的广告位</th>
+                <th>状态</th>
+                <th>操作</th>
+            </tr>
+            {volist name="res" id="vo"}
+            <tr class="unread">
+                <td rowspan="1" colspan="1" style="width:13px;"><input id="" name="site" type="checkbox" data-name="name-data"></td>
+                <td>{$vo.id}</td>
+                <td style="word-break:break-all;max-width: 350px;">{$vo.url_name}</td>
+                <td style="word-break:break-all;max-width: 350px;"><a href="{$vo.url}" target="_blank">{$vo.url}</a></td>
+                <td><a href='/tackjs/tackjs/poolToAdz?id={$vo.id}&type=0'>查看广告位</a></td>
+                <td>
+                    <span class="common-button ajax-status">
+                        {switch name="$vo.status" }
+                            {case value="0"}<span class="sta_er">锁定</span>{/case}
+                            {case value="1"}<span class="sta_bl">活动</span>{/case}
+                        {/switch}
+                    </span>
+                </td>
+                <td>
+                    <a href="javascript:;"  class="data-lock"  data='{"id":"{$vo.id}","status":"0"}' durl='/tackjs/tackjs/pointpoolstatus' statuscls='ajax-status'>锁定</a>
+                    <a href="javascript:;"  class="data-activation"  data='{"id":"{$vo.id}","status":"1"}' durl='/tackjs/tackjs/pointpoolstatus' statuscls='ajax-status'>激活</a>
+                    <a href="/tackjs/tackjs/editpointpool?id={$vo.id}">编辑</a>
+                    <a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                    <a href="javascript:;" class="ajax-del" data='{"id":{$vo.id}}' durl="/tackjs/tackjs/deletepointpool">删除</a>
+                </td>
+            </tr>
+            {/volist}
+        </table>
+        <div class="row">
+            {$page}
+        </div>
+    </div>
+</div>
+
+<!-- end wrapper -->
+{/block}
+
+{block name="js"}
+<script type="text/javascript">
+</script>
+{/block}

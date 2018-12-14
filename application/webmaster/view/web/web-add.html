@@ -1,0 +1,130 @@
+{extend name="public:base" /}
+
+{block name="main"}
+<!--  添加  -->
+<div class="wrapper">
+    <div>
+        <h3 class="heading">新增网站信息</h3>
+        <form class="" method="post" id="fromParam">
+            <div class="control-group formSep">
+                <label class="control-label">网站域名</label>
+                <div class="controls">
+                    <input class="input-text input1 required" name="web_url" type="text"><span class="erro">请输入网站url</span><span style="color: red">*必填</span>
+                </div>
+            </div>
+            <div class="control-group formSep st">
+                <label class="control-label">网站类型</label>
+                <div class="control-group formSep">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <select class="classification required" name="web_type">
+                {volist name="class" id="vo"}
+                        <option value="{$vo.class_name}" >{$vo.class_name}</option>
+                {/volist}
+                </select><span style="color: red">*必选</span>(默认分类：门户网站)
+                </div>
+            </div>
+            <div class="control-group formSep">
+                <label class="control-label">大致流量</label>
+                <div class="controls">
+                    <input class="input-text input1 required" name="about_ip" type="text"><span class="erro">请输入大致流量</span><span style="color: red">*必填</span>
+                </div>
+            </div>
+            <div class="control-group formSep">
+                <label class="control-label">QQ</label>
+                <div class="controls">
+                    <input class="input-text input1 required " name="qq" type="text" value=""><span class="erro">请输入QQ</span><span style="color: red">*必填</span>
+                </div>
+            </div>
+            <div class="control-group formSep">
+                <label class="control-label">电话</label>
+                <div class="controls">
+                    <input class="input-text input1" name="tel" type="text" value="">
+                </div>
+            </div>
+            <div class="control-group formSep">
+                <label class="control-label">电子邮件</label>
+                <div class="controls">
+                    <input class="input-text input1" name="email" type="text">
+                </div>
+            </div>
+            <div class="control-group formSep">
+                <label class="control-label">地域</label>
+                <div class="controls">
+                    <input class="input-text input1" name="area" type="text">
+                </div>
+            </div>
+            <div class="control-group formSep">
+                <label class="control-label">权重</label>
+                <div class="controls">
+                    <input class="input-text input1 required" name="weights" type="text"><span class="erro">请输入权重</span><span style="color: red">*必填</span>
+                </div>
+            </div>
+            <div class="control-group formSep">
+                <label class="control-label">负责人</label>
+                <div class="controls">
+                    {if condition="$_SESSION['think']['webmaster_login_id'] eq 'admin'"}
+                    <input class="input-text input1" name="customer" value="管理员" type="text">
+                    {else \}
+                    <input class="input-text input1" name="customer" value="{$_SESSION['think']['webmaster_login_id']}" type="text">
+                    {/if}
+                </div>
+            </div>
+            <div class="control-group formSep">
+                <label class="control-label">备注</label>
+                <div class="controls">
+                    <input class="input-text input1" name="info" type="text">
+                </div>
+            </div>
+            <div class="control-group formSep">
+                <div class="controls">
+                    <button class="btn btn-primary" type="submit">提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{/block}
+
+<!-- end wrapper -->
+
+{block name="js"}
+<script type="text/javascript">
+
+var flag = true;
+$('#fromParam').submit(function(){
+    $(".required").each(function(){
+        if($(this).val() == ""){
+            flag = false;
+        }else{
+            flag = true;
+        }
+    })
+    if(flag){
+        //点击按钮提交
+        var href = '/webmaster/web/add';
+        var data = $("#fromParam").serialize();
+        $.post(href,data,success);
+        function success(data) {
+            console.log(data);
+                if (data.status == 1) {
+                    layer.msg(data.info, {icon: 1});
+                    setTimeout(function(){
+                        window.location.href='/webmaster/web/list';
+                    },2000);
+                } else {
+                    layer.msg(data.info, {icon: 1});
+                    setTimeout(function(){},2000);
+                    return false;
+                }
+        }
+        return false;
+    }else{
+        return false;
+    }
+
+
+});
+
+</script>
+{/block}

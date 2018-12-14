@@ -1,0 +1,244 @@
+{extend name="public:customer-base" /}
+
+{block name="main"}
+    <!--会员管理-->
+    <div class="main_left">
+        <div class="subnav">
+            <div class="subnav-title">
+                <a href="" class="toggle-subnav">
+                    <i></i>
+                    <span>我的概括</span>
+                </a>
+            </div>
+            <ul class="subnav-menu">
+                <li><a href="/home/customer/index">我的概括</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="main" style="padding-top:10px;">
+        <table style=" margin-top:30px;" border="0" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td>
+                            <form method="post" action="/home/customer/user" name="select">
+                                <table style="width:430px;" border="0" cellpadding="0" cellspacing="0">
+                                    <tr class="user_input">
+                                        <td><input type="text" name="num"  {if condition="$one.params.num eq '0'"} value="" {else/} value="{$one.params.num}" {/if}></td>
+                                        <td>
+                                            <select name="selectName" style="wdith:auto;">
+                                                <option value="uname" {if condition="$one.params.selectName eq 'uname'"} selected {/if}>会员名称</option>
+                                                <option value="uid" {if condition="$one.params.selectName eq 'uid'"} selected {/if}>会员ID</option>
+                                            </select>
+                                        </td>
+                                        <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                        <td>
+                                            <select name="sortMethod">
+                                                <option value="descend" {if condition="$one.params.sortMethod eq 'descend'"} selected {/if}>降序</option>
+                                                <option value="ascend" {if condition="$one.params.sortMethod eq 'ascend'"} selected {/if}>升序</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select name="sortName">
+                                                <option value="ctime" {if condition="$one.params.sortName eq 'ctime'"} selected {/if}>默认排序</option>
+                                                <option value="settled_money" {if condition="$one.params.sortName eq 'settled_money'"} selected {/if}>已结算金额</option>
+                                                <option value="money" {if condition="$one.params.sortName eq 'money'"} selected {/if}>未结算金额</option>
+                                                <option value="sumpay" {if condition="$one.params.sortName eq 'sumpay'"} selected {/if}>今日收益</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select name="sortMoney">
+                                                <option value="all" {if condition="$one.params.sortMoney eq 'all'"} selected {/if}>全部会员</option>
+                                                <option value="sumpay" {if condition="$one.params.sortMoney eq 'sumpay'"} selected {/if}>60天内有收益会员</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <button type="submit" class="btn btn-primary">搜索</button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </form>
+                        </td>
+                    </tr>
+                </table>
+        <div class="box">
+            <div class="box-title">
+                <h4>
+                    <i></i>会员管理 
+                    &nbsp&nbsp&nbsp&nbsp&nbsp
+                    <span><i class="fa fa-plus-circle"></i><a href="/home/customer/custExcel?cpd_type=0" style="color:#09a26f; font-size: 18px;">导出跑量周结算</a> &nbsp&nbsp&nbsp</span>
+                    <span><i class="fa fa-plus-circle"></i><a href="/home/customer/custExcel?cpd_type=1" style="color:#09a26f; font-size: 18px;">导出包月周结算</a> &nbsp&nbsp&nbsp</span>
+                    <span><i class="fa fa-plus-circle"></i><a href="/home/customer/custExcel?cpd_type=2" style="color:#09a26f; font-size: 18px;">导出公户跑量周结算</a> </span>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <span><i class="fa fa-plus-circle"></i><a href="javascript:;" id="test" style="color:#09a26f; font-size: 18px;">申请测试</a> </span>
+                </h4>
+            </div>
+            <div class="box-content">
+                <table class="table">
+                    <tr>
+                        <th>会员ID</th>
+                        <th>会员名称</th>
+                        <th>已结算金额</th>
+                        <th>未结算金额</th>
+                        <th>今日收益</th>
+                        <th>状态</th>
+                        <th>合作模式</th>
+                        <th>操作</th>
+                    </tr>
+                    {volist name="one.res" id="vo"}
+                    <tr>
+                        <td>{$vo.uid}</td>
+                        <td><a href="/home/customer/toWebmaster?uid={$vo.uid}" target="_blank">{$vo.username}</a></td>
+                        <td>{$vo.settled_money|default='0.00'|decimal}</td>
+                        <td>{$vo.money|default='0.00'|decimal}</td>
+                        <td>{$vo.sumpay|default='0.00'|decimal}</td>
+                        <td>
+                            <span class="common-button ajax-status">
+                            {switch name="vo.status" }
+                                {case value="0"}<span class="sta_er">锁定</span>{/case}
+                                {case value="1"}<span class="sta_bl">活动</span>{/case}
+                                {case value="2"}<span class="sta_er">待审</span>{/case}
+                            {/switch}
+                            </span>
+                        </td>
+                      <td><div class="tb-lis cpd_typea" style="height: 12px"><a href="javascript:;" id="cpd_typea" data="{$vo.uid}">
+                           {switch name="vo.cpd_type" }
+                                {case value="0"}<span>跑量</span>{/case}
+                                {case value="1"}<span>包月</span>{/case}
+                                {case value="2"}<span>公户跑量</span>{/case}
+                            {/switch}
+                      </a></div></td>
+                       
+                        <td>
+                            <a href="javascript:;"  class="data-activation"  data='{"uid":"{$vo.uid}","status":"1"}' durl='/home/customer/usersActivate' >审核</a>
+                            <a href="javascript:;"  class="data-lock"  data='{"uid":"{$vo.uid}","status":"0"}' durl='/home/customer/usersActivate' >锁定</a>
+                            <a href="javascript:;"  class="users-Reset"  data='{"uid":"{$vo.uid}","status":"1"}' durl='/home/customer/usersReset?uid={$vo.uid}'>密码重置</a>
+                        </td>
+                    </tr>
+                    {/volist}
+                </table>
+            </div>
+        </div>
+        {$one.show}
+    </div>
+<div class="modal" style="width: 350px; height:200px; top: 240px; left: 700px;background: #eee; border-radius: 5px;display:none;">
+        <label class="control-label" for="" style="width: 100%;height: 40px;line-height:40px;background: #f7f7f7;font-size: 16px;padding-left: 15px;">编辑合作模式<span class="tc_close" style="margin-top: 8px;margin-right: 10px;text-align: center;float: right; width: 14px;height: 14px;line-height: 14px;cursor: pointer;background: url(/admin/img/close.jpg);background-size: 100%;"></span></label>
+    <div class="modal-body">
+        <div class="text" style="margin:0; padding-top:0; margin-left:20px;">
+            <form action="/home/customer/editCpdType" name="addform" method="post">
+                <div class="controls">
+                    <select name="cpd_type" id="" style="width:160px;">
+                        <option value="0">跑量</option>
+                        <option value="1">包月</option>
+                        <option value="2">公户跑量</option>
+                    </select>
+                </div>          
+                <div id="hidden" style="display: none"></div>
+                <div class="" style="margin-top:40px;">     
+                    <button class="btn btn-primary" type="submit" id="handbtn" clicked="0">提交</button>
+                </div>
+            </form>
+        </div>
+</div>
+</div>
+<div class="addtest" style="width: 650px; height:340px;position: absolute; top: 150px; left: 651.5px;background: white;display: none;">
+        <div class="modal_test" style="margin:0; padding-top:0;display:none;">
+            
+            <div class="modal-header">
+                    <div class="modal_title" style="margin-top: 8px; font-weight: bold;font-size: 20px">申请测试
+                    </div>
+                    <div class="testclose" style="margin-top: 8px;margin-right: 10px;text-align: center;float: right; width: 14px;height: 14px;line-height: 14px;cursor: pointer;background: url(/admin/img/close.jpg);background-size: 100%;"></div>
+            </div>
+            <div class="modal-body">
+            <form action="/home/customer/user_test" name="addform" method="post">
+                <div class="txt-fld txt-name " id="testid" style="height: 50px">
+                    <label class="tit" for="">测试主体</label>
+                    <input type="radio" value="2" checked="checked" data='one' name="testid">站长
+                    <input type="radio" value="1" checked="checked" data='one' name="testid">广告位
+                </div>
+
+
+                <div class="txt-fld txt-name" style="height: 50px">
+                    <label class="tit" for="">测试类型</label>
+                    <input type="radio" name="test" value="1">清理类测试
+                    <input type="radio" name="test" checked="checked" value="2" >高要求测试
+                    <input type="radio" name="test" value="3">小清新测试
+                    <input type="radio" name="test" value="4">小说测试
+                    <input type="radio" name="test" value="5">文字链接测试
+                    <input type="radio" name="test" value="6">右漂测试
+                </div>
+
+
+                <div class="txt-fld">
+                    <label class="tit" for="">申请ID</label>
+                    <input name="id" type="text"> <span class="erro">请输入ID</span>
+                </div>
+
+                <div class="btn-fld" style="margin: 50px auto;">
+                    <button  class="btn btn-primary" style="" id="click" type="submit">提交</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+<div class="modal-footer"></div>
+{/block}
+
+{block name="js"}
+<script>
+ // 站长密码重置
+    $(".users-Reset").click(function(){
+        var href= $(this).attr('durl');
+        var arr= $(this).attr('data');
+        var params = $.parseJSON(arr);
+        layer.confirm('确定重置密码吗？', {
+          btn: ['确定','取消'] //按钮
+        }, function(){
+        $.post(href,params,success);
+        function success(data) {
+            if (data.status == 1) {
+                layer.msg('重置成功！', {icon: 1});
+                _this.parent().parent().find('.ajax-status').html('重置').css({
+                    "background":"#ae432e",
+                    "padding":"2px 6px",
+                    "font-size":"12px",
+                    "color":"#fff",
+                    "border-radius":"4px"
+                });
+            } else {
+                layer.msg('请勿重复重置密码！', {icon: 1});
+                return false;
+            }
+        }
+        });
+    });
+
+////选择站长合作模式弹出框    
+$(".cpd_typea>a").click(function(){
+    $(".modal_layer").show();
+    $(".modal").show(); 
+}) 
+////选择站长合作模式
+$('.cpd_typea a').click(function(){
+    var txt = $(this).attr('data');
+    $("#hidden").append("<input type='hidden' name='uid' value='"+txt+"'>");
+})
+// 关闭弹窗
+$(".tc_close").click(function(){
+    $('.modal').css({"display":"none"});
+})
+
+
+//申请测试
+$("#test").click(function(){
+    $(".addtest").show();
+    $(".modal_test").show(); 
+    document.body.style.backgroundColor="#ECECFF";
+    $('#addTest').css({"display":"block"});
+})
+// 关闭弹窗
+$(".testclose").click(function(){
+    $('.addtest').css({"display":"none"});
+    document.body.style.backgroundColor="";
+})
+
+</script>
+{/block}

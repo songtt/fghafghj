@@ -1,0 +1,173 @@
+{extend name="public:advertiser-base" /}
+{block name="css"}
+<link href="__CSS__/daterangepicker-bs3.css" rel="stylesheet" />
+{/block}
+{block name="main"}
+    <!--充值记录-->
+    <div class="main_left">
+        <div class="subnav">
+            <div class="subnav-title">
+                <a href="" class="toggle-subnav">
+                    <i></i>
+                    <span>效果报告</span>
+                </a>
+            </div>
+            <ul class="subnav-menu">
+                <li><a href="/home/advertiser/summaryReport?time={$date.time.today}">综合报告(当天)</a></li>
+                <li><a href="/home/advertiser/summaryReport?time={$date.time.lastseven}">综合报告(一周)</a></li>
+                <li><a href="/home/advertiser/summaryReport?time={$date.time.lastthirty}">综合报告(一月)</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="main" style="padding-top:10px;">
+        <div class="box">
+            <div class="box-title" style="height:100px; margin-top:10px;">
+                <div style="font-size:20px;">数据报告</div>
+                <div style="float:left; padding:10px;">
+                    <button class="btn btn-primary report_none" style="margin-top:4px; float:left;">设置为默认报告</button>
+                    <span class="echt">
+                        <strong>数据显示:</strong>
+                        <label><input name="aaa" type="radio" value="" checked="">汇总报告</label>
+                        <label><input name="aaa" type="radio" value="" onclick="window.location='/home/advertiser/normalReport?time={$date.time.time}&type=plan'">项目报告</label>
+                        <label><input name="aaa" type="radio" value="" onclick="window.location='/home/advertiser/normalReport?time={$date.time.time}&type=ads'">广告报告</label>
+                    </span>
+                </div>
+            </div>
+            <div class="box-content mt30" style="margin-left:20px;">
+                <form action="/home/advertiser/summaryReport"  method="post" name="">
+                    时间段
+                    <select id="selectime" name="time" id="" style="width:204px;">
+                        <option id="fatime" value="{$date.time.nowval}">{$date.time.now}</option>
+                        <option value="{$date.time.today}" {if condition="$date.time.time eq $date.time.today"} selected {/if}>今天</option>
+                        <option value="{$date.time.yesterday}" {if condition="$date.time.time eq $date.time.yesterday"} selected {/if}>昨天</option>
+                        <option value="{$date.time.lastseven}" {if condition="$date.time.time eq $date.time.lastseven"} selected {/if}>一周</option>
+                        <option value="{$date.time.lastthirty}" {if condition="$date.time.time eq $date.time.lastthirty"} selected {/if}>最近30天</option>
+                        <option value="{$date.time.nowmonth}" {if condition="$date.time.time eq $date.time.nowmonth"} selected {/if}>本月</option>
+                        <option value="{$date.time.lastmonth}" {if condition="$date.time.time eq $date.time.lastmonth"} selected {/if}>上个月</option>
+                        <option value="{$date.time.allday}" {if condition="$date.time.time eq $date.time.allday"} selected {/if}>所有时间段</option>
+                    </select>
+                    <img src="/home/img/calendar.png" id="reservation">
+                    <button class="btn btn-primary" style="margin-top:-4px;">搜索</button>
+                </form>
+            </div>
+            <!--<div class="box-content" style="margin-top:15px;">-->
+                <!--<div id="container" style="min-width:700px;height:400px"></div>-->
+                <!--<div class="fold"></div>-->
+            <!--</div>-->
+            <div class="box-content mt30">
+                <table class="table">
+                    <tr>
+                        <th>日期</th>
+                        <!--<th>网页浏览量</th>-->
+                        <!--<th>结算数</th>-->
+                        <!--<th>CPC有效</th>-->
+                        <!--<th>CPM有效</th>-->
+                        <!--<th>CPV有效</th>-->
+                        <!--<th>CPS有效</th>-->
+                        <!--<th>CPA有效</th>-->
+                        <th>支付</th>
+                    </tr>
+                    <tr>
+                        <td>汇总</td>
+                        <!--<td>{$date.total.adv_views|default='0'}</td>-->
+                        <!--<td>{$date.total.adv_num|default='0'}</td>-->
+                        <!--<td>{$date.total.cpm|default='0'}</td>-->
+                        <!--<td>{$date.total.cpv|default='0'}</td>-->
+                        <!--<td>{$date.total.cps|default='0'}</td>-->
+                        <!--<td>{$date.total.cpa|default='0'}</td>-->
+                        <td>{$date.total.sumadvpay|default='0' | decimal}</td>
+                    </tr>
+                    {volist name="date.report" id="vo"}
+                    <tr>
+                        <td>{$vo.day}</td>
+                        <!--<td>{$vo.adv_views}</td>-->
+                        <!--<td>{$vo.adv_num}</td>-->
+                        <!--<td>{$vo.cpm}</td>-->
+                        <!--<td>{$vo.cpv}</td>-->
+                        <!--<td>{$vo.cps}</td>-->
+                        <!--<td>{$vo.cpa}</td>-->
+                        <td>{$vo.sumadvpay | decimal}</td>
+                    </tr>
+                    {/volist}
+                </table>
+            </div>
+        </div>
+    </div>
+{/block}
+
+{block name="js"}
+<!--时间插件-->
+<script src="__STATIC__/js/moment.min.js"></script>
+<script src="__JS__/daterangepicker.js"></script>
+<script src="__JS__/moment.js"></script>
+<script type="text/javascript" src="//cdn.hcharts.cn/highcharts/highcharts.js"></script>
+<script type="text/javascript">
+    $(function(){
+        var day = [{$date.chart.day}];
+        var num = [{$date.chart.adv_num}];
+        var views = [{$date.chart.adv_views}];
+        var adv_sumadvpay = [{$date.chart.adv_sumadvpay}];
+        $('#container').highcharts({
+            title: {
+                text: '效果报告',
+                x: -20 //center
+            },
+            xAxis: {
+                categories: day
+            },
+            credits: {
+                enabled:false
+            },
+            yAxis: {
+//                title: {
+//                    text: '流量统计(IP)'
+//                },
+                title: {
+                    text: '支付统计'
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle',
+                borderWidth: 0
+            },
+//            series: [{
+//                name: '结算数',
+//                data: num
+//            },{
+//                name: '浏览数',
+//                data: views
+//            }]
+            series: [{
+                name: '支付数',
+                data: adv_sumadvpay
+            }]
+        });
+        var time = $('select[name="time"] option:selected').val();
+        var start = time.substr(0,10);
+        var end = time.substr(10);
+        $('#reservation').daterangepicker({
+            startDate: start,
+            endDate: end,
+        }, function(start, end, label) {
+            console.log(start.toISOString(), end.toISOString(), label);
+            var a = start.format();
+            var b = end.format();
+            //start time
+            var c = a.substr(0,10);
+            //end time
+            var d = b.substr(0,10);
+            //点击选中第一个
+             $("#selectime option:first").prop("selected","selected");
+             $("#fatime").text(c+"至"+d);
+             $("#fatime").val(value = c+""+d);
+        });
+    });
+</script>
+{/block}

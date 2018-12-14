@@ -1,0 +1,82 @@
+{extend name="public:base" /}
+
+{block name="main"}
+<div class="wrapper">
+    <div class="row-fluid">
+        <h3 class="heading">批量新建单价</h3>
+        <form action="" method="post" id="formId">
+            <div class="control-group control-padding">
+                <label class="control-label">选择单价模板</label>
+                <div class="controls">
+                    <select id="template_name" name="template_name" onclick="template();">
+                        {volist name="typename" id="vo"}T
+                        <option value="{$vo.template_name}">{$vo.template_name}</option>
+                        {/volist}
+                    </select>
+                    <span class="erro"></span>
+                </div>
+            </div>
+            <div id = "template_times" class="control-group control-padding" style="display: none;">
+                <label class="control-label">填写模板倍数</label>
+                <div class="controls">
+                    <input value="" name="template_times" >不填默认为1
+                    <span class="erro"></span>
+                </div>
+            </div>
+            <div class="control-group control-padding">
+                <label class="control-label">站长单价分级</label>
+                <div class="controls adzone_month">
+                    <input type="radio" name="gradation" value="0" >不分等级
+                    <input type="radio" name="gradation" value="1" checked="checked">分网站等级
+                </div>
+            </div>
+            <div class="control-group control-padding" style="margin-top:10px;">
+                <div class="controls">
+                    <input class="btn btn-primary" type="submit" value="提交">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- end wrapper -->
+
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    //判断初始页面是否选择倍数模板
+    if(($("#template_name").val()=="Android倍数模版") || ($("#template_name").val()=="IOS倍数模版")){
+        $("#template_times").css("display","block");
+    }
+    //判断select框是否选择倍数模板
+    function template(){
+        if(($("#template_name").val()=="Android倍数模版") || ($("#template_name").val()=="IOS倍数模版")){
+            $("#template_times").css("display","block");
+        }else{
+            $("#template_times").css("display","none");
+        }
+    }
+
+
+    $('#formId').submit(function(){
+        //点击按钮提交
+        var href = '/admin/plan/batchaddprice?pid={$pid}';
+        var data = $("#formId").serialize();
+        $.post(href,data,success);
+
+        function success(data) {
+            if (data.status == 1) {
+                layer.msg('批量添加成功', {icon: 1});
+                window.location.href='/admin/plan/planprice/pid/'+data.data;
+            } else {
+                layer.msg(data.info, {icon: 1});
+                setTimeout(function(){},2000);
+                return false;
+            }
+        }
+        return false;
+    });
+
+
+</script>
+{/block}

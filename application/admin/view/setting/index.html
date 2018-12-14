@@ -1,0 +1,120 @@
+{block name="css"}
+<style>
+th {
+    text-align: center;
+}
+td {
+    text-align: center;
+}
+.notice {
+    width:20px;
+    height:20px;
+    line-height:20px;
+    font-size:10px;
+    color:#fff;
+    text-align:center;
+    background-color:#f00;
+    border-radius:50%;
+    position:absolute;
+    left:290px;
+    top:12px;
+
+}
+</style>
+{/block}
+
+{extend name="public:base" /}
+
+
+{block name="main"}
+{if condition="($group_id eq '4') OR ($group_id eq '7')"}
+    {volist name="remind" id="vo"}
+        {if condition="($vo.money-$vo.adv_money < $set.adv_money)"}
+        <div style=" background:#fff;width:25%; height:20px;position:fixed center 20px;margin:0 auto;"></div>
+        <div style=" color:red;background:#cdebf9;width:25%; position:fixed center 20px;margin:0 auto;text-indent:8px; border:1px solid #b1e3fa;font-size:10px;">广告商: {$vo.username} 账户余额小于{$set.adv_money}元,请充值！</div>
+        {/if}
+    {/volist}
+{/if}
+
+<div class="wrapper">
+    <h1 style=" font-family:Verdana;color:#08c;text-align:center;margin-top:8%;">欢迎进入乐樽后台系统!</h1>
+</div>
+
+{if condition="$uname eq 'yyblizz' "}
+    <div class="planname"></div>
+
+    <!-- <div class="zonename"></div> -->
+{/if}
+
+{/block}
+
+{block name="js"}
+<script type="text/javascript">
+
+var username = "{$uname}";
+//lizz 账号才进入,获取新建的广告位
+if(username == 'yyblizz'){
+    //计划提醒
+    var info = '';
+    info+='<div style="width:1050px; height:600px; overflow:scroll; position: absolute;bottom: 0;left: 30%;">';
+    info+='<div style="text-align: right;"><a href="/admin/setting/remindExcel" ">excel导出</a></div>';
+    info+='<table align="center" style="width:1000px; height:100px;" border="1">';
+    info+='<tr>';
+    info+='<th>提示类型</th>';
+    info+='<th>计划/广告位id</th>';
+    info+='<th>计划/广告位名称</th>';
+    info+='<th>广告商/站长id</th>';
+    info+='<th>广告商/站长名称</th>';
+    info+='<th>投放设备</th>';
+    info+='<th>所属客服/商务</th>';
+    info+='<th colspan="2">操作</th>';
+    info+='</tr>';
+    $.ajax({
+        type: 'get',
+        url: '/admin/setting/reminding',
+        dataType: 'json',
+        success:function(data){
+            for(var i = 0;i < data.length;i++){
+                info+='<tr>';
+                info+='<td>'+data[i].remind+'</td>';
+                info+='<td>'+data[i].pid_adzid+'</td>';
+                info+='<td>'+data[i].pname_adzname+'</td>';
+                info+= '<td>'+data[i].uid+'</td>';
+                info+= '<td>'+data[i].username+'</td>';
+                info+='<td>'+data[i].terminal+'</td>';
+                info+='<td>'+data[i].customer+'</td>';
+                info+='<td><a href='+data[i].url+'>查看</a></td>';
+                info+='<td><a href="#" onclick="vanishPlan(this)" id='+data[i].id+'>关闭</a></td>';
+                info+='</tr>';
+            }
+            info+='</table>';
+            info+='</div>';
+            $('.planname').html(info);
+        }
+    })
+
+    //点击消失
+    function vanishPlan(html){
+        var id = $(html).attr('id');
+        //当前一行的html
+        var content = $(html).parent('td').parent('tr');
+
+        $.get('/admin/setting/clickVanish',{id:id},function(data){
+            //直接删除当前的广告位提示
+            content.remove();
+            //动态显示未处理的广告位个数
+            var num = $('.notice').attr('num');
+            var count = num -1;
+            if(count > 0){
+                $('.notice').attr('num',count);
+                $('.notice').html(""+count+"");
+            }else{
+                //处理完直接删除
+                $('.notice').remove();
+            }
+        })
+    }
+}
+
+</script>
+{/block}

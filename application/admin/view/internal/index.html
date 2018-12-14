@@ -1,0 +1,15 @@
+{block name="main"}
+<div style="text-align: center;">
+    <form action="" method="post">
+        <input type="radio" name="type" value="0" {if condition="$type eq 0"} checked{/if}>本地<br/><br/>
+        <input type="radio" name="type" value="1" {if condition="$type eq 1"} checked{/if}>9090服务器<br/><br/>
+        <input type="radio" name="type" value="2" {if condition="$type eq 2"} checked{/if}>测试服务器<br/><br/>
+        <button class="submit">提交</button>
+    </form>
+</div>
+
+{/block}
+
+{block name="js"}
+
+{/block}

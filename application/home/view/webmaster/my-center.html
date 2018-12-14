@@ -1,0 +1,87 @@
+{extend name="public:station-base" /}
+
+{block name="main"}
+    <div class="main_left">
+        <div class="subnav">
+            <div class="subnav-title">
+                <a href="" class="toggle-subnav">
+                    <i></i>
+                    <span>我的概括</span>
+                </a>
+            </div>
+            <ul class="subnav-menu">
+                <li class="current"><a href="/home/webmaster/myCenter">我的概括</a></li>
+                <li><a href="/home/webmaster/account">账户设置</a></li>
+                <li><a href="/home/webmaster/siteList">网站管理</a></li>
+                <li><a href="/home/webmaster/record">付款记录</a></li>
+                <!--<li><a href="/home/webmaster/message">消息中心</a></li>-->
+            </ul>
+        </div>
+    </div>
+    <div class="main">
+        <table border="0" cellpadding="0" cellspacing="0" class="mt30">
+            <tr >
+                <td width="21%"><span class="money" >{$homepage.total.nowTotal|integer}</span></td>
+                <td width="21%"><span class="money" >{$homepage.total.yesTotal|integer}</span></td>
+                <td width="21%"><span class="money" >{$homepage.total.month|integer}</span></td>
+                <td width="21%"><span class="money" >{$homepage.total.monthcpd|decimal}</span></td>
+                <!-- <td><span class="money" >{$homepage.total.money|decimal}</span>元</td> -->
+            </tr>
+            <tr>
+                <td>当日收入(元)</td>
+                <td>昨日收入(元)</td>
+                <td>当月收入(元)</td>
+                <td>当月包天收入(元)</td>
+                <!-- <td>账户余额</td> -->
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <!--<td>-->
+                    <!--<button type="submin" class="btn btn-primary">付款记录</button>-->
+                    <!--查看最近的付款记录-->
+                <!--</td>-->
+            </tr>
+        </table>
+        <div class="box">
+            <!--<div class="box-title">-->
+                <!--<h3><i></i>当天报告</h3>-->
+            <!--</div>-->
+            <!--<div class="box-content">-->
+                <!--<table class="table table-hover table-nomargin">-->
+                    <!--<tr>-->
+                        <!--<th>类型</th>-->
+                        <!--<th width="120">浏览量</th>-->
+                        <!--<th width="120" class="hidden-350">结算</th>-->
+                        <!--<th width="160" class="hidden-480">收益</th>-->
+                    <!--</tr>-->
+                    <!--{volist name="homepage.report" id="vo"}-->
+                    <!--<tr>-->
+                        <!--<td>{$vo.plan_type}报表数据</td>-->
+                        <!--<td>{$vo.web_views}</td>-->
+                        <!--<td>{$vo.web_num}</td>-->
+                        <!--<td>{$vo.sumpay}元</td>-->
+                    <!--</tr>-->
+                    <!--{/volist}-->
+                <!--</table>-->
+            <!--</div>-->
+            <div class="box-title">
+                <h3><i></i>快捷报告</h3>
+            </div>
+            <div class="box-content ai_report">
+                <ul>
+                    <li><a href="/home/webmaster/effectReport?time={$homepage.time.nowmonth}">本月报告</a></li>
+                    <li><a href="/home/webmaster/effectReport?time={$homepage.time.lastmonth}">上个月报告</a></li>
+                    <li><a href="/home/webmaster/effectReport?time={$homepage.time.lastseven}">最近一周报告</a></li>
+                    <li><a href="/home/webmaster/effectReport?time={$homepage.time.today}">今天报告</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+{/block}
+
+{block name="js"}
+
+
+{/block}

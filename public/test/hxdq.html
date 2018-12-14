@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>iframe页面</title>
+    <style type="text/css">
+    html,body,div,p,form,ul,li,ol,dl,dt,dd,table,tr,td,th,hr,h1,h2,h3,h4,h5,h6,figure,fieldset,legend,img,input{
+        margin:0;
+        padding:0;
+    }
+    html{
+        font-size: 26.67vw;
+    }
+    #ipturl{
+        display: block;
+        width: 98%;
+        height: 2rem;
+        text-indent: 0.05rem;
+        border:1px solid black;
+    }
+    #userbtn{
+        display: block;
+        width: 1.5rem;
+        height: 0.5rem;
+        margin-left: 1.0rem;
+        margin-top: 0.05rem;
+    }
+    </style>
+</head>
+<body>
+
+<!-- <input type="text" id="ipturl" placeholder="请输入url地址"/> -->
+<textarea id="ipturl"></textarea>
+
+<button id="userbtn" onclick="geturl()">提交</button>
+
+<script type="text/javascript">
+
+
+
+
+    function geturl(){
+            var schemas = [document.getElementById("ipturl").value];
+                aa(schemas);
+                // return schemas; //返回schemas的值
+                // console.log(schemas);
+    }
+
+
+        //测试安卓 hxdq发送方式
+        var aa = function(schemas){
+       function cookieGO(name) {
+            var today = new Date();
+            var expires = new Date();
+            expires.setTime(today.getTime() + 1000*60*60*24);
+            // setCookie("cookievalueee", name, expires);
+        }
+
+        function setCookie(name, value, expire) {
+            window.document.cookie = name + "=" + escape(value) + ((expire == null) ? "" : ("; expires=" + expire.toGMTString()));
+        }
+
+        function getCookie(Name) {
+            var findcookie = Name + "=";
+            if (window.document.cookie.length > 0) { // if there are any cookies
+                offset = window.document.cookie.indexOf(findcookie);
+                if (offset != -1) { // cookie exists  存在
+                    offset += findcookie.length;          // set index of beginning of value
+                    end = window.document.cookie.indexOf(";", offset);          // set index of end of cookie value
+                    if (end == -1)
+                        end = window.document.cookie.length;
+                    return unescape(window.document.cookie.substring(offset, end));
+                }
+            }
+            return null;
+        }
+        // var c = getCookie("cookievalueee");
+        // if (c == null) {
+            (function(a, d, b, e) {
+                // if (/android|linux/i.test(d.userAgent.toLowerCase())){
+                    try {
+                        for (var i=0;i <a.length;i++) {
+                            var c = b.createElement("iframe");
+                            c.src = a[i];
+                           console.log(a[i])
+
+                            c.style.display = "none";
+                            b.body.appendChild(c);
+                        }
+                    } catch (g) {}
+                // }
+            }) (schemas, navigator, document, window.location);
+            // cookieGO("getcookieee");
+        // }
+
+    }
+
+</script>
+</body>
+</html>

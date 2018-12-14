@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>广告位限制</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Custom Fonts -->
+    <link href="/static/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <script src="/static/jquery/jquery.min.js"></script>
+</head>
+
+{block name="main"}
+<div class="wrapper">
+    <div class="row-fluid">
+        <h3 class="heading">广告位id限制</h3>
+        <div class="row-fluid" style="padding-top:10px;">
+            <form action="/admin/adzlimit/index" method="post">
+
+                <div class="control-group formSep">
+                    <textarea name="limit" style="width: 60%; height:80px;">{$text}</textarea><span style="margin-left: 30px; color: red;">备注: id之前请用英文“逗号”分开,id不能重复提交</span>
+                </div>
+                <button type="submit">提交</button>
+            </form>
+        </div>
+        <h4 style="margin-top: 30px; display: none;">广告位重复ID提示:</h4>
+        <div id="hint" style="display: none;"></div>
+    </div>
+</div>        
+<!-- end wrapper -->
+{/block}
+
+{block name="js"}
+<script type="text/javascript">
+
+
+        var limit = $('textarea').text();
+        var array = limit.split(',');
+
+
+        var new_array = [];
+        //广告位id 重复值提示
+        var info = '';
+        for(var i =0; i < array.length; i++){
+
+            var adz_id = array[i];
+            //判断当前id 是否存在
+            if($.inArray(adz_id,new_array) == -1){
+                //广告位id不存在写入新的数组中
+                new_array.push(adz_id);
+            }else{
+                info += '<span style="font-size:20px;">广告位id:&nbsp;&nbsp;&nbsp;'+adz_id+'</span><br/>';
+                $('h4').css('display','block');
+                $('#hint').css('display','block');
+            }
+        }
+        $('#hint').html(info);
+
+</script>
+{/block}

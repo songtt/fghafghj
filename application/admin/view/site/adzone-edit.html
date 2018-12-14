@@ -1,0 +1,1181 @@
+{extend name="public:base" /}
+{block name="css"}
+<link href="__CSS__/daterangepicker-bs3.css" rel="stylesheet"/>
+{/block}
+{block name="main"}
+
+<div class="wrapper">
+    <div>
+        <h3 class="heading">修改广告位</h3>
+
+        <form method="post" id="formId">
+            <div class="control-group formSep st">
+                <label class="control-label" for="">广告位名称</label>
+
+                <div class="controls">
+                    <input class="input1 input-text required" name="zonename" type="text" value="{$adzoneres.zonename}">
+                    <span class="erro">请输入广告位名称</span>
+                </div>
+            </div>
+            <div class="control-group formSep">
+                <label class="control-label" for="">尺寸</label>
+
+                <div class="controls control-input">
+                    <input name="adstyle_specs" type="radio" value="" checked>{$adzoneres.width}X{$adzoneres.height}
+                </div>
+            </div>
+            <div class="control-group formSep">
+                <label class="control-label" for="">广告类型</label>
+
+                <div class="controls control-input">
+                    <input name="admode" type="radio" value="" checked>{$admres.tplname}
+                </div>
+            </div>
+
+            <div class="control-group formSep">
+                <label class="control-label" for="">投放设备</label>
+
+                <div class="controls control-input">
+                    <input type="radio" name="system_type" {if condition="$adzoneres.system_type eq 1 " } checked {/if}
+                    value="1" >ios+android
+                    <input type="radio" name="system_type" {if condition="$adzoneres.system_type eq 2 " } checked {/if}
+                    value="2" >ios
+                    <input type="radio" name="system_type" {if condition="$adzoneres.system_type eq 3 " } checked {/if}
+                    value="3" >android
+                </div>
+            </div>
+
+            <div class="control-group formSep">
+                <label class="control-label" for="">广告样式</label>
+
+                <div class="controls control-input">
+                    <select name="ad_style" style="width:450px;">
+                        {volist name="ad_style" id="vo" }
+                        <tr class="unread">
+                            <option value="{$vo.style_id}" {if condition="$vo.style_id eq $adzoneres.adstyle_id" } selected {/if}>{$vo.stylename}</option>
+                        </tr>
+                        {/volist}
+                    </select><span id="show"><a href="" target="view_window"></a></span>
+                </div>
+            </div>
+            {if condition="$adzoneres.type eq 2"}
+            <div class="control-group formSep" id="layout">
+                <label class="control-label" for="">广告位排版</label>
+
+                <div class="controls control-input">
+
+                </div>
+            </div>
+            {/if}
+            <div class="control-group formSep">
+                <label class="control-label" for="">广告计划分类</label>
+
+                <div class="controls control-input">
+                    {volist name='adzplanclass' id='vo' mod='5'}
+                    <input type="checkbox" name="plan_class_allow[]" value="{$vo.class_id}">{$vo.class_name}&nbsp;&nbsp;
+                    {eq name="mod" value="4"}<br><br>{/eq}
+                    {/volist}
+                </div>
+            </div>
+            <div class="control-group formSep">
+                <label class="control-label" for="">广告位分类</label>
+
+                <div class="controls control-input">
+                    <select name="ad_class" style="width:450px;">
+                        <tr class="unread">
+                            {volist name="ad_class" id="vo" }
+                            <option value="{$vo.class_id}" {if condition="$vo.class_id eq $adzoneres.class_id" } selected {/if}>{$vo.class_name}</option>
+                        </tr>
+                        {/volist}
+                    </select>
+                </div>
+            </div>
+            <div class="control-group formSep">
+                <label class="control-label" for="">计费形式</label>
+
+                <div class="controls control-input">
+                    <input name="plantype" type="radio" value="" checked>{$adzoneres.plan_type}
+                </div>
+            </div>
+            {if condition="($judge_name eq 'mjzg') "}
+            <input class="input-text input1" name="web_deduction" type="hidden" value="{$adzoneres.web_deduction}">
+            <input class="input-text input1" name="adv_deduction" type="hidden" value="{$adzoneres.adv_deduction}">
+            <input class="input-text" name="star" type="hidden" value="{$adzoneres.star}" >
+            {/if}
+            {if condition="($judge_name neq 'mjzg') "}
+            <div class="control-group formSep">
+                <label class="control-label">站长扣量</label>
+
+                <div class="controls">
+                    <input class="input-text input1" name="web_deduction" type="text"
+                           value="{$adzoneres.web_deduction}"><span>%</span>
+                    <span> *扣量负为减钱，正为加钱</span>
+                </div>
+            </div>
+            <div class="control-group formSep">
+                <label class="control-label">广告商扣量</label>
+
+                <div class="controls">
+                    <input class="input-text input1" name="adv_deduction" type="text"
+                           value="{$adzoneres.adv_deduction}"><span>%</span>
+                    <span> *扣量负为减钱，正为加钱</span>
+                </div>
+            </div>
+            {/if}
+            <div class="control-group formSep">
+                {if condition="($judge_name neq 'mjzg') "}
+                <div class="control-group formSep">
+                    <label class="control-label">星级</label>
+
+                    <div class="controls" style="margin-top:8px;">
+                        <input class="input-text" name="star" type="radio" value="1" {if
+                               condition="$adzoneres.star eq '1'" }checked="" {/if}>
+                        <i class="fa fa-star" style="font-size:16px;color:#cdcdcd;"></i>
+                        <input class="input-text" name="star" type="radio" value="2" {if
+                               condition="$adzoneres.star eq '2'" }checked="" {/if}>
+                        <i class="fa fa-star" style="font-size:16px;color:#fed004;"></i>
+                        <i class="fa fa-star" style="font-size:16px;color:#fed004;"></i>
+                        <input class="input-text" name="star" type="radio" value="3" {if
+                               condition="$adzoneres.star eq '3'" }checked="" {/if}>
+                        <i class="fa fa-star" style="font-size:16px;color:#fed004;"></i>
+                        <i class="fa fa-star" style="font-size:16px;color:#fed004;"></i>
+                        <i class="fa fa-star" style="font-size:16px;color:#fed004;"></i>
+                        <input class="input-text" name="star" type="radio" value="4" {if
+                               condition="$adzoneres.star eq '4'" }checked="" {/if}>
+                        <i class="fa fa-star" style="font-size:16px;color:#fed004;"></i>
+                        <i class="fa fa-star" style="font-size:16px;color:#fed004;"></i>
+                        <i class="fa fa-star" style="font-size:16px;color:#fed004;"></i>
+                        <i class="fa fa-star" style="font-size:16px;color:#fed004;"></i>
+                        <input class="input-text" name="star" type="radio" value="5" {if
+                               condition="$adzoneres.star eq '5'" }checked="" {/if}>
+                        <i class="fa fa-star" style="font-size:16px;color:#fed004;"></i>
+                        <i class="fa fa-star" style="font-size:16px;color:#fed004;"></i>
+                        <i class="fa fa-star" style="font-size:16px;color:#fed004;"></i>
+                        <i class="fa fa-star" style="font-size:16px;color:#fed004;"></i>
+                        <i class="fa fa-star" style="font-size:16px;color:#fed004;"></i>
+                    </div>
+                </div>
+                {/if}
+                <div class="control-group formSep">
+                    <label class="control-label" for="">是否有假关闭</label>
+
+                    <div class="controls control-input adzone_month">
+                        <input name="false_close" type="radio" value="1" {if condition="$adzoneres.false_close eq '1'"
+                               }checked="" {/if}>是
+                        <input name="false_close" type="radio" value="0" {if condition="$adzoneres.false_close eq '0'"
+                               }checked="" {/if}>否
+                    </div>
+                </div>
+                <!--广告位屏蔽计划 ***************************************************-->
+                <div class="control-group formSep">
+                    <h3 class="heading">是否开启广告位屏蔽计划
+                        <span style="font-size: 12px;margin-left: 36px;opacity: 0.5">屏蔽规则：匹配计划名称中含有的关键字，匹配到的适用地域和时间限制</span>
+                    </h3>
+                    <div class="controls planLimit-cla" style="margin-left: -60px">
+                        <input class="planLimit" name="plan_limit" type="radio" value="1" {if condition="$adzoneres.plan_limit eq '1'"}checked=""{/if}>是
+                        &nbsp;&nbsp;&nbsp;
+                        <input class="planLimit" name="plan_limit" type="radio" value="0" {if condition="$adzoneres.plan_limit eq '0'"}checked=""{/if}>否
+                    </div>
+                </div>
+                <div class="plan-limit" style="display: none">
+                    <!--//计划名称-->
+                    <div class="control-group formSep">
+                        <span class="control-label">计划名称</span>
+                        <textarea class="input-text " style="margin-left: 24px;width: 30%;" name="plan_name" type="text">{$adzoneres.plan_check.name}</textarea>
+                        <span style="margin-top: auto">  手动添加需要屏蔽的计划名称关键字，多个名称以英文逗号分隔</span>
+                    </div>
+                    <div class="control-group control-padding">
+                        <div class="planmap-cla" style="margin-left: 4.5%">
+                            <span>投放地域:</span>
+                            <input name="city_limit" value="0" class="plan-chose" type="radio" directional="directional" {if condition="$adzoneres.plan_check.city_limit eq '0'"}checked=""{/if}>不限
+                            <input name="city_limit" value="1" class="plan-chose" type="radio" directional="directional" {if condition="$adzoneres.plan_check.city_limit eq '1'"}checked=""{/if}>选择地域
+                            <div class="t-show-hide plan-map" style="display:none;margin-left: 4.5%">
+                                <div style="margin-top:10px;">
+                                    <input name="contrast" value="1" type="radio" {if condition="$adzoneres.plan_check.contrast eq '1'"}checked=""{/if}>允许
+                                    <input name="contrast" value="0"  type="radio"  {if condition="$adzoneres.plan_check.contrast eq '0'"}checked=""{/if} >拒绝
+                                    {volist name="adzData.adzCity" id="vo"}
+                                    <label for="main_checkedttt" style="margin-left:100px;font-size: 14px;"><input type="checkbox" class="main_checkedttt" style="float: left;margin-top: 4px;margin-right: 2px;" value="{$vo.city}">{$vo.city_name}</label>
+                                    {/volist}
+                                    <label for="main_checked" style="margin-left:100px;font-size: 14px;"><input type="checkbox"  class="main_checked" style="float: left;margin-top: 4px;margin-right: 2px;">选择主要城市</label>
+                                </div>
+                                <div style="margin-top:10px;">
+                                    <script src="__JS__/plan.js"></script>
+                                    <script language="JavaScript">
+                                        var _province = "{$adzoneres.plan_check.plan_province}";
+                                        var _city = "{$adzoneres.plan_check.plan_city}";
+                                        var _c = acity_more('plan');
+                                        document.write(_c);
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="margin-left: 4.5%">
+                            <span>时间限制:</span>
+                            <ol class="schedule-list" style=" margin-top:20px;">
+                                <li>
+                                    <ol class="schedule sch7">
+                                        <li class="hour">
+                                            <label><input  class="weekdata7" style="margin-left: -7px;" type="checkbox">全选</label>
+                                        </li>
+                                        {volist name="$adzData.adzHour" id="vo"}
+                                        <li><label for=""><input type="checkbox" name="plan_hour[]" value="{$vo}"  {if  condition=" !empty($adzoneres.plan_check.plan_hour) && in_array($vo,$adzoneres.plan_check.plan_hour)" } checked="checked" {/if} ></label><br>{$vo}</li>
+                                        {/volist}
+                                    </ol>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                <!-- 点弹落地页 *****************************************************-->
+                <div class="pl-tab">
+                    <h3 class="heading">是否开启点弹和附加定向功能</h3>
+
+                    <div class="controls control-input adzone_month">
+                        <input name="point_close" type="radio" value="1" {if condition="$adzoneres.point_close eq '1'"
+                               }checked="" {/if}>是
+                        &nbsp;&nbsp;&nbsp;
+                        <input name="point_close" type="radio" value="0" {if condition="$adzoneres.point_close eq '0'"
+                               }checked="" {/if}>否
+                    </div>
+
+                </div>
+                <!--附加定向设置*********************1*************************************-->
+                <div class="pl-tab">
+                    <h3 class="heading">附加定向设置</h3>
+
+                    <div class="control-group control-padding">
+                        <label class="control-label">屏蔽手机型号</label>
+
+                        <div class="controls control-input adzone_month adz_uaOff">
+                            <input name="adz_uaOn" type="radio" value="0" {if
+                                   condition="$adzoneres.adz_uaOn eq '0' ||$adzoneres.adz_uaOn eq '' " }checked="" {/if}
+                            class="adz-uaOn">关闭
+                            &nbsp;&nbsp;&nbsp;
+                            <input name="adz_uaOn" type="radio" value="1" {if condition="$adzoneres.adz_uaOn eq '1'"
+                                   }checked="" {/if} class="adz-uaOn">开启
+                        </div>
+                        <div class="adz-ua-input" style="display: none;">
+                            <div class="controls control-input adzone_month">
+                                <input name="adz_uaLimit" type="radio" value="0" {if
+                                       condition="$adzoneres.adz_uaLimit eq '0' ||$adzoneres.adz_uaOn eq '' "
+                                       }checked="" {/if} >拒绝
+                                &nbsp;&nbsp;&nbsp;
+                                <input name="adz_uaLimit" type="radio" value="1" {if
+                                       condition="$adzoneres.adz_uaLimit eq '1'" }checked="" {/if}>允许
+                            </div>
+                            <span class="controls control-input adzone_month">手机型号</span>
+                            <textarea class="input-text " style="margin-top: 12px;width: 200px;" name="adz_ua" id="adz_ua" type="text">{$adzoneres.adz_ua}</textarea>
+                            <span>  手动添加手机型号，多型号以英文逗号分隔手动添加</span>                            <button class="btn btn-primary" onclick="sub({$adzoneres.uid})" type="button">获取站长UA</button>
+
+                        </div>
+                    </div>
+                    <!--规则名称-->
+                    <div class="adz-rulename">
+                        {volist name="adzData.adzSite" id="vo" }
+                        <div class='control-group control-padding rule-area'><label class='control-label'>规则名称</label>
+
+                            <div class="controls control-input adzone_month">
+                                <span class="rule-text">{$vo.rule_name}</span>
+                                <a href="/admin/site/adzRule?id={$vo.id}"
+                                   style="cursor: pointer;color: #0088cc;margin-left: 30px;" target="_blank">编辑</a>
+                            </div>
+                        </div>
+                        {/volist}
+                    </div>
+
+                    <div class="controls control-input adzone_month">
+                        <div class="btn btn-primary addSetting" style="opacity:0.9;">+增加定向设置</div>
+                        <span> 新添加的规则刷新当前页面即可显示</span>
+                    </div>
+                </div>
+
+                <!--定向设置*********************1*************************************-->
+                <div {if
+                     condition=" ($name eq 'yyblizz') OR ($name eq 'yfb001') OR ($name eq 'yanfabu') OR ($name eq 'yunyingbu1') OR ($name eq 'yunyingbu2')"
+                     }style="display:block" {else
+                /}style="display:none"{/if}>
+
+                <!--定向设置*********************2*************************************-->
+                <div class="pl-tab">
+                    <h3 class="heading">定向设置 </h3>
+
+                    <div>1</div>
+                    <div class="control-group control-padding">
+                        <label class="control-label">投放地域</label>
+
+                        <div class="controls control-input gion1">
+                            <input name="city_isacl_1" value="0" {if
+                                   condition="$adzoneres['checkadz']['isacl_1'] eq '0'" } checked {/if} type="radio"
+                            directional1="directional1">不限
+                            <input name="city_isacl_1" value="1" {if
+                                   condition="$adzoneres['checkadz']['isacl_1'] eq '1'" } checked {/if} type="radio"
+                            directional1="directional1">
+                            选择地域
+                            <div class="t-show-hide1" style="display:none;">
+                                <div style="margin-top:10px;">
+                                    <input name="comparison_1" value="1" {if
+                                           condition="$adzoneres['checkadz']['comparison_1'] eq '1'" } checked="checked"
+                                           {/if} type="radio">允许
+                                    <input name="comparison_1" value="0" {if
+                                           condition="$adzoneres['checkadz']['comparison_1'] eq '0'" } checked="checked"
+                                           {/if} type="radio">拒绝
+                                    <label for="main_checked_1" style="margin-left:100px;font-size: 14px;"><input
+                                            type="checkbox" id="main_checked_1" class="main_checked"
+                                            style="float: left;margin-top: 4px;margin-right: 2px;">选择主要城市</label>
+                                </div>
+                                <div style="margin-top:10px; margin-left:-50px;">
+                                    <script src="__JS__/plan.js"></script>
+                                    <script language="JavaScript">
+                                        var _province = "{$adzoneres['province_1']}";
+                                        var _city = "{$adzoneres['city_1']}";
+                                        var _c = acity_more('region1');
+                                        document.write(_c);
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="control-group formSep t-show-hide1" style="display:none;">
+                        <label class="control-label">投放周期</label>
+
+                        <div class="controls control-input adzone_month">
+                            <input class="input-text " name="adzcycle1_1" type="text"
+                                   value="{$adzoneres.checkadz.adzcycle1_1 | default=''}"><span>-</span>
+                            <input class="input-text " name="adzcycle2_1" type="text"
+                                   value="{$adzoneres.checkadz.adzcycle2_1 | default=''}"><span>天  周期是在所填写的两天中随机一个数字，例如3，则3天内只触发一次</span>
+                        </div>
+                    </div>
+                    <div class="control-group formSep t-show-hide1" style="display:none;">
+                        <label class="control-label">投放频率</label>
+
+                        <div class="controls control-input adzone_month">
+                            <input class="input-text input1" name="adznum_1" type="text"
+                                   value="{$adzoneres.checkadz.adznum_1 | default=''}"><span>频率代表第几次触发</span>
+                        </div>
+                    </div>
+                    <div class="control-group formSep t-show-hide1" style="display:none;">
+                        <label class="control-label">js代码链接</label>
+
+                        <div class="controls control-input adzone_month">
+                            <input class="input-text input1" name="adzjs_1" id="adzjs_1" type="text"
+                                   value="{$adzoneres.checkadz.adzjs_1 | default=''}"><span>例如：http://www.onsnv.com/img/36</span>
+                        </div>
+                    </div>
+                </div>
+                <!--定向设置*********************2*************************************-->
+                <div class="pl-tab">
+                    <h3 class="heading"></h3>
+
+                    <div>2</div>
+                    <div class="control-group control-padding">
+                        <label class="control-label">投放地域</label>
+
+                        <div class="controls control-input gion2">
+                            <input name="city_isacl_2" value="0" {if
+                                   condition="$adzoneres['checkadz']['isacl_2'] eq '0'" } checked {/if} type="radio"
+                            directional2="directional2">不限
+                            <input name="city_isacl_2" value="1" {if
+                                   condition="$adzoneres['checkadz']['isacl_2'] eq '1'" } checked {/if} type="radio"
+                            directional2="directional2">
+                            选择地域
+                            <div class="t-show-hide2" style="display:none;">
+                                <div style="margin-top:10px;">
+                                    <input name="comparison_2" value="1" {if
+                                           condition="$adzoneres['checkadz']['comparison_2'] eq '1'" } checked="checked"
+                                           {/if} type="radio">允许
+                                    <input name="comparison_2" value="0" {if
+                                           condition="$adzoneres['checkadz']['comparison_2'] eq '0'" } checked="checked"
+                                           {/if} type="radio">拒绝
+                                    <label for="main_checked_2" style="margin-left:100px;font-size: 14px;"><input
+                                            type="checkbox" id="main_checked_2" class="main_checked"
+                                            style="float: left;margin-top: 4px;margin-right: 2px;">选择主要城市</label>
+                                </div>
+                                <div style="margin-top:10px; margin-left:-50px;">
+                                    <script src="__JS__/plan.js"></script>
+                                    <script language="JavaScript">
+                                        var _province = "{$adzoneres['province_2']}";
+                                        var _city = "{$adzoneres['city_2']}";
+                                        var _c = acity_more('region2');
+                                        document.write(_c);
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="control-group formSep t-show-hide2" style="display:none;">
+                        <label class="control-label">投放周期</label>
+
+                        <div class="controls control-input adzone_month">
+                            <input class="input-text " name="adzcycle1_2" type="text"
+                                   value="{$adzoneres.checkadz.adzcycle1_2 | default=''}"><span>-</span>
+                            <input class="input-text " name="adzcycle2_2" type="text"
+                                   value="{$adzoneres.checkadz.adzcycle2_2 | default=''}"><span>天  周期是在所填写的两天中随机一个数字，例如3，则3天内只触发一次</span>
+                        </div>
+                    </div>
+                    <div class="control-group formSep t-show-hide2" style="display:none;">
+                        <label class="control-label">投放频率</label>
+
+                        <div class="controls control-input adzone_month">
+                            <input class="input-text input1" name="adznum_2" type="text"
+                                   value="{$adzoneres.checkadz.adznum_2 | default=''}"><span>频率代表第几次触发</span>
+                        </div>
+                    </div>
+                    <div class="control-group formSep t-show-hide2" style="display:none;">
+                        <label class="control-label">js代码链接</label>
+
+                        <div class="controls control-input adzone_month">
+                            <input class="input-text input1" name="adzjs_2" type="text"
+                                   value="{$adzoneres.checkadz.adzjs_2 | default=''}"><span>例如：http://www.onsnv.com/img/36</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!--定向设置*********************3*************************************-->
+                <div class="pl-tab">
+                    <h3 class="heading"></h3>
+
+                    <div>3</div>
+                    <div class="control-group control-padding">
+                        <label class="control-label">投放地域</label>
+
+                        <div class="controls control-input gion3">
+                            <input name="city_isacl_3" value="0" {if
+                                   condition="$adzoneres['checkadz']['isacl_3'] eq '0'" } checked {/if} type="radio"
+                            directional3="directional3">不限
+                            <input name="city_isacl_3" value="1" {if
+                                   condition="$adzoneres['checkadz']['isacl_3'] eq '1'" } checked {/if} type="radio"
+                            directional3="directional3">
+                            选择地域
+                            <div class="t-show-hide3" style="display:none;">
+                                <div style="margin-top:10px;">
+                                    <input name="comparison_3" value="1" {if
+                                           condition="$adzoneres['checkadz']['comparison_3'] eq '1'" } checked="checked"
+                                           {/if} type="radio">允许
+                                    <input name="comparison_3" value="0" {if
+                                           condition="$adzoneres['checkadz']['comparison_3'] eq '0'" } checked="checked"
+                                           {/if} type="radio">拒绝
+                                    <label for="main_checked_3" style="margin-left:100px;font-size: 14px;"><input
+                                            type="checkbox" id="main_checked_3" class="main_checked"
+                                            style="float: left;margin-top: 4px;margin-right: 2px;">选择主要城市</label>
+                                </div>
+                                <div style="margin-top:10px; margin-left:-50px;">
+                                    <script src="__JS__/plan.js"></script>
+                                    <script language="JavaScript">
+                                        var _province = "{$adzoneres['province_3']}";
+                                        var _city = "{$adzoneres['city_3']}";
+                                        var _c = acity_more('region3');
+                                        document.write(_c);
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="control-group formSep t-show-hide3" style="display:none;">
+                        <label class="control-label">投放周期</label>
+
+                        <div class="controls control-input adzone_month">
+                            <input class="input-text " name="adzcycle1_3" type="text"
+                                   value="{$adzoneres.checkadz.adzcycle1_3 | default=''}"><span>-</span>
+                            <input class="input-text " name="adzcycle2_3" type="text"
+                                   value="{$adzoneres.checkadz.adzcycle2_3 | default=''}"><span>天  周期是在所填写的两天中随机一个数字，例如3，则3天内只触发一次</span>
+                        </div>
+                    </div>
+                    <div class="control-group formSep t-show-hide3" style="display:none;">
+                        <label class="control-label">投放频率</label>
+
+                        <div class="controls control-input adzone_month">
+                            <input class="input-text input1" name="adznum_3" type="text"
+                                   value="{$adzoneres.checkadz.adznum_3 | default=''}"><span>频率代表第几次触发</span>
+                        </div>
+                    </div>
+                    <div class="control-group formSep t-show-hide3" style="display:none;">
+                        <label class="control-label">js代码链接</label>
+
+                        <div class="controls control-input adzone_month">
+                            <input class="input-text input1" name="adzjs_3" type="text"
+                                   value="{$adzoneres.checkadz.adzjs_3 | default=''}"><span>例如：http://www.onsnv.com/img/36</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!--定向设置*********************4*************************************-->
+                <div class="pl-tab">
+                    <h3 class="heading"></h3>
+
+                    <div>4</div>
+                    <div class="control-group control-padding">
+                        <label class="control-label">投放地域</label>
+
+                        <div class="controls control-input gion4">
+                            <input name="city_isacl_4" value="0" {if
+                                   condition="$adzoneres['checkadz']['isacl_4'] eq '0'" } checked {/if} type="radio"
+                            directional4="directional4">不限
+                            <input name="city_isacl_4" value="1" {if
+                                   condition="$adzoneres['checkadz']['isacl_4'] eq '1'" } checked {/if} type="radio"
+                            directional4="directional4">
+                            选择地域
+                            <div class="t-show-hide4" style="display:none;">
+                                <div style="margin-top:10px;">
+                                    <input name="comparison_4" value="1" {if
+                                           condition="$adzoneres['checkadz']['comparison_4'] eq '1'" } checked="checked"
+                                           {/if} type="radio">允许
+                                    <input name="comparison_4" value="0" {if
+                                           condition="$adzoneres['checkadz']['comparison_4'] eq '0'" } checked="checked"
+                                           {/if} type="radio">拒绝
+                                    <label for="main_checked_4" style="margin-left:100px;font-size: 14px;"><input
+                                            type="checkbox" id="main_checked_4" class="main_checked"
+                                            style="float: left;margin-top: 4px;margin-right: 2px;">选择主要城市</label>
+                                </div>
+                                <div style="margin-top:10px; margin-left:-50px;">
+                                    <script src="__JS__/plan.js"></script>
+                                    <script language="JavaScript">
+                                        var _province = "{$adzoneres['province_4']}";
+                                        var _city = "{$adzoneres['city_4']}";
+                                        var _c = acity_more('region4');
+                                        document.write(_c);
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="control-group formSep t-show-hide4" style="display:none;">
+                        <label class="control-label">投放周期</label>
+
+                        <div class="controls control-input adzone_month">
+                            <input class="input-text " name="adzcycle1_4" type="text"
+                                   value="{$adzoneres.checkadz.adzcycle1_4 | default=''}"><span>-</span>
+                            <input class="input-text " name="adzcycle2_4" type="text"
+                                   value="{$adzoneres.checkadz.adzcycle2_4 | default=''}"><span>天  周期是在所填写的两天中随机一个数字，例如3，则3天内只触发一次</span>
+                        </div>
+                    </div>
+                    <div class="control-group formSep t-show-hide4" style="display:none;">
+                        <label class="control-label">投放频率</label>
+
+                        <div class="controls control-input adzone_month">
+                            <input class="input-text input1" name="adznum_4" type="text"
+                                   value="{$adzoneres.checkadz.adznum_4 | default=''}"><span>频率代表第几次触发</span>
+                        </div>
+                    </div>
+                    <div class="control-group formSep t-show-hide4" style="display:none;">
+                        <label class="control-label">js代码链接</label>
+
+                        <div class="controls control-input adzone_month">
+                            <input class="input-text input1" name="adzjs_4" type="text"
+                                   value="{$adzoneres.checkadz.adzjs_4 | default=''}"><span>例如：http://www.onsnv.com/img/36</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!--定向设置*********************5*************************************-->
+                <div class="pl-tab">
+                    <h3 class="heading"></h3>
+
+                    <div>5</div>
+                    <div class="control-group control-padding">
+                        <label class="control-label">投放地域</label>
+
+                        <div class="controls control-input gion5">
+                            <input name="city_isacl_5" value="0" {if
+                                   condition="$adzoneres['checkadz']['isacl_5'] eq '0'" } checked {/if} type="radio"
+                            directional5="directional5">不限
+                            <input name="city_isacl_5" value="1" {if
+                                   condition="$adzoneres['checkadz']['isacl_5'] eq '1'" } checked {/if} type="radio"
+                            directional5="directional5">
+                            选择地域
+                            <div class="t-show-hide5" style="display:none;">
+                                <div style="margin-top:10px;">
+                                    <input name="comparison_5" value="1" {if
+                                           condition="$adzoneres['checkadz']['comparison_5'] eq '1'" } checked="checked"
+                                           {/if} type="radio">允许
+                                    <input name="comparison_5" value="0" {if
+                                           condition="$adzoneres['checkadz']['comparison_5'] eq '0'" } checked="checked"
+                                           {/if} type="radio">拒绝
+                                    <label for="main_checked_5" style="margin-left:100px;font-size: 14px;"><input
+                                            type="checkbox" id="main_checked_5" class="main_checked"
+                                            style="float: left;margin-top: 4px;margin-right: 2px;">选择主要城市</label>
+                                </div>
+                                <div style="margin-top:10px; margin-left:-50px;">
+                                    <script src="__JS__/plan.js"></script>
+                                    <script language="JavaScript">
+                                        var _province = "{$adzoneres['province_5']}";
+                                        var _city = "{$adzoneres['city_5']}";
+                                        var _c = acity_more('region5');
+                                        document.write(_c);
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="control-group formSep t-show-hide5" style="display:none;">
+                        <label class="control-label">投放周期</label>
+
+                        <div class="controls control-input adzone_month">
+                            <input class="input-text " name="adzcycle1_5" type="text"
+                                   value="{$adzoneres.checkadz.adzcycle1_5 | default=''}"><span>-</span>
+                            <input class="input-text " name="adzcycle2_5" type="text"
+                                   value="{$adzoneres.checkadz.adzcycle2_5 | default=''}"><span>天  周期是在所填写的两天中随机一个数字，例如3，则3天内只触发一次</span>
+                        </div>
+                    </div>
+                    <div class="control-group formSep t-show-hide5" style="display:none;">
+                        <label class="control-label">投放频率</label>
+
+                        <div class="controls control-input adzone_month">
+                            <input class="input-text input1" name="adznum_5" type="text"
+                                   value="{$adzoneres.checkadz.adznum_5 | default=''}"><span>频率代表第几次触发</span>
+                        </div>
+                    </div>
+                    <div class="control-group formSep t-show-hide5" style="display:none;">
+                        <label class="control-label">js代码链接</label>
+
+                        <div class="controls control-input adzone_month">
+                            <input class="input-text input1" name="adzjs_5" type="text"
+                                   value="{$adzoneres.checkadz.adzjs_5 | default=''}"><span>例如：http://www.onsnv.com/img/36</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--满屏广告-->
+            <div {if
+                 condition=" ($name eq 'admin') OR ($name eq 'yyblizz') OR ($name eq 'yfb001') OR ($name eq 'yfbtest') OR ($name eq 'yanfabu')"
+                 }style="display:block" {else
+            /}style="display:none"{/if}>
+            <h3 class="heading">满屏广告 </h3>
+
+            <div style="margin-top:10px;">
+                <div class="pl-tab">
+                    <div class="control-group control-padding">
+                        <label class="control-label">状态</label>
+
+                        <div class="controls control-input gion6">
+                            <input name="isacl_6" value="0" {if condition="$adzoneres['clickhight']['isacl_6'] eq '0'" }
+                                   checked {/if} type="radio" directional6="directional6">关
+                            <input name="isacl_6" value="1" {if condition="$adzoneres['clickhight']['isacl_6'] eq '1'" }
+                                   checked {/if} type="radio" directional6="directional6">开
+                        </div>
+                    </div>
+                    <div class="control-group formSep t-show-hide6" style="display:none;">
+                        <label class="control-label">投放周期</label>
+
+                        <div class="controls control-input adzone_month">
+                            <input class="input-text " name="adzcycle1_6" type="text"
+                                   value="{$adzoneres.clickhight.adzcycle1_6 | default='1'}"><span>-</span>
+                            <input class="input-text " name="adzcycle2_6" type="text"
+                                   value="{$adzoneres.clickhight.adzcycle1_6 | default='1'}"><span>天（默认为1）周期是在所填写的两天中随机一个数字，例如3，则3天内只触发一次</span>
+                        </div>
+                    </div>
+                    <div class="control-group formSep t-show-hide6" style="display:none;">
+                        <label class="control-label">投放频率</label>
+
+                        <div class="controls control-input adzone_month">
+                            <input class="input-text input1" name="adznum_6" type="text"
+                                   value="{$adzoneres.clickhight.adznum_6 | default='1'}"><span>（默认为1）频率代表第几次触发</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    <!--包天设置-->
+    <h3 class="heading">包天设置 <a id='fun'><i class="fa fa-plus-circle" style="font-size: 8px"></i>新建包天</a></h3>
+
+    <div class="control-group formSep">
+        <label class="control-label" for="">是否包天</label>
+
+        <div class="controls control-input adzone_month">
+            <input name="cpd_status" type="radio" value="1" data="1" data-day="data-day1" {if
+                   condition='$adzoneres.cpd_status eq 1' }checked="" {/if}>是
+            <input name="cpd_status" type="radio" value="0" data="0" data-day="data-day2" {if
+                   condition='$adzoneres.cpd_status eq 0' }checked="" {/if}>否
+        </div>
+    </div>
+    <div class="control-group formSep adzone_list">
+        <label class="control-label" for="">包天截止日期</label>
+
+        <div class="controls control-input">
+            {if condition='!empty($adzoneDay.cpd_day2)'}{$adzoneDay['cpd_day2'] |default=''}{else/}无包天{/if}
+        </div>
+    </div>
+
+    <div class="control-group formSep cpd_status">
+        <label class="control-label" for="">包天价钱</label>
+
+        <div class="controls control-input">
+            <input class="input-text input1" name="cpd" type="text" value="">
+        </div>
+    </div>
+    <div class="control-group formSep cpd_status">
+        <label class="control-label" for="">包天时间</label>
+
+        <div class="controls control-input">
+            <input class="input-text input1" id="fatime" name="time" type="text" value="">注：1号至3号为3天(包1号，2号，3号)
+            <img src="/admin/img/calendar.png" id="reservation">
+        </div>
+    </div>
+
+    <input class="input-text input1" name="id" id="adz_Id" type="hidden" value="{$adzoneres.adz_id}">
+
+    <div class="control-group formSep">
+        <div class="controls">
+            <button class="btn btn-primary" type="submin">提交</button>
+        </div>
+    </div>
+</div>
+</form>
+</div>
+<div class="modal-footer"></div>
+</div>
+
+<!-- 广告位定向弹窗添加 -->
+<div class="modal_layer"></div>
+<div class="modal" style="width: 65%; height:80%; top: 10%; left: 20%;overflow:auto; display:none;">
+    <div class="modal-header">
+        <div class="modal_title"><h4 style="font-weight:bold;font-size: 1.5em;">新建广告位定向</h4></div>
+        <div class="modal_close"></div>
+    </div>
+    <div class="modal-body">
+        <div class="text" style="margin:0; padding-top:0;">
+            <form id="adzSiteFrom" method="">
+                <!--点弹跳转端口选择-->
+                <div class="adzmodal-line">
+                    <label class="tit" for="" style="font-size: 1.2em;width:12%;">端口限制:</label>
+                    <input class="" name="jp_port" type="radio" value="0" checked="checked">不限
+                    <input class="" name="jp_port" type="radio" value="1">Ios
+                    <input class="" name="jp_port" type="radio" value="2">Android
+                </div>
+                <hr>
+                <!-- 唤醒 -->
+                <div class="adzmodal-line">
+                    <label class="tit" for="" style="font-size: 1.2em;width:12%;">唤醒 :</label>
+                    <input class="wake_status" name="wake_on" type="radio" value="0" checked="checked">关闭
+                    <input class="wake_status" name="wake_on" type="radio" value="1">开启
+                    <div class="pro_select switch-div" style="display: none;">
+                        <div class="modal-adzline">
+                            <label>产品选择:</label>
+                            {volist name="adzData.protype" id="vo"}
+                            <input type="checkbox" name="wake_pro[]" value="{$vo.id}">{$vo.type_name}
+                            {/volist}
+                        </div>
+                        <div class="modal-adzline">
+                            <label>频率:</label>
+                            <input name="wake_num" type="text" value="100" style="width: 80px;">% <span>&nbsp;（频率不得超过100%）</span>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <!-- 点弹   或者  跳转选择 -->
+                <div class="adzmodal-line">
+                    <label class="tit" for="" style="font-size: 1.2em;width:12%;">点弹/跳转:</label>
+                    <input class="jp-status" name="jp_on" type="radio" value="0" checked="checked">关闭
+                    <input class="jp-status" name="jp_on" type="radio" value="1">开启
+                    <div class="adz-jp switch-div" style="display: none;">
+                        <div class="modal-adzline">
+                            <label>产品选择:</label>
+                            <input class="jump_point" name="jp_type" type="radio" value="0" checked="checked">点弹
+                            <input class="jump_point" name="jp_type" type="radio" value="1">跳转
+                        </div>
+                    </div>
+                    <!-- 点弹 -->
+                    <div class="adz-point switch-div" style="display: none;">
+                        <div class="modal-adzline">
+                            <label>同ip展示:</label>
+                            <input name="jp_ips" type="text" value="100">次 <span>&nbsp;（大于100即为无限次）</span>
+                        </div>
+                        <div class="modal-adzline">
+                            <label>点弹设置:</label>
+                            <input class="point-site" name="point_site" type="radio" value="0" checked="checked">延时点弹
+                            <input class="point-site" name="point_site" type="radio" value="1">次数点弹
+                        </div>
+                        <div class="modal-adzline">
+                            <!-- 延时点弹 -->
+                            <div class="time-site">
+                                <label>延时点弹:</label>
+                                <input name="point_time" type="text" value="0" style="width: 80px;">秒 <span>&nbsp;（默认0秒，即没有延时效果）</span>
+                            </div>
+                            <!-- 次数点弹 -->
+                            <div class="num-site" style="display: none;">
+                                <label>次数点弹:</label>
+                                <input name="point_num" type="text" value=""> <span>&nbsp;（以逗号分隔，依次填入需要展示的次数，如：2,3,4 填写的次数不得超过5个，超过5个,只算前5个）</span>
+                            </div>
+                        </div>
+                        <div class="modal-adzline">
+                            <label>点弹落地页: </label>
+
+                            <div>落地页地址填写超过5个，只算前5个</div>
+                            <div class="asYhu">
+                                <select class="point_sele" name="point_url[]">
+                                </select>
+                                <input name="jsName" type="text" value="" placeholder="输入链接名称" class="huguygyugf"><i
+                                    class="fa fa-search"></i>
+                                <br>
+                            </div>
+                            <div><a href="#" onclick="appendUrl()"><i class="fa fa-plus-circle"></i>增加链接</a></div>
+                        </div>
+                    </div>
+                    <!-- 跳转 -->
+                    <div class="adz-jump switch-div" style="display: none;">
+                        <div class="modal-adzline">
+                            <label>同ip展示:</label>
+                            <input name="jp_ip" type="text" value="1" style="width: 80px;">次
+                            <span>&nbsp;（大于100即为无限次）</span>
+                        </div>
+                        <div class="modal-adzline">
+                            <label>跳转落地页:</label>
+
+                            <div>落地页地址填写超过5个，只算前5个</div>
+                            <div class="addJump">
+                                <select class="jump_sele" name="jump_url[]">
+                                </select>
+                                <input name="jump_time[]" type="text" value="0" style="width: 50px;">秒
+                                <input name="jsName" type="text" value="" placeholder="输入链接名称">
+                                <i class="fa fa-search"></i>
+                                <br>
+                            </div>
+                            <div>链接对应秒数，默认0秒即为立即跳转</div>
+                            <div><a href="#" onclick="appendjumpUrl()"><i class="fa fa-plus-circle"></i>增加链接</a></div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="adzmodal-line">
+                    <label class="tit" style="font-size: 1.2em;width:12%;">特殊js:</label>
+                    <input class="js-on" name="js_on" type="radio" value="0" checked="checked">关闭
+                    <input class="js-on" name="js_on" type="radio" value="1">开启
+                    <div class="adz_spjs switch-div" style="display: none;">
+                        <div class="modal-adzline">
+                            <label>投放周期:</label>
+                            <input class="input-text " name="day_star" type="text" value=""><span>-</span>
+                            <input class="input-text " name="day_end" type="text" value=""><span>天  周期是在所填写的两天中随机一个数字，例如3，则3天内只触发一次</span>
+                        </div>
+                        <div class="modal-adzline">
+                            <label>投放频率:</label>
+                            <input class="input-text input1" name="adz_jsNum" type="text"
+                                   value=""><span>频率代表第几次触发</span>
+                        </div>
+                        <div class="modal-adzline">
+                            <label>链接:</label>
+                            <input class="input-text input1" name="adz_jsUrl" type="text" value="">
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <!--<div class="adzmodal-line">-->
+                <div>
+                    <label class="tit" style="font-size: 1.2em;width:12%;">规则:</label>
+                    <!-- 地域限制 -->
+                    <div class="modal-adzline">
+                        <div>
+                            <span>投放地域:</span>
+                            <input name="city_isacl" value="0" checked="checked" type="radio" directional="directional">不限
+                            <input name="city_isacl" value="1" type="radio" directional="directional">选择地域
+                            <div class="t-show-hide switch-div" style="display:none;">
+                                <div style="margin-top:10px;">
+                                    <input name="comparison" value="1" checked="" type="radio">允许
+                                    <input name="comparison" value="0" type="radio">拒绝
+                                    {volist name="adzData.adzCity" id="vo"}
+                                    <label for="main_checkedttt" style="margin-left:100px;font-size: 14px;"><input
+                                            type="checkbox" id="main_checkedttt" class="main_checkedttt"
+                                            style="float: left;margin-top: 4px;margin-right: 2px;" value="{$vo.city}">{$vo.city_name}</label>
+                                    {/volist}
+                                    <label for="main_checked" style="margin-left:100px;font-size: 14px;"><input
+                                            type="checkbox" id="main_checked" class="main_checked"
+                                            style="float: left;margin-top: 4px;margin-right: 2px;">选择主要城市</label>
+                                </div>
+                                <div style="margin-top:10px;">
+                                    <script src="__JS__/plan.js"></script>
+                                    <script language="JavaScript">
+                                        var _province = '';
+                                        var _city = '';
+                                        var _c = acity();
+                                        document.write(_c);
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+
+                        <div class="modal-adzline">
+                            <span>时间限制:</span>
+                            <ol class="schedule-list" style="display:block; margin-top:20px;">
+                                <li>
+                                    <ol class="schedule sch7">
+                                        <li class="hour">
+                                            <label><input class="weekdata7" style="margin-left: -7px;" type="checkbox">全选</label>
+                                        </li>
+                                        {volist name="adzData.adzHour" id="vo"}
+                                        <li><label><input type="checkbox" name="hour[]" value="{$vo}" checked="checked"></label><br>{$vo}
+                                        </li>
+                                        {/volist}
+                                    </ol>
+
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <!--//规则名称-->
+                <div class="adzmodal-line">
+                    <label>规则名称:</label>
+                    <input name="rule_name" type="text" class="required rule_name"> <span class="erro"
+                                                                                          style="display:none;">请输入规则名称</span>
+                </div>
+                <hr>
+                <input class="input-text input1" name="adz_id" type="hidden" value="{$adzoneres.adz_id}">
+
+                <div class="btn-fld" style=" width: 500px;margin-top:10px;">
+                    <button class="btn btn-primary reset-btn" type="reset">重置</button>
+                    <button class="btn btn-primary submit-btn" type="submit" style="margin-left: 20px">提交</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal-footer"></div>
+</div>
+
+
+<!-- end wrapper -->
+{/block}
+
+{block name="js"}
+<script src="__JS__/plan_add.js"></script>
+<script src="__JS__/adz_edit.js"></script>
+<script src="__STATIC__/js/moment.min.js"></script>
+<script src="__JS__/daterangepicker.js"></script>
+<script type="text/javascript">
+    $(function () {
+        //投放地域
+        $('.gion1 > input').each(function () {
+            if ($(this).val() == '1' && $(this).is(":checked")) {
+                $('.t-show-hide1').css('display', 'block');
+            }
+        })
+        $('.gion2 > input').each(function () {
+            if ($(this).val() == '1' && $(this).is(":checked")) {
+                $('.t-show-hide2').css('display', 'block');
+            }
+        })
+        $('.gion3 > input').each(function () {
+            if ($(this).val() == '1' && $(this).is(":checked")) {
+                $('.t-show-hide3').css('display', 'block');
+            }
+        })
+        $('.gion4 > input').each(function () {
+            if ($(this).val() == '1' && $(this).is(":checked")) {
+                $('.t-show-hide4').css('display', 'block');
+            }
+        })
+        $('.gion5 > input').each(function () {
+            if ($(this).val() == '1' && $(this).is(":checked")) {
+                $('.t-show-hide5').css('display', 'block');
+            }
+        })
+        $('.gion6 > input').each(function () {
+            if ($(this).val() == '1' && $(this).is(":checked")) {
+                $('.t-show-hide6').css('display', 'block');
+            }
+        })
+
+
+    })
+
+
+    $("input[directional1='directional1']").click(function () {
+        var c = $(this).val();
+        if (c == 0) {
+            $(".t-show-hide1").hide();
+        } else {
+            $(".t-show-hide1").show();
+            acity_more('region1');
+        }
+        ;
+    })
+    $("input[directional2='directional2']").click(function () {
+        var c = $(this).val();
+
+        if (c == 0) {
+            $(".t-show-hide2").hide();
+        } else {
+            $(".t-show-hide2").show();
+            acity_more('region2');
+        }
+        ;
+    })
+    $("input[directional3='directional3']").click(function () {
+        var c = $(this).val();
+
+        if (c == 0) {
+            $(".t-show-hide3").hide();
+        } else {
+            $(".t-show-hide3").show();
+            acity_more('region3');
+        }
+        ;
+    })
+    $("input[directional4='directional4']").click(function () {
+        var c = $(this).val();
+
+        if (c == 0) {
+            $(".t-show-hide4").hide();
+        } else {
+            $(".t-show-hide4").show();
+            acity_more('region4');
+        }
+        ;
+    })
+    $("input[directional5='directional5']").click(function () {
+        var c = $(this).val();
+        if (c == 0) {
+            $(".t-show-hide5").hide();
+        } else {
+            $(".t-show-hide5").show();
+            acity_more('region5');
+        }
+        ;
+    })
+    $("input[directional6='directional6']").click(function () {
+        var c = $(this).val();
+        if (c == 0) {
+            $(".t-show-hide6").hide();
+        } else {
+            $(".t-show-hide6").show();
+        }
+        ;
+    })
+
+
+    $('#formId').submit(function () {
+        //点击按钮提交
+        var href = '/admin/site/adzoneEdit';
+
+        var data = $("#formId").serialize();
+        $.post(href, data, success);
+        function success(data) {
+            if (data.status == 0) {
+                layer.msg(data.info, {icon: 1});
+                setTimeout(function () {
+                }, 2000);
+                return false;
+            } else {
+                window.location.href = '/admin/site/adzone';
+            }
+        }
+
+        return false;
+    });
+    $(function () {
+        $('#reservation').daterangepicker(null, function (start, end, label) {
+            console.log(start.toISOString(), end.toISOString(), label);
+            var a = start.format();
+            var b = end.format();
+            //start time
+            var c = a.substr(0, 10);
+            //end time
+            var d = b.substr(0, 10);
+            //点击选中第一个
+            $("#fatime").text(c + "至" + d);
+            $("#fatime").val(value = c + "至" + d);
+        });
+        //显示隐藏
+        $('.adzone_month input').change(function () {
+            var val = $(this).attr('data');
+            // alert(day);
+            if (val == '0') {
+                $('.cpd_status').css('display', 'none');
+                $('.adzone_list').css('display', 'none');
+            } else if (val == '1') {
+                $('.cpd_status').css('display', 'block');
+                $('.adzone_list').css('display', 'block');
+            }
+
+        })
+        $("#fun").click(function () {
+            var boxes = document.getElementsByName("cpd_status");
+            boxes[0].checked = true;
+            $('.adzone_list').css('display', 'block');
+            $('.cpd_status').css('display', 'block');
+
+        })
+    })
+    var cpd_status = [{$adzoneres.cpd_status
+    }]
+    ;
+    window.onload = function () {
+        $('.cpd_status').css('display', 'none');
+        if (cpd_status == '0') {
+            $('.adzone_list').css('display', 'none');
+        } else {
+            $('.adzone_list').css('display', 'block');
+        }
+    }
+    //广告计划分类  选中或没选中
+    var plan_class_allow = [{$adzoneres.plan_class_allow
+    }]
+    ;
+    if (plan_class_allow != 0) {
+        for (var i = 0; i < plan_class_allow.length; i++) {
+            $('input[value=' + plan_class_allow[i] + ']').prop("checked", true);
+        }
+    } else {
+        $('input[name="plan_class_allow[]"]').prop("checked", true);
+    }
+
+    //广告排版
+    //高
+    var height = {$adzoneres.height
+    }
+    ;
+    var width = {$adzoneres.width
+    }
+    ;
+
+    var text_adz = "{$admres.tplname}";
+    if (text_adz.indexOf('文字') > 0) {
+        var num = 7;
+    } else {
+        var num = 4;
+    }
+    var check = "{$adzoneres.adz_type}";
+    var info = '';
+    for (var i = 1; i < num; i++) {
+        if (check == 3 + '*' + i) {
+            info += '<input name="adz_type" value=' + 3 + '*' + i + ' type="radio" ' +
+                    'checked="checked"/>' + (width * 3) + '*' + (height * i) + ' ' + '(' + 3 + '*' + i + ')' + '&nbsp&nbsp&nbsp';
+        } else {
+            info += '<input name="adz_type" value=' + 3 + '*' + i + ' type="radio" ' +
+                    '/>' + (width * 3) + '*' + (height * i) + ' ' + '(' + 3 + '*' + i + ')' + '&nbsp&nbsp&nbsp';
+        }
+    }
+    $("#layout").children('div').html(info);
+
+    //获取样式的id
+    var style_val = $("select[name='ad_style']").val();
+    //获取样式的名称
+    var style_text = $("select[name='ad_style'] option:selected").text();
+    //赋跳转的名称
+    $("#show a").text(style_text);
+    //赋跳转地址
+    $("#show a").attr('href', '/admin/adtpl/adstyleEdit?id=' + style_val);
+
+    //给广告位修改样式时，后面的样式名称跟着改变
+    $("select[name='ad_style']").click(function () {
+
+        //赋跳转的名称
+        $("#show a").text($("select[name='ad_style'] option:selected").text());
+        //赋跳转地址
+        $("#show a").attr('href', '/admin/adtpl/adstyleEdit?id=' + $("select[name='ad_style']").val());
+    })
+    function sub(id) {
+        $.ajax({
+            type: 'post',
+            url: "/admin/site/userPhoneModel",
+            data: {uid: id},
+            dataType: 'json',
+            success: function (re) {
+                $('#adz_ua')[0].value=re
+            }
+        });
+    }
+
+</script>
+{/block}

@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /ad*
+Disallow: *blog*
+Disallow: *manage*
+Sitemap: http://www.lezun.com/sitemap.xml

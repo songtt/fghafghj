@@ -1,0 +1,89 @@
+{extend name="public:advertiser-base" /}
+
+{block name="main"}
+<!--我的概括-->
+<div class="main_left">
+    <div class="subnav">
+        <div class="subnav-title">
+            <a href="" class="toggle-subnav">
+                <i></i>
+                <span>我的概括</span>
+            </a>
+        </div>
+        <ul class="subnav-menu">
+            <li class="current"><a href="/home/advertiser/homePage">我的概括</a></li>
+            <li><a href="/home/advertiser/accountEdit">账户设置</a></li>
+            <!--<li><a href="/home/advertiser/apply">审批申请</a></li>-->
+            <li><a href="/home/advertiser/recharge">充值记录</a></li>
+            <!--<li><a href="/home/advertiser/message">消息中心</a></li>-->
+        </ul>
+    </div> 
+</div>+
+<div class="main">
+    <table border="0" cellpadding="0" cellspacing="0" class="mt30">
+        <tr >
+            {if condition="($homepage.total.money < $adv_money.adv_money)"}
+                <div  style="float:right;width:30%;color:red;padding:6px; margin:2px; background:#d5ffce;text-indent:15px; border:1px solid #9adf8f;">该账户余额不足{$adv_money.adv_money|decimal}元 , 请马上充值！ </div>
+            {/if}
+            <td width="21%"><span class="money">{$homepage.total.nowTotal|decimal}</span>元</td>
+            <td width="21%"><span class="money">{$homepage.total.yesTotal|decimal}</span>元</td>
+            <td width="21%"><span class="money">{$homepage.total.month|decimal}</span>元</td>
+            <td><span class="money">{$homepage.total.money|decimal}</span>元</td>
+        </tr>
+        <tr>
+            <td>当日支付</td>
+            <td>昨日支付</td>
+            <td>当月支付</td>
+            <td>账户余额</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+         <!--    <td>
+                <button type="submin" class="btn btn-primary">马上充值</button> -->
+                <!--查看最近的充值记录-->
+            <!-- </td> -->
+        </tr>
+    </table>
+    <div class="box">
+        <div class="box-title" style="display:none;">
+            <h3><i></i>当天报告</h3>
+        </div>
+        <div class="box-content" style="display:none;">
+            <table class="table table-hover table-nomargin">
+                <tr>
+                    <th>类型</th>
+                    <th width="120">浏览量</th>
+                    <th width="120" class="hidden-350">结算数</th>
+                    <th width="160" class="hidden-480">支出</th>
+                </tr>
+                {volist name="homepage.report" id="vo"}
+                <tr>
+                    <td>{$vo.plan_type}报表数据</td>
+                    <td>{$vo.adv_views}</td>
+                    <td>{$vo.adv_num}</td>
+                    <td>{$vo.sumadvpay|decimal}元</td>
+                </tr>
+                {/volist}
+            </table>
+        </div>
+        <div class="box-title">
+            <h3><i></i>快捷报告</h3>
+        </div>
+        <div class="box-content ai_report">
+            <ul>
+                <li><a href="/home/advertiser/summaryReport?time={$homepage.time.nowmonth}">本月报告</a></li>
+                <li><a href="/home/advertiser/summaryReport?time={$homepage.time.lastmonth}">上个月报告</a></li>
+                <li><a href="/home/advertiser/summaryReport?time={$homepage.time.lastseven}">最近一周报告</a></li>
+                <li><a href="/home/advertiser/summaryReport?time={$homepage.time.today}">今天报告</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+
+
+{/block}

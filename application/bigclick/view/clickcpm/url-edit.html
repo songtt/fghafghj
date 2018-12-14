@@ -1,0 +1,237 @@
+{extend name="public:base" /}
+
+{block name="main"}
+<!--  添加  -->
+<div class="wrapper">
+    <div class="main_nav">
+        <div class="mn_left"></div>
+        <div class="mn_right">
+            <div class="mn_mt">
+                <ul>
+                    <li><a href="/bigclick/clickcpm/urllist">返回列表</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div>
+        <h3 class="heading">编辑链接</h3>
+        <form id="formId" name="formId" method="post" action="">
+            <div class="control-group control-padding">
+                <label class="control-label">所属产品</label>
+                <div class="controls">
+                    <select name="pro_id" class="required onesel">
+                        <option value="{$one.pro_id}">{$one.pro_name}</option>
+                    </select>
+                    <span class="erro"></span>
+                    <span class="erro"></span>
+                    <span>属于哪个产品名下的链接</span>
+                </div>
+            </div>
+            <div class="control-group formSep">
+                <label class="control-label">url链接名称</label>
+                <div class="controls">
+                    <input class="input-text input1 required b_quired" id="urlName" name="url_name" value="{$one.url_name}" type="text"><span class="erro">输入url链接名称</span>
+                </div>
+            </div>
+              <input class="input-text input1 required b_quired"  name="url_id" value="{$one.url_id}" type="hidden">
+            <div class="control-group formSep">
+                <label class="control-label">url链接</label>
+                <div class="controls">
+                    <textarea name="url" class="input-text input1 required b_quired" style="width:800px;height: 150px;" >{$one.url}</textarea><span class="erro">输入url链接</span>
+                    <!-- <input class="input-text input1 required b_quired" id="khurl" name="url" style="width: 900px;" value='{$one.url}' type="text"><span class="erro">输入url链接</span> -->
+                </div>
+            </div>
+            <div class="control-group formSep">
+                <label class="control-label" style="margin-top: -7px;">投放方式</label>
+                <div class="controls delivery-mode">
+                    <input type="radio" name="delivery_mode" value="1" {if condition="$one.delivery_mode eq '1'"} checked {/if}> 周期投放
+                    <input type="radio" name="delivery_mode" value="2" {if condition="$one.delivery_mode eq '2'"} checked {/if}> 按日投放
+                </div>
+            </div>
+            <div class="control-group formSep start-day" style="display:block;">
+                <label class="control-label">开始日期</label>
+                <div class="controls">
+                    <input class="input-text input1 b_quired" id="startday" name="start_day" value="{$one.start_day}" type="text">
+                </div>
+            </div>
+            <div class="control-group formSep revolution" style="display:block;">
+                <label class="control-label">投放周期</label>
+                <div class="controls">
+                    <input class="input-text input1 b_quired" id="revolution" name="revolution" value="{$one.revolution}" type="text"><span>天</span>
+                </div>
+            </div>
+            <div class="control-group control-padding day-hidden" style="display:none;">
+                <label class="control-label" style="margin-top:13px;">日期选择</label>
+                <div class="controls control-input">
+                    <ol class="schedule-list" style="display:block; margin-top:20px;">
+                        <li>
+                            <ol class="schedule day">
+                                <li class="day">
+                                    <label><input  class="weekdata7" style="margin-left: -7px;" type="checkbox">全选</label>
+                                </li>
+                                <li><label for=""><input type="checkbox" name="day[]" value="01"></label><br>01</li>
+                                <li><label for=""><input type="checkbox" name="day[]" value="02"></label><br>02</li>
+                                <li><label for=""><input type="checkbox" name="day[]" value="03"></label><br>03</li>
+                                <li><label for=""><input type="checkbox" name="day[]" value="04"></label><br>04</li>
+                                <li><label for=""><input type="checkbox" name="day[]" value="05"></label><br>05</li>
+                                <li><label for=""><input type="checkbox" name="day[]" value="06"></label><br>06</li>
+                                <li><label for=""><input type="checkbox" name="day[]" value="07"></label><br>07</li>
+                                <li><label for=""><input type="checkbox" name="day[]" value="08"></label><br>08</li>
+                                <li><label for=""><input type="checkbox" name="day[]" value="09"></label><br>09</li>
+                                <li><label for=""><input type="checkbox" name="day[]" value="10"></label><br>10</li>
+                                <li><label for=""><input type="checkbox" name="day[]" value="11"></label><br>11</li>
+                                <li><label for=""><input type="checkbox" name="day[]" value="12"></label><br>12</li>
+                                <li><label for=""><input type="checkbox" name="day[]" value="13"></label><br>13</li>
+                                <li><label for=""><input type="checkbox" name="day[]" value="14"></label><br>14</li>
+                                <li><label for=""><input type="checkbox" name="day[]" value="15"></label><br>15</li>
+                                <li><label for=""><input type="checkbox" name="day[]" value="16"></label><br>16</li>
+                                <li><label for=""><input type="checkbox" name="day[]" value="17"></label><br>17</li>
+                                <li><label for=""><input type="checkbox" name="day[]" value="18"></label><br>18</li>
+                                <li><label for=""><input type="checkbox" name="day[]" value="19"></label><br>19</li>
+                                <li><label for=""><input type="checkbox" name="day[]" value="20"></label><br>20</li>
+                                <li><label for=""><input type="checkbox" name="day[]" value="21"></label><br>21</li>
+                                <li><label for=""><input type="checkbox" name="day[]" value="22"></label><br>22</li>
+                                <li><label for=""><input type="checkbox" name="day[]" value="23"></label><br>23</li>
+                                <li><label for=""><input type="checkbox" name="day[]" value="24"></label><br>24</li>
+                                <li><label for=""><input type="checkbox" name="day[]" value="25"></label><br>25</li>
+                                <li><label for=""><input type="checkbox" name="day[]" value="26"></label><br>26</li>
+                                <li><label for=""><input type="checkbox" name="day[]" value="27"></label><br>27</li>
+                                <li><label for=""><input type="checkbox" name="day[]" value="28"></label><br>28</li>
+                                <li><label for=""><input type="checkbox" name="day[]" value="29"></label><br>29</li>
+                                <li><label for=""><input type="checkbox" name="day[]" value="30"></label><br>30</li>
+                                <li><label for=""><input type="checkbox" name="day[]" value="31"></label><br>31</li>
+                            </ol>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+            <div class="control-group control-padding">
+                <label class="control-label" style="margin-top:13px;">小时选择</label>
+                <div class="controls control-input">
+                    <ol class="schedule-list" style="display:block; margin-top:20px;">
+                        <li>
+                            <ol class="schedule hour">
+                                <li class="hour">
+                                    <label><input  class="weekdata7" style="margin-left: -7px;" type="checkbox">全选</label>
+                                </li>
+                                <li><label for=""><input type="checkbox" name="hour[]" value="00"></label><br>00</li>
+                                <li><label for=""><input type="checkbox" name="hour[]" value="01"></label><br>01</li>
+                                <li><label for=""><input type="checkbox" name="hour[]" value="02"></label><br>02</li>
+                                <li><label for=""><input type="checkbox" name="hour[]" value="03"></label><br>03</li>
+                                <li><label for=""><input type="checkbox" name="hour[]" value="04"></label><br>04</li>
+                                <li><label for=""><input type="checkbox" name="hour[]" value="05"></label><br>05</li>
+                                <li><label for=""><input type="checkbox" name="hour[]" value="06"></label><br>06</li>
+                                <li><label for=""><input type="checkbox" name="hour[]" value="07"></label><br>07</li>
+                                <li><label for=""><input type="checkbox" name="hour[]" value="08"></label><br>08</li>
+                                <li><label for=""><input type="checkbox" name="hour[]" value="09"></label><br>09</li>
+                                <li><label for=""><input type="checkbox" name="hour[]" value="10"></label><br>10</li>
+                                <li><label for=""><input type="checkbox" name="hour[]" value="11"></label><br>11</li>
+                                <li><label for=""><input type="checkbox" name="hour[]" value="12"></label><br>12</li>
+                                <li><label for=""><input type="checkbox" name="hour[]" value="13"></label><br>13</li>
+                                <li><label for=""><input type="checkbox" name="hour[]" value="14"></label><br>14</li>
+                                <li><label for=""><input type="checkbox" name="hour[]" value="15"></label><br>15</li>
+                                <li><label for=""><input type="checkbox" name="hour[]" value="16"></label><br>16</li>
+                                <li><label for=""><input type="checkbox" name="hour[]" value="17"></label><br>17</li>
+                                <li><label for=""><input type="checkbox" name="hour[]" value="18"></label><br>18</li>
+                                <li><label for=""><input type="checkbox" name="hour[]" value="19"></label><br>19</li>
+                                <li><label for=""><input type="checkbox" name="hour[]" value="20"></label><br>20</li>
+                                <li><label for=""><input type="checkbox" name="hour[]" value="21"></label><br>21</li>
+                                <li><label for=""><input type="checkbox" name="hour[]" value="22"></label><br>22</li>
+                                <li><label for=""><input type="checkbox" name="hour[]" value="23"></label><br>23</li>
+                            </ol>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+            <div class="control-group formSep">
+                <label class="control-label">投放频率</label>
+                <div class="controls">
+                    <input class="input-text input1 required b_quired" id="percent" name="percent" value="{$one.percent}" type="text"><span>%(同一产品下，同一时间投放的所有链接频率总和不超过1)</span><span class="erro">投放频率</span>
+                </div>
+            </div>
+            <input class="input-text input1 required b_quired" name="id" value="{$one.url_id}" type="hidden">
+            <div class="control-group formSep">
+                <div class="controls">
+                    <input type="button" name="" class="btn btn-primary" id="submit" value="提交">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{/block}
+
+<!-- end wrapper -->
+
+{block name="js"}
+<script>
+    if({$one.delivery_mode} == 1){
+        $('.start-day').css('display','block');
+        $('.revolution').css('display','block');
+        $('.day-hidden').css('display','none');
+    }else{
+        $('.day-hidden').css('display','block');
+        $('.start-day').css('display','none');
+        $('.revolution').css('display','none');
+    }
+    //小时checked
+    var hour = {$one['hour']|default = "'null'"};//json为接收的后台返回的数据；
+    if('null'!= hour){
+        for(i=0;i<hour.length;i++) {
+            $('.hour input[value='+hour[i]+'] ').attr('checked','true');
+        }
+    }
+    //日期checked
+    var day = {$one['day']|default = "'null'"};//json为接收的后台返回的数据；
+    if('null'!= day){
+        for(i=0;i<day.length;i++) {
+            $('.day input[value='+day[i]+'] ').attr('checked','true');
+        }
+    }
+
+    $(".hour").click(function(){
+        if ($(this).children().children().prop("checked")==true) { // 全选
+            $(this).siblings().find('input').prop("checked",true);
+        } else { // 取消全选
+            $(this).siblings().find('input').prop("checked",false);
+        }
+    })
+    $(".day").click(function(){
+        if ($(this).children().children().prop("checked")==true) { // 全选
+            $(this).siblings().find('input').prop("checked",true);
+        } else { // 取消全选
+            $(this).siblings().find('input').prop("checked",false);
+        }
+    })
+    //投放方式不同，页面显示内容不同
+    $(".delivery-mode").click(function(){
+        $('.delivery-mode > input').each(function(){
+            if($(this).val() == '1' && $(this).is(":checked")){
+                $('.start-day').css('display','block');
+                $('.revolution').css('display','block');
+                $('.day-hidden').css('display','none');
+            }else if($(this).val() == '2' && $(this).is(":checked")){
+                $('.day-hidden').css('display','block');
+                $('.start-day').css('display','none');
+                $('.revolution').css('display','none');
+            }
+        })
+    })
+
+    $('#submit').click(function(){
+        //点击按钮提交
+        var href = '/bigclick/clickcpm/urledit';
+        var data = $("#formId").serialize(); 
+
+        $.post(href,data,function(data){
+            layer.msg("修改成功", {icon: 1});
+            setTimeout(function(){
+                window.location.href = "/bigclick/clickcpm/urllist";
+                return false;
+            },800);
+        })
+
+        
+    });
+</script>
+{/block}

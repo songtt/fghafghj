@@ -1,0 +1,71 @@
+{extend name="public:base" /}
+
+{block name="main"}
+<div class="wrapper">
+    <div class="row-fluid">
+        <div id="repo_data" class="tb_sts" style="position:absolute; top:110px; right:30px;">
+        </div>
+        <h3 class="heading"> 机型列表</h3>
+        <div class="dataTables-wrapper">
+<!--             <div class="tb-lis">
+                    <div class="dataTables-filter">
+                    </div>
+            </div> -->
+
+        </div>
+
+            <!--批量操作，暂时隐藏，下一期进行开发-->
+ <!--            <form action="#" name="deductionform" method="post">
+                <div class="row">
+                    <div class="plan6">
+                        <div class="dataTables-length">
+                            批量操作：
+                            <a href="javascript:;"  ><button class="btn btn-primary" type="button" onclick="delLst();" style="padding:2px 12px;">删除</button></a>
+
+                        </div>
+                    </div>
+                </div> -->
+                <div class="row">机型访问总数：{$num.num}</div>
+            <table class="dataTable table-hover" name="plan-list" >
+                <tr role="row">
+                    <th rowspan="1" colspan="1" style="width:13px;"><input id="" class="checkedAll" name="" type="checkbox" data-name="name-data"></th>
+                    <th>ID</th>
+                    <th>机型名称</th>
+                    <th>机型数量</th>
+                    <th>机型占比</th>
+                    <th>日期</th>
+                </tr>   
+                {volist name="moblie" id="vo"}
+                <tr class="unread">
+                    <td rowspan="1" colspan="1" style="width:13px;"><input id="" name="id[]" value="" type="checkbox" data-name="name-data"></td>
+                    <td>{$vo.id}</td>
+                    <td>{$vo.name}</td>
+                    <td>{$vo.num}</td>
+                    <td>{$vo.percent}%</td>
+                    <td>{$vo.ctime}</td>
+                </tr>
+                {/volist}
+            </table>
+            <!-- </form> -->
+        <!-- </div> -->
+        <div class="row">
+            {$page}
+        </div>
+    </div>
+</div>
+
+<!-- end wrapper -->
+{/block}
+{block name="js"}
+
+<script>
+    // 批量删除
+    function delLst(){
+        layer.confirm('确定删除吗？', {
+          btn: ['确定','取消'] //按钮
+        }, function(){
+            $('form').submit();
+        });
+    }
+</script>
+{/block}

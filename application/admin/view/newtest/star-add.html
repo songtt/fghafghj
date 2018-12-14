@@ -1,0 +1,131 @@
+{extend name="public:base" /}
+
+{block name="main"}
+<div class="wrapper">
+    <div class="row-fluid">
+        <h3 class="heading">添加星级</h3>
+        <div class="row-plan row-fluid" style="padding-top:20px;">
+            <div class="">
+                <div class="pl-tab">
+                    <div class="control-group control-padding">
+                        <label class="control-label">类型名称</label>
+                        <div class="controls">
+                            <span><input id="type" name="type"></span>
+                        </div>
+                    </div>
+                    <div class="control-group control-padding">
+                        <label class="control-label">包体大小</label>
+                        <div class="controls">
+                            <input id="bt_dx1" class="input-text input1 data_pac" name="bt_dx1"  type="text" placeholder="请输入包体大小">
+                            <input id="bt_dx2" class="input-text input1 data_pac" name="bt_dx2"  type="text" placeholder="请输入包体大小"></span>
+                        </div>
+                    </div>
+                    <div class="control-group control-padding">
+                        <label class="control-label">全站成本</label>
+                        <div class="controls">
+                            <input id="qz_cb1" class="input-text input1 data_pac" name="qz_cb1"  type="text" placeholder="请输入全站成本">
+                            <input id="qz_cb2" class="input-text input1 data_pac" name="qz_cb2"  type="text" placeholder="请输入全站成本">
+                        </div>
+                    </div>
+                    <div class="control-group control-padding">
+                        <label class="control-label">倍数</label>
+                        <div class="controls">
+                            <input id="bs" class="input-text input1" type="text" name="bs"  placeholder="请输入倍数"/>
+                        </div>
+                    </div>
+                    <div class="control-group control-padding">
+                        <label class="control-label">客户参考成本</label>
+                        <div class="controls">
+                            <input id="kh_ck" class="input-text input1" type="text" name="kh_ck" />
+                        </div>
+                    </div>
+                    <div class="control-group control-padding"><h4>&nbsp;&nbsp;&nbsp;&nbsp;星级评定 五星为最优(1-5)</h4></div>
+                    <div class="control-group control-padding">
+                        <label class="control-label">一星</label>
+                        <div class="controls">
+                            (包含) <input id="yistar" style="width: 80px" class="input-text input1" type="text" name="yistar"  />
+                        </div>
+                    </div>
+                    <div class="control-group control-padding">
+                        <label class="control-label">二星</label>
+                        <div class="controls">
+                            上限（小）(包含)： <input id="erstar_on" style="width: 80px" class="input-text input1" type="text" name="two_up" />
+                            下限（大）： <input id="erstar" style="width: 80px" class="input-text input1" type="text" name="two_dwon" /> 区间
+                        </div>
+                    </div>
+                    <div class="control-group control-padding">
+                        <label class="control-label">三星</label>
+                        <div class="controls">
+                            上限（小）(包含)： <input id="sanstar_on" style="width: 80px" class="input-text input1" type="text" name="three_up" />
+                            下限（大）： <input id="sanstar" style="width: 80px" class="input-text input1" type="text" name="three_dwon" />  区间
+                        </div>
+                    </div>
+                    <div class="control-group control-padding">
+                        <label class="control-label">四星</label>
+                        <div class="controls">
+                            上限（小）(包含)： <input id="sistar_on" style="width: 80px" class="input-text input1" type="text" name="four_up" />
+                            下限（大）： <input id="sistar" style="width: 80px" class="input-text input1" type="text" name="four_dwon" /> 区间
+                        </div>
+                    </div>
+                    <div class="control-group control-padding">
+                        <label class="control-label">五星</label>
+                        <div class="controls">
+                            (不包含) <input id="wustar" style="width: 80px" class="input-text input1" type="text" name="wustar" />
+                        </div>
+                    </div>
+                    <div class="control-group control-padding">
+                        <label class="control-label">备注</label>
+                        <div class="controls">
+                            <input id="text" class="input-text input1" type="text" name="info"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group" style="padding-bottom:50px;">
+                    <div class="controls">
+                        <button class="btn btn-primary click" type="submit">提交</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{/block}
+
+{block name="js"}
+<script src="__JS__/submit.js"></script>
+<script language="JavaScript" type="text/javascript">
+    $('.click').click(function(){
+        var type = $('#type').val();
+        var bt_dx1 = $('#bt_dx1').val();
+        var bt_dx2 = $('#bt_dx2').val();
+        var qz_cb1 = $('#qz_cb1').val();
+        var qz_cb2 = $('#qz_cb2').val();
+        var bs = $('#bs').val();
+
+        var kh_ck = $('#kh_ck').val();
+
+        var yistar = $('#yistar').val();
+        var one = "+"+"-"+yistar;
+        var erstar = $('#erstar').val()+"-"+$('#erstar_on').val();
+        var sanstar = $('#sanstar').val()+"-"+$('#sanstar_on').val();
+        var sistar = $('#sistar').val()+"-"+$('#sistar_on').val();
+        var wustar = $('#wustar').val()+"-"+0;
+        var text = $('#text').val();
+        var href = '/admin/newtest/starAdd';
+        var data = {
+            type:type,bt_dx1:bt_dx1,bt_dx2:bt_dx2,qz_cb1:qz_cb1,qz_cb2:qz_cb2,bs:bs,kh_ck:kh_ck,yistar:one,erstar:erstar,sanstar:sanstar,sistar:sistar,wustar:wustar,info:text
+        };
+        $.post(href,data,success);
+        function success(data) {
+            console.log(data);
+            if(data.status ==1){
+                layer.msg(data.info, {icon: 1});
+                window.location.href=data.data;
+            }else{
+                layer.msg(data.info, {icon: 2});
+            }
+        }
+    })
+</script>
+{/block}

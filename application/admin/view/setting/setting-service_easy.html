@@ -1,0 +1,77 @@
+{extend name="public:base" /}
+
+
+{block name="main"}
+<div class="wrapper">
+    <div class="row-fluid">
+        <h3 class="heading">服务器地址修改</h3>
+        <div id="content">
+            <form action="" name="basicform" method="post">
+                <!--<div class="control-group">-->
+                    <!--<label class="control-label control-label-left">主站服务器IP</label>-->
+                    <!--<div class="controls control-input">-->
+                        <!--<input class="input-text input1" type="text" name="main_server" value="{$setting_service.main_server|default='空'}" />-->
+                        <!--<span>联盟主站所在服务器的IP 多IP用 ‘,’ 分割 如：192.168.1.1,192.168.1.2</span>-->
+                    <!--</div>-->
+                <!--</div> -->
+                <div class="control-group">
+                    <label class="control-label control-label-left">修改服务器的类型</label>
+                    <div class="controls control-input">&nbsp;&nbsp;&nbsp;&nbsp;
+                        <select name="type">
+                            <option value="">请选择</option>
+                            <option value="imageurl">图片服务器</option>
+                            <option value="url">跳转服务器</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label control-label-left">服务器地址修改</label>
+                    <div class="controls control-input">
+                        查找&nbsp;<input class="input-text input1" name="find_url" value=""/>
+                        <span>例如(www.baidu.com 查找框填写 baidu)</span><br/><br/>
+                        修改&nbsp;<input class="input-text input1" name="update_url" value=""/>
+                        <span>例如(修改框则填写需要修改域名的中间部分)</span>
+                    </div>
+                </div>
+
+                <div class="sbut">
+                    <button class="btn btn-primary">保存设置</button>
+                </div>  
+            </form>
+        </div>
+    </div>
+    {if condition="$status eq '1' "}
+    <div class="al_box" style="position:fixed; top:80px; right:0; color:#444; width:280px; height:32px; line-height:32px; background:#d5ffce; text-indent:10px; border:1px solid #9adf8f;">修改成功</div>
+    {elseif condition="$status eq '0' "/}
+    <div class="al_box" style="position:fixed; top:80px; right:0; color:#444; width:280px; height:32px; line-height:32px; background:#d5ffce; text-indent:10px; border:1px solid #9adf8f;">修改失败</div>
+    {else/}
+    {/if}
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    $('.btn-primary').click(function(){
+        var type = $('select[name="type"]').val();
+        var find_url = $('input[name="find_url"]').val();
+        var update_url = $('input[name="update_url"]').val();
+        if(type != '' && find_url != '' && update_url != ''){
+            $(from).submit;
+        }else{
+            if(type == ''){
+                alert('请选择修改的服务器类型');
+                return false;
+            }else{
+                if(find_url == ''){
+                    alert('服务器地址查找框字符不能为空');
+                    return false;
+                }else{
+                    alert('服务器地址修改框字符不能为空');
+                    return false;
+                }
+            }
+        }
+    })
+</script>
+{/block}

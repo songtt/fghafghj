@@ -1,0 +1,83 @@
+{extend name="public:base" /}
+
+{block name="main"}
+
+<div class="wrapper">
+    <div>
+        <h3 class="heading">新建广告类型</h3>
+        <form class="" action="/admin/adtpl/addType" method="post" name="addform">
+            <div class="control-group formSep st">
+                <label class="control-label">计费方式</label>
+                <div class="controls checkboxs" style="margin-top:6px;">
+                    <input name="statstype[]" type="checkbox" class="statstype" value="CPC,"> CPC
+                    <input name="statstype[]" type="checkbox" class="statstype" value="CPM,"> CPM
+                    <input name="statstype[]" type="checkbox" class="statstype" value="CPV,"> CPV
+                    <input name="statstype[]" type="checkbox" class="statstype" value="CPS,"> CPS
+                    <input name="statstype[]" type="checkbox" class="statstype" value="CPA,"> CPA
+                    <input name="statstype[]" type="checkbox" class="statstype" value="CPAS"> CPAS
+                    <span class="erro">请选择计费类型</span>
+                </div>
+            </div>
+            <div class="control-group formSep">
+                <label class="control-label">广告类型名称</label>
+                <div class="controls">
+                    <input class="input-text input1 required" name="name" type="text" class=""  value=""> <span class="erro">请输入广告类型名称</span>
+                </div>
+            </div>
+            <div class="control-group formSep">
+                <label class="control-label">排序</label>
+                <div class="controls">
+                    <input class="input-text input1" name="sort" type="text" class=""  value="">
+                    <span>1~100数字</span>
+                </div>
+            </div>
+            <div class="control-group formSep">
+                <label class="control-label">终端</label>
+                <div class="controls">
+                    <input name="terminal" type="radio" value="1" checked>PC
+                    <input name="terminal" type="radio"  value="2" >MOBILE
+                    <span></span>
+                </div>
+            </div>
+            <div class="control-group formSep">
+                <div class="controls">
+                    <button class="btn btn-primary" type="submit">提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{/block}
+
+
+{block name="js"}
+<script>
+    $(function(){
+        $("form").submit(function(){
+            $(".statstype").each(function(){
+                if($("input[type='checkbox']:checked").length < 1){
+                    $(".statstype").siblings("span").css('display','inline');
+                    return false;
+                }else{
+                    $(".statstype").siblings("span").css('display','none');
+                }
+            })
+            if($("input[name='name']").val() == ''){
+                return false;
+            }
+            if($("input[type='checkbox']:checked").length == 0){
+                return false;
+            }
+
+        })
+//        $(".checkboxs input").change(function(){
+//            $(this).each(function(){
+//                if($(this).prop("checked") == true){
+//                    $(this).siblings("span").css('display','none');
+//                }
+//            })
+//        })
+    })
+</script>
+{/block}

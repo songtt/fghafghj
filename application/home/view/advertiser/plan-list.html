@@ -1,0 +1,90 @@
+{extend name="public:advertiser-base" /}
+
+{block name="main"}
+    <div class="main_left">
+        <div class="subnav">
+            <div class="subnav-title">
+                <a href="" class="toggle-subnav">
+                    <i></i>
+                    <span>计费模式</span>
+                </a>
+            </div>
+            <ul class="subnav-menu">
+                <li><a href="/home/advertiser/planlist">所有计划</a></li>
+                {volist name="plan_list.type" id="vo"}
+                <li><a href="/home/advertiser/planlist?type={$vo}">{$vo}类</a></li>
+                {/volist}
+            </ul>
+        </div>
+    </div>
+    <div class="main" style="padding-top:10px;">
+        <div class="mt30" style="height:30px;">
+            <div class="new_date">
+                <a href="/home/advertiser/planAdd">新建计划</a>
+            </div>
+        </div>
+        <div class="box">
+            <div class="box-title">
+                <h3>
+                    <i></i>计划列表
+                </h3>
+            </div>
+            <div class="box-content">
+                <table class="table table-hover">
+                    <tr>
+                        <th>活动名称</th>
+                        <th width="80">计划ID</th>
+                        <th width="80">类型</th>
+                        <th width="90">限额</th>
+                        <th width="90">分类</th>
+                        <th width="90">状态</th>
+                        <th>操作</th>
+                    </tr>
+                    {volist name="plan_list.res" id="vo"}
+                    <tr style="font-size:14px;">
+                        <td>
+                            <table width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td width="120" rowspan="2" style="border:none;">
+                                        <img src="/home/img/no.gif" border="0">
+                                    </td>
+                                    <td style="border:none;">
+                                        <a href="" style="font-size:14px;">{$vo.plan_name}</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border:none;font-size:14px;">结算：{$vo.clearing}</td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td>{$vo.pid}</td>
+                        <td>{$vo.plan_type}</td>
+                        <td>{$vo.budget}</td>
+                        <td>{$vo.class_name}</td>
+                        <td>
+                        <span class="common-button ajax-status" >
+                            {switch name="vo.status" }
+                                {case value="0"}<span class="sta_er">锁定</span>{/case}
+                                {case value="1"}<span class="sta_bl">活动</span>{/case}
+                                {case value="2"}<span class="sta_bl">待审</span>{/case}
+                            {/switch}
+                        </span>
+                        </td>
+                        <td>
+                            <a href="/home/advertiser/planEdit?pid={$vo.pid}">编辑</a>
+                            <a href="/home/advertiser/planToAds?pid={$vo.pid}">查看广告</a>
+                            <a href="/home/advertiser/adsAdd">新建广告</a>
+                        </td>
+                    </tr>
+                    {/volist}
+                </table>
+            </div>
+            <div class="row">
+                {$plan_list.show}
+            </div>
+        </div>
+    </div>
+{/block}
+
+{block name="js"}
+{/block}

@@ -1,0 +1,189 @@
+{extend name="public:base" /}
+
+{block name="main"}
+<!--  添加  -->
+<div class="wrapper">
+    <div class="main_nav">
+        <div class="mn_left"></div>
+        <div class="mn_right">
+            <div class="mn_mt">
+                <ul>
+                    <li><a href="">返回列表</a></li>
+                    <li><a href="">新建网站</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div>
+        <h3 class="heading">新建网站</h3>
+        <form class="" action="/admin/site/siteAdd" method="post" name="addform">
+            <div class="control-group formSep st">
+                <label class="control-label">站长用户名</label>
+                <div class="controls">
+                    <input class="input-text input1" name="uid" type="hidden" value="">
+                    <input class="input-text input1 required" name="username" type="text"><span class="erro">输入站长名称</span><span id="name_text"></span>
+                </div>
+            </div>
+            <div class="control-group formSep">
+                <label class="control-label">网站域名</label>
+                <div class="controls">
+                    <input class="input-text input1 required b_quired" name="siteurl" type="text"><span class="erro">输入网站域名</span>
+                </div>
+            </div>
+            <div class="control-group formSep">
+                <label class="control-label">网站名称</label>
+                <div class="controls">
+                    <input class="input-text input1 required" name="sitename" type="text"><span class="erro">输入网站名称</span>
+                </div>
+            </div>
+            <div class="control-group formSep">
+                <label class="control-label">是否包含https</label>
+                <div class="controls">
+                    <input type="radio" name="https" value="0" checked> 否 
+                    <input type="radio" name="https" value="1"> 是 
+                </div>
+            </div>
+            {if condition="$auth.group_id eq '1'"}
+            <div class="control-group formSep">
+                <label class="control-label">站长扣量</label>
+                <div class="controls">
+                    <input class="input-text input1" name="web_deduction" type="text" value=""><span>%</span>
+                </div>
+            </div>
+            <div class="control-group formSep">
+                <label class="control-label">广告商扣量</label>
+                <div class="controls">
+                    <input class="input-text input1" name="adv_deduction" type="text" value=""><span>%</span>
+                </div>
+            </div>
+            {/if}
+            <div class="control-group formSep">
+                <label class="control-label">网站备案信息</label>
+                <div class="controls">
+                    <input class="input-text input1" name="sitebeian" type="text">
+                </div>
+            </div>
+            <div class="control-group formSep">
+                <label class="control-label">CNZZ代码添加</label>
+                <div class="controls">
+                    <input class="input1 input-text " name="site_cnzz_id" type="text" value="">
+                </div>
+            </div>
+            <div class="control-group formSep">
+                <label class="control-label">星级</label>
+                <div class="controls" style="margin-top:8px;">
+                    <input class="input-text" name="star" type="radio" value="1" checked="">
+                    <i class="fa fa-star" style="font-size:16px;color:#cdcdcd;"></i>
+                    <input class="input-text" name="star" type="radio" value="2">
+                    <i class="fa fa-star" style="font-size:16px;color:#fed004;"></i>
+                    <i class="fa fa-star" style="font-size:16px;color:#fed004;"></i>
+                    <input class="input-text" name="star" type="radio" value="3">
+                    <i class="fa fa-star" style="font-size:16px;color:#fed004;"></i>
+                    <i class="fa fa-star" style="font-size:16px;color:#fed004;"></i>
+                    <i class="fa fa-star" style="font-size:16px;color:#fed004;"></i>
+                    <input class="input-text" name="star" type="radio" value="4">
+                    <i class="fa fa-star" style="font-size:16px;color:#fed004;"></i>
+                    <i class="fa fa-star" style="font-size:16px;color:#fed004;"></i>
+                    <i class="fa fa-star" style="font-size:16px;color:#fed004;"></i>
+                    <i class="fa fa-star" style="font-size:16px;color:#fed004;"></i>
+                    <input class="input-text" name="star" type="radio" value="5">
+                    <i class="fa fa-star" style="font-size:16px;color:#fed004;"></i>
+                    <i class="fa fa-star" style="font-size:16px;color:#fed004;"></i>
+                    <i class="fa fa-star" style="font-size:16px;color:#fed004;"></i>
+                    <i class="fa fa-star" style="font-size:16px;color:#fed004;"></i>
+                    <i class="fa fa-star" style="font-size:16px;color:#fed004;"></i>
+                </div>
+            </div>
+            <div class="control-group formSep">
+                <label class="control-label">网站类型</label>
+                <div class="controls">
+                    <select name="class_id" class="required">
+                        {volist name="class_list" id="vo"}
+                        <option value="{$vo.class_id}">{$vo.class_name}</option>
+                        {/volist}
+                    </select>
+                </div>
+            </div>
+            <div class="control-group formSep">
+                <div class="controls">
+                    <button class="btn btn-primary" type="submit">提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{/block}
+
+<!-- end wrapper -->
+
+{block name="js"}
+<script>
+    $(function(){
+        $("input[name='username']").mouseout(function(){
+            var val = $("input[name='username']").val();
+            $.post('/admin/site/userOne',{username:val},function(data){
+                if(data ==0){
+                    $('#name_text').text("没有这个站长，请重新输入").css({'color':'red','font-size':'12px'});
+                }else{
+                    $('#name_text').text(' ');
+                    $("input[name='uid']").val(data);
+                }
+            })
+        })
+
+        $("input[name='username']").keyup(function(){
+            var val = $("input[name='username']").val();
+            $.post('/admin/site/userOne',{username:val},function(data){
+                if(data ==0){
+                    $('#name_text').text("没有这个站长，请重新输入").css({'color':'red','font-size':'12px'});
+                }else{
+                    $('#name_text').text(' ');
+                    $("input[name='uid']").val(data);
+                }
+            })
+        })
+
+        //为空验证判断
+        $("form").submit(function(){
+            var flag = true;
+            $(".required").each(function(){
+                if($(this).val() == ""){
+                    $(this).next().css("display","inline");
+                    $(this).focus();
+                    $("html,body").animate({scrollTop:0}, 0);
+                    flag = false;
+                }
+            })
+            if(!flag){
+                return false;
+            }
+        })
+        //keyup事件
+        $(".required").keyup(function(){
+            var value = $(this).val();
+            if(value!=""){
+                $(this).next().css("display","none");
+                return true;  
+            }else{  
+                $(this).next().css("display","inline");
+                return false;  
+            }
+        })
+        //网址判断
+        $(".b_quired").keyup(function(){
+        //正则判断
+            var hpattern =/^http:\/\/[A-Za-z0-9]+\.[A-Za-z0-9]+[\/=\?%\-&_~`@[\]\':+!]*([^<>\"\"])*$/;
+            var pattern =/^[A-Za-z0-9]+\.[A-Za-z0-9]+[\/=\?%\-&_~`@[\]\':+!]*([^<>\"\"])*$/;
+            var value = $(this).val();
+            if(hpattern.test(value)==true || pattern.test(value)==true){
+               $(this).next().css('display','none');
+               return true;  
+            }else{  
+               $(this).next().css('display','inline');
+               return false;  
+            }    
+        }) 
+    })
+</script>
+{/block}

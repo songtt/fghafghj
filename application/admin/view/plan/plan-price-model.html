@@ -1,0 +1,109 @@
+{extend name="public:base" /}
+
+{block name="main"}
+<div class="wrapper">
+    <div class="row-fluid">
+        <h3 class="heading">新建单价模板</h3>
+        <form action="" method="post" id="formId">
+            <div class="control-group control-padding">
+                <label class="control-label">类型和尺寸</label>
+                <div class="controls">
+                    <select name="price_name" >
+                        {volist name="one" id="vo"}
+                        <option value="{$vo.tplname},{$vo.size},{$vo.tpl_id}">{$vo.name}</option>
+                        {/volist}
+                    </select>
+                    <span class="erro"></span>
+                </div>
+            </div>
+            <div class="control-group control-padding">
+                <label class="control-label">模板名称</label>
+                <div class="controls">
+                    <input class="input-text input1 mon-input" name="template_name" value="" type="text">
+                </div>
+            </div>
+
+            <div class="control-group control-padding">
+                <label class="control-label">广告商单价</label>
+                <div class="controls">
+                    <input class="input-text input1 mon-input" name="pricedv" value="" type="text"><span>元</span>
+                </div>
+            </div>
+
+            <input type="hidden" name="gradation" value="0" checked="checked">
+            <div id="ad_lists" class="control-group control-padding">
+                <label class="control-label">站长单价</label>
+                <div class="controls" >
+                    不分级&nbsp;&nbsp;<input class="input-text input1 money-input" name="price" value="" type="text"><span class="erro">站长单价必须小于广告商单价</span><span>元</span>
+                </div>
+                <div class="controls" style="margin-top:20px;">
+                    1星级&nbsp;&nbsp;<input class="input-text input1 money-input " name="price_1" value="" type="text"><span class="erro">站长单价必须小于广告商单价</span><span>元</span>
+                </div>
+                <div class="controls" style="margin-top:20px;">
+                    2星级&nbsp;&nbsp;<input class="input-text input1 money-input " name="price_2" value="" type="text"><span class="erro">站长单价必须小于广告商单价</span><span>元</span>
+                </div>
+                <div class="controls" style="margin-top:20px;">
+                    3星级&nbsp;&nbsp;<input class="input-text input1 money-input " name="price_3" value="" type="text"><span class="erro">站长单价必须小于广告商单价</span><span>元</span>
+                </div>
+                <div class="controls" style="margin-top:20px;">
+                    4星级&nbsp;&nbsp;<input class="input-text input1 money-input " name="price_4" value="" type="text"><span class="erro">站长单价必须小于广告商单价</span><span>元</span>
+                </div>
+                <div class="controls" style="margin-top:20px;">
+                    5星级&nbsp;&nbsp;<input class="input-text input1 money-input " name="price_5" value="" type="text"><span class="erro">站长单价必须小于广告商单价</span><span>元</span>
+                </div>
+            </div>
+            <div class="control-group control-padding" style="margin-top:10px;">
+                <div class="controls">
+                    <input class="btn btn-primary" type="submit" value="提交">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- end wrapper -->
+
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    $('#formId').submit(function(){
+        //点击按钮提交
+        var href = '/admin/plan/price';
+        var data = $("#formId").serialize();
+        $.post(href,data,success);
+        function success(data) {
+            if (data.status == 1) {
+                console.log(data)
+                window.location.href='/admin/plan/pricemodel';
+
+            } else {
+                layer.msg(data.info, {icon: 1});
+                setTimeout(function(){},2000);
+                return false;
+            }
+        }
+        return false;
+    });
+    $(function(){
+        //显示隐藏
+        $('.adzone_month input').change(function(){
+            var val = $(this).val();
+            if(val == '0'){
+                $('.adzone_list').css('display','none');
+                $('#ad_lists').css('display','block');
+                $('#ad_lists input').addClass('money-input required');
+            }else if(val == '1'){
+                $('.adzone_list').css('display','block');
+                $('#ad_lists input').removeClass('money-input required');
+                $('#ad_lists').css('display','none');
+                $('#ad_lists input').val('');
+            }
+        })
+        window.onload = function(){
+            $('.adzone_list').css('display','none');
+            $('#ad_lists').css('display','block');
+            $('#ad_lists input').addClass('money-input required');
+        }
+    })
+</script>
+{/block}

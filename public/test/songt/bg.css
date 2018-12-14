@@ -1,0 +1,68 @@
+*{
+    padding:0;
+    margin:0;
+}
+.main{
+    overflow: hidden;
+}
+.main img{
+    width:100%;
+    outline-width:0px;
+    vertical-align:top;
+}
+.main{
+    position: relative;
+}
+.main .copy-container{
+    width:3rem;
+    height:0.42rem;
+    position: absolute;
+    top: 0.8rem;
+    display: flex;
+    padding-left:0.38rem;
+
+}
+.copy-text{
+    flex: 1;
+
+    text-decoration: none;
+    border-bottom: 0.02rem solid #333;
+    width:1.8rem;
+    margin-right:0.2rem;
+}
+.copy-text input{
+    border: none;
+    background: none;
+    font-size: 0.34rem;
+    color: #231815;
+    display: block;
+}
+.copy-btn{
+    width:0.98rem;
+    font-size: 0.16rem;
+    color: #d14622;
+    height:0.42rem;
+    text-align: center;
+    line-height: 0.42rem;
+    background: #ffdb32;
+    z-index: 100;
+    outline: none;
+    border: none;
+    border-radius: 0.21rem;
+}
+.tips{
+    width:1.5rem;
+    height: 0.3rem;
+    line-height: 0.3rem;
+    color: #fff;
+    background: rgba(0,0,0,0.7);
+    text-align: center;
+    font-size: 0.16rem;
+    border-radius: 0.04rem;
+    position: fixed;
+    left:0;
+    top:0;
+    right:0;
+    bottom:0;
+    margin: auto;
+}

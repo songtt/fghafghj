@@ -1,0 +1,740 @@
+{extend name="public:base" /}
+{block name="css"}
+<link href="__CSS__/daterangepicker-bs3.css" rel="stylesheet" />
+{/block}
+{block name="main"}
+
+<!--  添加  -->
+<div class="wrapper">
+    <h3 class="heading">数据报表</h3>
+    <div class="tb_sts">
+        <form class="" action="/admin/report/zoneReport" method="post" name="">
+            <div id="repo_data" style="position:absolute; top:26px!important; right:30px;">
+                <a href="/admin/report/planReport?stats=plan_list&id={$data.data.id}&numid={$data.data.numid}&sort={$data.data.sort}&type={$data.data.type}&time={$data.data.time}"
+                   {if condition="$data.data.stats eq 'plan_list'"} class="repo_data" {/if}>计划报表</a>
+                <a href="/admin/report/webReport?stats=user_list&id={$data.data.id}&numid={$data.data.numid}&sort={$data.data.sort}&type={$data.data.type}&time={$data.data.time}"
+                   {if condition="$data.data.stats eq 'user_list'"} class="repo_data" {/if}>站长报表</a>
+                <a href="/admin/report/adsReport?stats=ads_list&id={$data.data.id}&numid={$data.data.numid}&sort={$data.data.sort}&type={$data.data.type}&time={$data.data.time}"
+                   {if condition="$data.data.stats eq 'ads_list'"} class="repo_data" {/if}>广告报表</a>
+                <a href="/admin/report/zoneReport?stats=zone_list&id={$data.data.id}&numid={$data.data.numid}&sort={$data.data.sort}&type={$data.data.type}&time={$data.data.time}"
+                   {if condition="$data.data.stats eq 'zone_list'"} class="repo_data" {/if}>广告位报表</a>
+                <a href="/admin/report/advReport?stats=adv_list&id={$data.data.id}&numid={$data.data.numid}&sort={$data.data.sort}&type={$data.data.type}&time={$data.data.time}"
+                   {if condition="$data.data.stats eq 'adv_list'"} class="repo_data" {/if}>广告商报表</a>
+                <a href="/admin/report/siteReport?stats=site_list&id={$data.data.id}&numid={$data.data.numid}&sort={$data.data.sort}&type={$data.data.type}&time={$data.data.time}"
+                   {if condition="$data.data.stats eq 'site_list'"} class="repo_data" {/if}>网站报表</a>
+                <a href="/admin/report/classReport?stats=classes_list&id={$data.data.id}&numid={$data.data.numid}&sort={$data.data.sort}&type={$data.data.type}&time={$data.data.time}"
+				    {if condition="$data.data.stats eq 'classes_list'"} class="repo_data" {/if}>网站分类报表</a>
+                <a href="/admin/report/adzClassReport?stats=adzClass_list&id={$data.data.id}&numid={$data.data.numid}&sort={$data.data.sort}&type={$data.data.type}&time={$data.data.time}"
+                    {if condition="$data.data.stats eq 'adzClass_list'"} class="repo_data" {/if}>广告位分类报表</a>
+            </div>
+            <!--数据报表content-->
+            搜索：
+            <input class="input-text input1" type="hidden" name="stats" value="{$data.data.stats}" />
+            <!--排重点击总数-->
+            <input class="input-text input1" type="hidden" name="ratio" value="{$ratio}" />
+            <input class="input-text" name="numid" type="text" {if condition="$data.data.numid eq '0'"} value="" {else /} value="{$data.data.numid}" {/if} style="width:80px;">
+            <select name="id" id="" style="width:90px;">
+                <option value="pid" {if condition="$data.data.id eq 'pid'"} selected {/if}>计划ID</option>
+                <option value="uid" {if condition="$data.data.id eq 'uid'"} selected {/if}>站长ID</option>
+                <option value="ad_id" {if condition="$data.data.id eq 'ad_id'"} selected {/if}>广告ID</option>
+                <option value="adz_id" {if condition="$data.data.id eq 'adz_id'"} selected {/if}>广告位ID</option>
+                <option value="adv_id" {if condition="$data.data.id eq 'adv_id'"} selected {/if}>广告商ID</option>
+                <option value="site_id" {if condition="$data.data.id eq 'site_id'"} selected {/if}>网站ID</option>
+                <option value="class_name" {if condition="$data.data.id eq 'class_name'"} selected {/if}>网站分类名称</option>
+                <option value="size" {if condition="$data.data.id eq 'size'"} selected {/if}>尺寸筛选</option>
+            </select>
+            <select name="sort" id="" style="width:90px;">
+                <option value="ctime" {if condition="$data.data.sort eq 'ctime'"} selected {/if}>日期</option>
+                <option value="views" {if condition="$data.data.sort eq 'views'"} selected {/if}>浏览数</option>
+                <option value="web_num" {if condition="$data.data.sort eq 'web_num'"} selected {/if}>结算数</option>
+                <option value="click_num" {if condition="$data.data.sort eq 'click_num'"} selected {/if}>点击率</option>
+                <option value="web_deduction" {if condition="$data.data.sort eq 'web_deduction'"} selected {/if}>扣量数</option>
+                <option value="sumpay" {if condition="$data.data.sort eq 'sumpay'"} selected {/if}>佣金</option>
+				<option value="sumprofit" {if condition="$data.data.sort eq 'sumprofit'"} selected {/if}>盈利</option>
+                <option value="ui_web" {if condition="$data.data.sort eq 'ui_web'"} selected {/if}>独立ip</option>
+                <!--<option value="heavy_click_num" {if condition="$data.data.sort eq 'heavy_click_num'"} selected {/if}>排重点击</option>-->
+
+                <option value="sortA" {if condition="$params.sort eq 'sortA'"} selected {/if}>A排序</option>
+                <option value="sortB" {if condition="$params.sort eq 'sortB'"} selected {/if}>B排序</option>
+                <option value="sortC" {if condition="$params.sort eq 'sortC'"} selected {/if}>C排序</option>
+                <option value="sortD" {if condition="$params.sort eq 'sortD'"} selected {/if}>D排序</option>
+                <option value="sortE" {if condition="$params.sort eq 'sortE'"} selected {/if}>E排序</option>
+                <option value="sortF" {if condition="$params.sort eq 'sortF'"} selected {/if}>F排序</option>
+            </select>
+            <select name="type" id="" style="width:90px;">
+  <option value="0" {if condition="$data.data.type eq '0'"} selected {/if}>所有类型</option>
+                <option value="cpc" {if condition="$data.data.type eq 'cpc'"} selected {/if}>Cpc类型</option>
+                <option value="cpm" {if condition="$data.data.type eq 'cpm'"} selected {/if}>Cpm类型</option>
+                <option value="cpv" {if condition="$data.data.type eq 'cpv'"} selected {/if}>Cpv类型</option>
+                <option value="cps" {if condition="$data.data.type eq 'cps'"} selected {/if}>Cps类型</option>
+                <option value="cpa" {if condition="$data.data.type eq 'cpa'"} selected {/if}>Cpa类型</option>
+            </select>
+            <select id="selectime" name="time" id="" style="width:204px;">
+                <option id="fatime" value="{$data.data.nowval}">{$data.data.now}</option>
+                <option value="{$data.data.allday}" {if condition="$data.data.time eq $data.data.allday"} selected {/if}>所有时间段</option>
+                <option value="{$data.data.today}" {if condition="$data.data.time eq $data.data.today"} selected {/if}>今天</option>
+                <option value="{$data.data.yesterday}" {if condition="$data.data.time eq $data.data.yesterday"} selected {/if}>昨天</option>
+                <option value="{$data.data.lastseven}" {if condition="$data.data.time eq $data.data.lastseven"} selected {/if}>最近七天</option>
+                <option value="{$data.data.lastthirty}" {if condition="$data.data.time eq $data.data.lastthirty"} selected {/if}>最近30天</option>
+                <option value="{$data.data.lastmonth}" {if condition="$data.data.time eq $data.data.lastmonth"} selected {/if}>上个月</option>
+            </select>
+            <img src="/admin/img/calendar.png" id="reservation">
+            <button type="input" style="width:150px;"><i class="fa fa-search"></i></button>
+        </form>
+    </div>
+    <form  action="/admin/Report/delReport" name="delete" id="delete" method="post">
+    <input type="hidden" name="numid" value="{$data.data.numid}"/>
+    <input type="hidden" name="number" value="{$data.data.id}"/>
+    <input type="hidden" name="stats" value="{$data.data.stats}"/>
+    <input type="hidden" name="time" value="{$data.data.time}"/>
+    <input type="hidden" name="sort" value="{$data.data.sort}"/>
+    <div class="row">
+        <div class="plan6">
+            <div class="dataTables-length">
+                批量操作：
+                <a href="javascript:;"  ><button class="btn btn-primary" type="button" onclick="delLst();" style="padding:2px 12px;">删除</button></a>&nbsp;&nbsp;
+                <i class="fa fa-plus-circle"></i><a href="#" id="excel" style="color:#09a26f;"> 导出Excel</a>&nbsp;&nbsp;
+                <i class="fa fa-plus-circle"></i><a href="#" id="siteexcel" style="color:#09a26f;"> 批量导出受访域名</a>
+            </div>
+        </div>
+    </div>
+    <table class="dataTable table-hover" id="tableChange">
+        <tr>
+            <th style = "width:80px;"><input id="" name="" type="checkbox" class="checkedAll" data-name="data-name"></th>
+            <th class="check checkDate">日期</th>
+            <th class="check checkAdvert">广告位ID</th>
+            <th class="check checkSize">尺寸</th>
+            <th class="check checkViews">浏览数</th>
+            <th class="check checkClis">点击数</th>
+            <th>跳转数</th>
+            <!--<td>独立访客</td>-->
+            <th class="check checkHits">独立IP</th>
+            {if condition="$judge_name eq 'admin'"}<th class="check checkDedu">扣量数</th>{/if}
+            <th class="check checkBalance">结算数</th>
+            <th class="check checkCRT">CRT</th>
+            <th class="check checkClirate">点击率</th>
+            <!-- {if condition="$type =='pid' || $type == 'uid' || $type =='adz_id'"}<td class="check checkRefer">排重点击</td>{/if} -->
+            <th class="check checkRefer">排重点击</th>
+            {if condition="!($judge_name eq 'yanfabu' || $judge_name eq 'yfbtest')"}
+            <th class="check checkCharges">实际跑量佣金</th>
+            <th class="check checkPrice">包天价钱</th>
+            {/if}
+            {if condition="($judge_name eq 'admin' || $judge_name eq 'yfb001' || $judge_name eq 'yyblizz'|| $judge_name eq 'yunyingbu1'|| $judge_name eq 'yunyingbu2' || $judge_name eq 'yunyingbu3')"}
+			<th class="check checkGain">跑量盈利</th>
+            {/if}
+
+            <!--<td>实际盈利</td>-->
+			<th class = "check checkAnum" style="display:none;">A次数</th>
+            <th class = "check checkAown" style="display:none;">A独立</th>
+            <th class = "check checkBnum" style="display:none;">B次数</th>
+            <th class = "check checkBown" style="display:none;">B独立</th>
+            <th class = "check checkCnum" style="display:none;">C次数</th>
+            <th class = "check checkCown" style="display:none;">C独立</th>
+            <th class = "check checkDnum" style="display:none;">D次数</th>
+            <th class = "check checkDown" style="display:none;">D独立</th>
+            <th class = "check checkEnum" style="display:none;">E次数</th>
+            <th class = "check checkEown" style="display:none;">E独立</th>
+            <th class = "check checkFnum" style="display:none;">F次数</th>
+            <th class = "check checkFown" style="display:none;">F独立</th>
+
+        </tr>
+        <tr>
+            <th style = "width:80px;">汇总</th>
+            {if condition="$data.data.views  neq ''"}
+			<th class = "checkDate"></th>
+            <th class = "checkAdvert"></th>
+            <th class = "checkSize"></th>
+            <th class = "checkViews">{$data.data.views|default='0'}</th>
+            <th class = "checkClis">{$data.data.click_num|default='0'}</th>
+            <th>{$data.data.jump|default='0'}</th>
+            <!--<th>{$data.data.uv_web|default='0'}</th>-->
+            <th class = "checkHits">{$data.data.ui_web|default='0'}</th>
+            {if condition="$judge_name eq 'admin'"}<th class = "checkDedu">{$data.data.web_deduction|default='0'|num_Round}</th>{/if}
+            <th class = "checkBalance">{$data.data.web_num|default='0'|num_Round}</th>
+            <th class = "checkCRT">{$data.data.crt|default='0'}%</th>
+            <th class = "checkClirate">{$data.data.ctr|default='0'}%</th>
+    <!--         {if condition="$type =='pid' || $type == 'uid' || $type =='adz_id'"}<th class = "checkRefer all_adz_click_num">{$data.data.adz_click_num|default='0'}</th>{/if} -->
+            <th class = "checkRefer">{$data.data.adz_click_num|default='0'|num_Round}</th>
+            {if condition="!($judge_name eq 'yanfabu' || $judge_name eq 'yfbtest')"}
+            <th class = "checkCharges">{$data.data.sumpay|default='0'|process_decimal}</th>
+            <th class = "checkPrice">{$data.data.cpd|default='0'}</th>
+            {/if}
+            {if condition="($judge_name eq 'admin' || $judge_name eq 'yfb001' || $judge_name eq 'yyblizz'|| $judge_name eq 'yunyingbu1'|| $judge_name eq 'yunyingbu2')"}
+            <th class = "checkGain">{$data.data.sumprofit|default='0'|process_decimal}</th>
+            {/if}
+            <!--<th>{$data.data.fact_sumprofit|default='0'}</th>-->
+			<th class = "checkAnum" style="display:none;">{$data.data.click_numA|default='0'}</th>
+			<th class = "checkAown" style="display:none;">{$data.data.ui_numA|default='0'}</th>
+			<th class = "checkBnum" style="display:none;">{$data.data.click_numB|default='0'}</th>
+			<th class = "checkBown" style="display:none;">{$data.data.ui_numB|default='0'}</th>
+			<th class = "checkCnum" style="display:none;">{$data.data.click_numC|default='0'}</th>
+			<th class = "checkCown" style="display:none;">{$data.data.ui_numC|default='0'}</th>
+			<th class = "checkDnum" style="display:none;">{$data.data.click_numD|default='0'}</th>
+			<th class = "checkDown" style="display:none;">{$data.data.ui_numD|default='0'}</th>
+			<th class = "checkEnum" style="display:none;">{$data.data.click_numE|default='0'}</th>
+			<th class = "checkEown" style="display:none;">{$data.data.ui_numE|default='0'}</th>
+			<th class = "checkFnum" style="display:none;">{$data.data.click_numF|default='0'}</th>
+			<th class = "checkFown" style="display:none;">{$data.data.ui_numF|default='0'}</th>
+            {/if}
+        </tr>
+            {volist name="data.res" id="vo" }
+            <tr>
+            <td style = "width:80px;"><input id="" name="id[]" data="{$vo.adz_id}" value="{$vo.adz_id}.{$vo.day}.adz_id" type="checkbox" data-name="data-name"></td>
+            <td class = "checkDate">{$vo.day|default=''}</td>
+            <td class = "checkAdvert"><a class="detailed_info">{$vo.adz_id|default='已删除'}</a></td>
+            <td class = "checkSize">{$vo.size|default='已删除'}</td>
+            <td class = "checkViews">{$vo.views|default='0'}</td>
+            <td class = "checkClis">{$vo.click_num|default='0'}</td>
+            <td>{$vo.jump|default='0'}</td>
+                <!--<td>{$vo.uv_web|default='0'}</td>-->
+            <td class = "checkHits">{$vo.ui_web|default='0'}</td>
+            {if condition="$judge_name eq 'admin'"}<td class = "checkDedu">{$vo.web_deduction|default='0'|num_Round}</td>{/if}
+            <td class = "checkBalance">{$vo.web_num|default='0'|num_Round}</td>
+            <td class = "checkCRT">{$vo.crt|default='0'}%</td>
+            <td class = "checkClirate">{$vo.ctr|default='0'}%</td>
+      <!--       {if condition="$type =='pid' || $type == 'uid' || $type =='adz_id'"}<td class = "checkRefer adz_click_num" data="{$vo.click_num|default='0'}/{$data.data.click_num|default='0'}">{$vo.adz_click_num|default='0'}</td>{/if} -->
+            <td class = "checkRefer">{$vo.adz_click_num|default='0'|num_Round}</td>
+            {if condition="!($judge_name eq 'yanfabu' || $judge_name eq 'yfbtest')"}
+            <td class = "checkCharges">{$vo.sumpay|default='0'|process_decimal}</td>
+            <td class = "checkPrice">{$vo.cpd|default='0'}</td>
+            {/if}
+            {if condition="($judge_name eq 'admin' || $judge_name eq 'yfb001' || $judge_name eq 'yyblizz'|| $judge_name eq 'yunyingbu1'|| $judge_name eq 'yunyingbu2' ||$judge_name eq 'yunyingbu3')"}
+            <td class = "checkGain">{$vo.sumprofit|default='0'|process_decimal}</td>
+            {/if}
+			<td class = "checkAnum" style="display:none;">{$vo.click_numA|default='0'}</td>
+			<td class = "checkAown" style="display:none;">{$vo.ui_numA|default='0'}</td>
+			<td class = "checkBnum" style="display:none;">{$vo.click_numB|default='0'}</td>
+			<td class = "checkBown" style="display:none;">{$vo.ui_numB|default='0'}</td>
+			<td class = "checkCnum" style="display:none;">{$vo.click_numc|default='0'}</td>
+			<td class = "checkCown" style="display:none;">{$vo.ui_numB|default='0'}</td>
+			<td class = "checkDnum" style="display:none;">{$vo.click_numD|default='0'}</td>
+			<td class = "checkDown" style="display:none;">{$vo.ui_numD|default='0'}</td>
+			<td class = "checkEnum" style="display:none;">{$vo.click_numE|default='0'}</td>
+			<td class = "checkEown" style="display:none;">{$vo.ui_numE|default='0'}</td>
+			<td class = "checkFnum" style="display:none;">{$vo.click_numF|default='0'}</td>
+			<td class = "checkFown" style="display:none;">{$vo.ui_numF|default='0'}</td>
+            <!--<td>{$vo.fact_sumprofit|default='0'}</td>-->
+            </tr>
+            <tr class="u_info">
+                <td colspan="103">
+                    <table class="tab_info" border="0" cellpadding="0" cellspacing="0" width="100%">
+                        <tr>
+                            <td height="30">
+                                <strong>查看该广告位下</strong>
+                                <span class="span7" style="padding-left:20px;">
+                                    <a href="/admin/report/planReport?numid={$vo.adz_id}&id=adz_id&stats=plan_list&time={$data.data.time}&type={$data.data.type}&sort={$data.data.sort}&ratio={$vo.adz_click_num|default='0'}">计划报表</a>
+                                </span>
+                                <span class="span7" style="padding-left:20px;">
+                                    <a href="/admin/report/webReport?numid={$vo.adz_id}&id=adz_id&stats=user_list&time={$data.data.time}&type={$data.data.type}&sort={$data.data.sort}&ratio={$vo.adz_click_num|default='0'}">站长报表</a>
+                                </span>
+                                <span class="span7" style="padding-left:20px;">
+                                    <a href="/admin/report/adsReport?numid={$vo.adz_id}&id=adz_id&stats=ads_list&time={$data.data.time}&type={$data.data.type}&sort={$data.data.sort}">广告报表</a>
+                                </span>
+                                <span class="span7" style="padding-left:20px;">
+                                    <a href="/admin/report/zoneReport?numid={$vo.adz_id}&id=adz_id&stats=zone_list&time={$data.data.time}&type={$data.data.type}&sort={$data.data.sort}&ratio={$vo.adz_click_num|default='0'}">广告位报表</a>
+                                </span>
+                                <span class="span7" style="padding-left:20px;">
+                                    <a href="/admin/report/advReport?numid={$vo.adz_id}&id=adz_id&stats=adv_list&time={$data.data.time}&type={$data.data.type}&sort={$data.data.sort}">广告商报表</a>
+                                </span>
+                                <span class="span7" style="padding-left:20px;">
+                                    <a href="/admin/report/siteReport?numid={$vo.adz_id}&id=adz_id&stats=site_list&time={$data.data.time}&type={$data.data.type}&sort={$data.data.sort}">网站报表</a>
+                                </span>
+                                 <span class="span7" style="padding-left:20px;">
+                                    <a href="/admin/report/classReport?numid={$vo.adz_id}&id=adz_id&stats=classes_list&time={$data.data.time}&type={$data.data.type}&sort={$data.data.sort}">网站分类报表</a>
+                                </span>
+                                <span class="span7" style="padding-left:20px;">
+                                    <a href="/admin/report/adzClassReport?numid={$vo.adz_id}&id=adz_id&stats=adzClass_list&time={$data.data.time}&type={$data.data.type}&sort={$data.data.sort}">广告位分类报表</a>
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            {/volist}
+    </table>
+    </form>
+	<!-- checkbox -->
+
+	<ul id= "checked" style="width:8.5%;padding-top:10px;position:absolute;right:2.5%;top:118px;">
+		<select id = "choiceBtn" style="display:block;background-color:#fff;border:1px solid #ccc;width:100%;height:36px;"><option style = "display:none;" selected = "selected">请选择</option></select>
+		<div id = "choiceBlock" style="display:none;background-color:#fff;border:1px solid #ccc;width:100%;padding:6px 10px;height:120px;overflow-y: scroll">
+			<li><input type="checkbox" class="checked" id="checkedDate" onclick="smallChangea()"/>日期</li>
+			<li><input type="checkbox" class="checked" id="checkedAdvert" onclick="smallChangeb()"/>广告位ID</li>
+			<li><input type="checkbox" class="checked" id="checkedSize" onclick="smallChangec()"/>尺寸</li>
+			<li><input type="checkbox" class="checked" id="checkedViews" onclick="smallChanged()"/>浏览数</li>
+			<li><input type="checkbox" class="checked" id="checkedClis" onclick="smallChangee()"/>点击数</li>
+			<li><input type="checkbox" class="checked" id="checkedHits" onclick="smallChangef()"/>独立IP</li>
+			<li><input type="checkbox" class="checked" id="checkedDedu" onclick="smallChangeg()">扣量数</li>
+			<li><input type="checkbox" class="checked" id="checkedBalance" onclick="smallChangeh()"/>结算数</li>
+			<li><input type="checkbox" class="checked" id="checkedCRT" onclick="smallChangei()"/>CRT</li>
+			<li><input type="checkbox" class="checked" id="checkedClirate" onclick="smallChangej()"/>点击率</li>
+			<li><input type="checkbox" class="checked" id="checkedRefer" onclick="smallChangek()"/>排重点击</li>
+			<li><input type="checkbox" class="checked" id="checkedCharges" onclick="smallChangel()"/>实际跑量佣金</li>
+			<li><input type="checkbox" class="checked" id="checkedPrice" onclick="smallChangem()"/>包天价钱</li>
+			<li><input type="checkbox" class="checked" id="checkedGain" onclick="smallChangen()"/>跑量盈利</li>
+			<li><input type="checkbox" class="checked" id="checkedAnum" onclick="smallChangeo()"/>A次数</li>
+			<li><input type="checkbox" class="checked" id="checkedAown" onclick="smallChangep()"/>A独立</li>
+			<li><input type="checkbox" class="checked" id="checkedBnum" onclick="smallChangeq()"/>B次数</li>
+			<li><input type="checkbox" class="checked" id="checkedBown" onclick="smallChanger()"/>B独立</li>
+			<li><input type="checkbox" class="checked" id="checkedCnum" onclick="smallChanges()"/>C次数</li>
+			<li><input type="checkbox" class="checked" id="checkedCown" onclick="smallChanget()"/>C独立</li>
+			<li><input type="checkbox" class="checked" id="checkedDnum" onclick="smallChangeu()"/>D次数</li>
+			<li><input type="checkbox" class="checked" id="checkedDown" onclick="smallChangev()"/>D独立</li>
+			<li><input type="checkbox" class="checked" id="checkedEnum" onclick="smallChangew()"/>E次数</li>
+			<li><input type="checkbox" class="checked" id="checkedEown" onclick="smallChangex()"/>E独立</li>
+			<li><input type="checkbox" class="checked" id="checkedFnum" onclick="smallChangey()"/>F次数</li>
+			<li><input type="checkbox" class="checked" id="checkedFown" onclick="smallChangez()"/>F独立</li>
+		</div>
+	</ul>
+
+
+	<div class="row">{$data.show}</div>
+</div>
+{/block}
+
+<!-- end wrapper -->
+
+{block name="js"}
+<!-- <script src="__JS__/report.js"></script> -->
+<script src="__STATIC__/js/moment.min.js"></script>
+<script src="__JS__/daterangepicker.js"></script>
+<script src="__JS__/moment.js"></script>
+<script type="text/javascript">
+    // 批量删除
+    function delLst(){
+        layer.confirm('确定删除吗？', {
+            btn: ['确定','取消'] //按钮
+        }, function(){
+            $('form').submit();
+        });
+    }
+
+    $(document).ready(function() {
+       var time = $('select[name="time"] option:selected').val();
+        var start = time.substr(0,10);
+        var end = time.substr(10);
+        $('#reservation').daterangepicker({
+            startDate: start,
+            endDate: end,
+        }, function(start, end, label) {
+            var a = start.format();
+            var b = end.format();
+            //start time
+            var c = a.substr(0,10);
+            //end time
+            var d = b.substr(0,10);
+            // console.log(a+'----'+b+'----'+c+'----'+d);
+            //点击选中第一个
+            $("#selectime option:first").prop("selected","selected");
+            $("#fatime").text(c+"至"+d);
+            $("#fatime").val(value = c+""+d);
+        });
+        //页面跳转之后 的状态以及颜色
+        $('#repo_data').children("a").each(function(){
+            // $(this).removeClass("repo_data");
+            if($(this)[0].href==String(window.location)){
+                $(this).addClass("repo_data");
+                $(this).siblings().removeClass("repo_data");
+            }
+        });
+    });
+
+    $('#excel').click(function(){
+        var stats = '{$data.data.stats}';
+        var numid = $('input[name="numid"]').val();
+        var id = $('select[name="id"] option:selected').val();
+        var sort = $('select[name="sort"] option:selected').val();
+        var type = $('select[name="type"] option:selected').val();
+        var time = $('select[name="time"] option:selected').val();
+
+        window.location.href="/admin/report/zoneExcel?stats="+stats+"&numid="+numid+"&id="+id+"&sort="+sort+"&type="+type+"&time="+time;
+    })
+
+    $('#siteexcel').click(function(){
+        $('input[type="checkbox"]').attr('checked',true);
+
+        var stats = '{$data.data.stats}';
+        var numid = $('input[name="numid"]').val();
+        var id = $('select[name="id"] option:selected').val();
+        var sort = $('select[name="sort"] option:selected').val();
+        var type = $('select[name="type"] option:selected').val();
+        var time = $('select[name="time"] option:selected').val();
+
+        var els =$('input[name="id[]"]');
+        for (var i = 0, j = els.length; i < j; i++){
+            if(els[i].checked == true){
+                var adzid = els[i].attributes["data"].value;
+
+//                $.ajax({
+//                    url: '/admin/report/zoneSiteExcel',
+//                    data: {adzid:adzid,stats:stats,numid:numid,id:id,sort:sort,type:type,time:time},
+//                    type: 'post',
+//                    dataType: 'json',
+//                    success:function(data){
+//                        console.log(data)
+//                    }
+//
+//                })
+                window.location.href="/admin/report/zoneSiteExcel?stats="+stats+"&numid="+numid+"&id="+id+"&sort="+sort+"&type="+type+"&time="+time+'&adzid='+adzid;
+
+            }
+        }
+
+    })
+    //计划报表、广告报表、广告商报表跳广告位报表隐藏独立ip
+    var aQuery = window.location.href;//取得Get参数
+    if(aQuery.indexOf("&numid=&") > 0 ||aQuery.indexOf("id=uid") > 0 ||aQuery.indexOf("id=adz_id") > 0 || aQuery.indexOf("zoneReport?") < 0){
+        var adzone_ui = 'ok';
+    }else{
+        var adzone_ui = 'none';
+    }
+    if(aQuery.indexOf("id=ad_id") > 0 ||aQuery.indexOf("id=pid&stats") > 0||aQuery.indexOf("id=adv_id") > 0 ||adzone_ui=='none'){
+        $('.checkHits').css('display','none');
+    }
+
+	//checked
+
+	var tableChange = document.getElementById("tableChange");
+    var choiceBtn = document.getElementById("choiceBtn");
+    var choiceBlock = document.getElementById("choiceBlock");
+
+    choiceBtn.onclick = function () {
+        if (choiceBlock.style.display == "none") {
+            choiceBlock.style.display = "block";
+            tableChange.style.width = "90%";
+        }else{
+            choiceBlock.style.display = "none";
+            tableChange.style.width = "100%";
+        }
+    }
+
+	var checkdate=document.querySelectorAll(".checkDate");
+	var checkAdvert=document.querySelectorAll(".checkAdvert");
+	var checkSize=document.querySelectorAll(".checkSize");
+	var checkViews=document.querySelectorAll(".checkViews");
+	var checkClis=document.querySelectorAll(".checkClis");
+	var checkHits=document.querySelectorAll(".checkHits");
+	var checkDedu=document.querySelectorAll(".checkDedu");
+	var checkBalance=document.querySelectorAll(".checkBalance");
+	var checkCRT=document.querySelectorAll(".checkCRT");
+	var checkClirate=document.querySelectorAll(".checkClirate");
+	var checkRefer=document.querySelectorAll(".checkRefer");
+	var checkCharges=document.querySelectorAll(".checkCharges");
+	var checkPrice=document.querySelectorAll(".checkPrice");
+	var checkGain=document.querySelectorAll(".checkGain");
+	var checkAnum=document.querySelectorAll(".checkAnum");
+	var checkAown=document.querySelectorAll(".checkAown");
+	var checkBnum=document.querySelectorAll(".checkBnum");
+	var checkBown=document.querySelectorAll(".checkBown");
+	var checkCnum=document.querySelectorAll(".checkCnum");
+	var checkCown=document.querySelectorAll(".checkCown");
+	var checkDnum=document.querySelectorAll(".checkDnum");
+	var checkDown=document.querySelectorAll(".checkDown");
+	var checkEnum=document.querySelectorAll(".checkEnum");
+	var checkEown=document.querySelectorAll(".checkEown");
+	var checkFnum=document.querySelectorAll(".checkFnum");
+	var checkFown=document.querySelectorAll(".checkFown");
+
+	var checkeddate=document.getElementById("checkedDate");
+	var checkedAdvert=document.getElementById("checkedAdvert");
+	var checkedSize=document.getElementById("checkedSize");
+	var checkedViews=document.getElementById("checkedViews");
+	var checkedClis=document.getElementById("checkedClis");
+	var checkedHits=document.getElementById("checkedHits");
+	var checkedDedu=document.getElementById("checkedDedu");
+	var checkedBalance=document.getElementById("checkedBalance");
+	var checkedCRT=document.getElementById("checkedCRT");
+	var checkedClirate=document.getElementById("checkedClirate");
+	var checkedRefer=document.getElementById("checkedRefer");
+	var checkedCharges=document.getElementById("checkedCharges");
+	var checkedPrice=document.getElementById("checkedPrice");
+	var checkedGain=document.getElementById("checkedGain");
+	var checkedAnum=document.getElementById("checkedAnum");
+	var checkedAown=document.getElementById("checkedAown");
+	var checkedBnum=document.getElementById("checkedBnum");
+	var checkedBown=document.getElementById("checkedBown");
+	var checkedCnum=document.getElementById("checkedCnum");
+	var checkedCown=document.getElementById("checkedCown");
+	var checkedDnum=document.getElementById("checkedDnum");
+	var checkedDown=document.getElementById("checkedDown");
+	var checkedEnum=document.getElementById("checkedEnum");
+	var checkedEown=document.getElementById("checkedEown");
+	var checkedFnum=document.getElementById("checkedFnum");
+	var checkedFown=document.getElementById("checkedFown");
+
+	var check=document.querySelectorAll(".check");
+	var checked=document.querySelectorAll(".checked");
+
+	function begin() {
+		for (var i = 0; i < 14; i++) {
+			checked[i].checked = true;
+		}
+		for (var j = 14; j < checked.length; j++) {
+			checked[j].checked = false;
+		}
+	}
+	begin();
+
+	function smallChangea() {
+		for (var i = 0; i < checkdate.length; i++) {
+			if (checkedDate.checked == false) {
+				checkdate[i].style.display = "none";
+			} else {
+				checkdate[i].style.display = "table-cell";
+			}
+		}
+	}
+
+	function smallChangeb() {
+		for (var i = 0; i < checkAdvert.length; i++) {
+			if (checkedAdvert.checked == false) {
+				checkAdvert[i].style.display = "none";
+			} else {
+				checkAdvert[i].style.display = "table-cell";
+			}
+		}
+	}
+
+	function smallChangec() {
+		for (var i = 0; i < checkSize.length; i++) {
+			if (checkedSize.checked == false) {
+				checkSize[i].style.display = "none";
+			} else {
+				checkSize[i].style.display = "table-cell";
+			}
+		}
+	}
+
+	function smallChanged() {
+		for (var i = 0; i < checkViews.length; i++) {
+			if (checkedViews.checked == false) {
+				checkViews[i].style.display = "none";
+			} else {
+				checkViews[i].style.display = "table-cell";
+			}
+		}
+	}
+
+	function smallChangee() {
+		for (var i = 0; i < checkClis.length; i++) {
+			if (checkedClis.checked == false) {
+				checkClis[i].style.display = "none";
+			} else {
+				checkClis[i].style.display = "table-cell";
+			}
+		}
+	}
+
+	function smallChangef() {
+		for (var i = 0; i < checkHits.length; i++) {
+			if (checkedHits.checked == false) {
+				checkHits[i].style.display = "none";
+			} else {
+				checkHits[i].style.display = "table-cell";
+			}
+		}
+	}
+
+	function smallChangeg() {
+		for (var i = 0; i < checkDedu.length; i++) {
+			if (checkedDedu.checked == false) {
+				checkDedu[i].style.display = "none";
+			} else {
+				checkDedu[i].style.display = "table-cell";
+			}
+		}
+	}
+
+	function smallChangeh() {
+		for (var i = 0; i < checkBalance.length; i++) {
+			if (checkedBalance.checked == false) {
+				checkBalance[i].style.display = "none";
+			} else {
+				checkBalance[i].style.display = "table-cell";
+			}
+		}
+	}
+
+	function smallChangei() {
+		for (var i = 0; i < checkCRT.length; i++) {
+			if (checkedCRT.checked == false) {
+				checkCRT[i].style.display = "none";
+			} else {
+				checkCRT[i].style.display = "table-cell";
+			}
+		}
+	}
+
+	function smallChangej() {
+		for (var i = 0; i < checkClirate.length; i++) {
+			if (checkedClirate.checked == false) {
+				checkClirate[i].style.display = "none";
+			} else {
+				checkClirate[i].style.display = "table-cell";
+			}
+		}
+	}
+
+	function smallChangek() {
+		for (var i = 0; i < checkRefer.length; i++) {
+			if (checkedRefer.checked == false) {
+				checkRefer[i].style.display = "none";
+			} else {
+				checkRefer[i].style.display = "table-cell";
+			}
+		}
+	}
+
+	function smallChangel() {
+		for (var i = 0; i < checkCharges.length; i++) {
+			if (checkedCharges.checked == false) {
+				checkCharges[i].style.display = "none";
+			} else {
+				checkCharges[i].style.display = "table-cell";
+			}
+		}
+	}
+
+	function smallChangem() {
+		for (var i = 0; i < checkPrice.length; i++) {
+			if (checkedPrice.checked == false) {
+				checkPrice[i].style.display = "none";
+			} else {
+				checkPrice[i].style.display = "table-cell";
+			}
+		}
+	}
+
+	function smallChangen() {
+		for (var i = 0; i < checkGain.length; i++) {
+			if (checkedGain.checked == false) {
+				checkGain[i].style.display = "none";
+			} else {
+				checkGain[i].style.display = "table-cell";
+			}
+		}
+	}
+
+	function smallChangeo() {
+		for (var i = 0; i < checkAnum.length; i++) {
+			if (checkedAnum.checked) {
+				checkAnum[i].style.display = "table-cell";
+			} else {
+				checkAnum[i].style.display = "none";
+			}
+		}
+	}
+
+	function smallChangep() {
+		for (var i = 0; i < checkAown.length; i++) {
+			if (checkedAown.checked) {
+				checkAown[i].style.display = "table-cell";
+			} else {
+				checkAown[i].style.display = "none";
+			}
+		}
+	}
+
+	function smallChangeq() {
+		for (var i = 0; i < checkBnum.length; i++) {
+			if (checkedBnum.checked) {
+				checkBnum[i].style.display = "table-cell";
+			} else {
+				checkBnum[i].style.display = "none";
+			}
+		}
+	}
+
+	function smallChanger() {
+		for (var i = 0; i < checkBown.length; i++) {
+			if (checkedBown.checked) {
+				checkBown[i].style.display = "table-cell";
+			} else {
+				checkBown[i].style.display = "none";
+			}
+		}
+	}
+
+	function smallChanges() {
+		for (var i = 0; i < checkCnum.length; i++) {
+			if (checkedCnum.checked) {
+				checkCnum[i].style.display = "table-cell";
+			} else {
+				checkCnum[i].style.display = "none";
+			}
+		}
+	}
+
+	function smallChanget() {
+		for (var i = 0; i < checkCown.length; i++) {
+			if (checkedCown.checked) {
+				checkCown[i].style.display = "table-cell";
+			} else {
+				checkCown[i].style.display = "none";
+			}
+		}
+	}
+
+	function smallChangeu() {
+		for (var i = 0; i < checkDnum.length; i++) {
+			if (checkedDnum.checked) {
+				checkDnum[i].style.display = "table-cell";
+			} else {
+				checkDnum[i].style.display = "none";
+			}
+		}
+	}
+
+	function smallChangev() {
+		for (var i = 0; i < checkDown.length; i++) {
+			if (checkedDown.checked) {
+				checkDown[i].style.display = "table-cell";
+			} else {
+				checkDown[i].style.display = "none";
+			}
+		}
+	}
+
+	function smallChangew() {
+		for (var i = 0; i < checkEnum.length; i++) {
+			if (checkedEnum.checked) {
+				checkEnum[i].style.display = "table-cell";
+			} else {
+				checkEnum[i].style.display = "none";
+			}
+		}
+	}
+
+	function smallChangex() {
+		for (var i = 0; i < checkEown.length; i++) {
+			if (checkedEown.checked) {
+				checkEown[i].style.display = "table-cell";
+			} else {
+				checkEown[i].style.display = "none";
+			}
+		}
+	}
+
+	function smallChangey() {
+		for (var i = 0; i < checkFnum.length; i++) {
+			if (checkedFnum.checked) {
+				checkFnum[i].style.display = "table-cell";
+			} else {
+				checkFnum[i].style.display = "none";
+			}
+		}
+	}
+
+	function smallChangez() {
+		for (var i = 0; i < checkFown.length; i++) {
+			if (checkedFown.checked) {
+				checkFown[i].style.display = "table-cell";
+			} else {
+				checkFown[i].style.display = "none";
+			}
+		}
+	}
+
+
+</script>
+{/block}

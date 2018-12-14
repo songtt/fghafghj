@@ -1,0 +1,91 @@
+{extend name="public:customer-base" /}
+
+{block name="main"}
+    <!--网站管理-->
+    <div class="main_left">
+        <div class="subnav">
+            <div class="subnav-title">
+                <a href="" class="toggle-subnav">
+                    <i></i>
+                    <span>我的概括</span>
+                </a>
+            </div>
+            <ul class="subnav-menu">
+                <li><a href="/home/customer/index">我的概括</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="main" style="padding-top:10px;">
+        <table style=" margin-top:30px;" border="0" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td>
+                            <form method="post" action="/home/customer/site" name="select">
+                                <table style="width:430px;" border="0" cellpadding="0" cellspacing="0">
+                                    <tr class="user_input">
+                                        <td width="150"><input type="text" name="num" {if condition="$one.params.num eq '0'"} value="" {else/} value="{$one.params.num}" {/if}"></td>
+                                        <td width="100">
+                                            <select name="selectName">
+                                                <option value="sitename" {if condition="$one.params.selectName eq 'sitename'"} selected {/if}>网站名称</option>
+                                                <option value="userid" {if condition="$one.params.selectName eq 'userid'"} selected {/if}>会员ID</option>
+                                                <option value="siteid" {if condition="$one.params.selectName eq 'siteid'"} selected {/if}>网站ID</option>
+                                                <option value="username" {if condition="$one.params.selectName eq 'username'"} selected {/if}>会员名称</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <button type="submit" class="btn btn-primary">搜索</button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </form>
+                        </td>
+                    </tr>
+                </table>
+        <div class="box">
+            <div class="box-title">
+                <h3>
+                    <i></i>网站管理
+                </h3>
+            </div>
+            <div class="box-content">
+                <table class="table">
+                    <tr>
+                        <th>网站ID</th>
+                        <th>会员名称</th>
+                        <th>网站名称</th>
+                        <th>分类</th>
+                        <th>网站备案信息</th>
+                        <!--<th>日访问量</th>-->
+                        <th>网站描述</th>
+                        <th>状态</th>
+                        <!--<th>操作</th>-->
+                    </tr>
+                    {//volist name="one.site" id="vo"}
+                    <!--<tr>-->
+                        <!--<td>{//$vo.site_id}</td>-->
+                        <!--<td><a href="/home/customer/toWebmaster?uid={//$vo.uid}" target="_blank">{//$vo.username}</a></td>-->
+                        <!--<td>{//$vo.sitename}</td>-->
+                        <!--<td>{//$vo.class_name}</td>-->
+                        <!--<td>{//$vo.beian|default='空'}</td>-->
+                        <!--&lt;!&ndash;<td>{$vo.day_ip|default='0'}</td>&ndash;&gt;-->
+                        <!--<td>{//$vo.siteinfo|default='空'}</td>-->
+                        <!--<td>-->
+                             <!--<span class="common-button ajax-status">-->
+                            <!--{//switch name="//vo.status" }-->
+                                <!--{//case value="0"}<span class="sta_er">锁定</span>{///case}-->
+                                <!--{//case value="1"}<span class="sta_bl">活动</span>{///case}-->
+                                <!--{//case value="2"}<span class="sta_er">待审</span>{///case}-->
+                            <!--{///switch}-->
+                            <!--</span>-->
+                        <!--</td>-->
+                    <!--</tr>-->
+                    {///volist}
+                </table>
+            </div>
+        </div>
+        {//$one.show}
+    </div>
+{/block}
+
+{block name="js"}
+
+{/block}
